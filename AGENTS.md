@@ -35,7 +35,10 @@ This repository is a static learning website for PM, BA, and Product Design lear
 ## Content rules
 
 - Teach concepts and process, not deep coding syntax.
-- Emphasize: Git, branch, worktree, AI Agent explore/plan/review, Next.js literacy, component/state thinking, Storybook, mock data, debugging evidence, git diff, quality checks, commit/push/MR.
+- Emphasize: writing an agent-ready issue with acceptance criteria, Git, branch, worktree, AI Agent explore/plan/review, Next.js literacy, component/state thinking, Storybook, mock data, debugging evidence, git diff, quality checks, commit discipline, and the full delivery loop from issue to merge and cleanup.
+- The Git story must stay realistic end to end: learners own their repository (GitHub fork or their own GitLab project), file a real issue, work on one branch/worktree, commit at verified checkpoints with `type(scope): subject` messages that reference the issue, sync with main, open an MR that closes the issue, take review feedback, and clean up after merge.
+- Keep the traceability chain intact across lessons: issue number → branch name → commit footer → MR `Closes`.
+- The agent drafts and proposes; a human approves anything that leaves the machine. Agent skills may fill templates and propose `gh`/`glab` commands, but must never merge, push to main, or mark an MR ready.
 - Capstone guidance uses progressive disclosure: independent attempt → hint → step-by-step.
 - `AGENTS.md` is the single source of truth for agent instructions.
 
@@ -43,4 +46,5 @@ This repository is a static learning website for PM, BA, and Product Design lear
 
 - Never use real patient data, secrets, `.env` values, production credentials, or production endpoints in course examples.
 - Never encourage direct changes to `main`.
-- Do not add destructive Git commands to beginner lessons.
+- Do not add destructive Git commands to beginner lessons (no `reset --hard`, no `push --force`, no `branch -D`).
+- Never commit secrets, `.env` values, build output, or agent scratch files in examples.

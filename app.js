@@ -9,14 +9,15 @@
     last: 'his-ai-course.last',
     quiz: 'his-ai-course.quiz',
     promptLang: 'his-ai-course.promptLang',
-    agentTool: 'his-ai-course.agentTool'
+    agentTool: 'his-ai-course.agentTool',
+    repoHost: 'his-ai-course.repoHost'
   };
 
   const ui = {
     th: {
       start: 'เริ่มเรียน', continue: 'เรียนต่อจากที่ค้าง', curriculum: 'ดูหลักสูตร',
       duration: 'ระยะเวลา', audience: 'กลุ่มผู้เรียน', format: 'รูปแบบ',
-      audienceValue: 'PM · BA · Product Design', formatValue: '3 วัน · Hands-on · AI-assisted', durationValue: '≈ 16 ชั่วโมง',
+      audienceValue: 'PM · BA · Product Design', formatValue: '3 วัน · Hands-on · AI-assisted', durationValue: '≈ 17.5 ชั่วโมง',
       progress: 'ความคืบหน้า', complete: 'เรียนจบบทนี้', completed: 'เรียนจบแล้ว',
       next: 'บทถัดไป', previous: 'บทก่อนหน้า', copy: 'คัดลอก', copied: 'คัดลอกแล้ว',
       expected: 'ดูผลลัพธ์ที่คาดหวัง', hideExpected: 'ซ่อนผลลัพธ์',
@@ -52,7 +53,7 @@
     en: {
       start: 'Start learning', continue: 'Continue where you left off', curriculum: 'View curriculum',
       duration: 'Duration', audience: 'Audience', format: 'Format',
-      audienceValue: 'PM · BA · Product Design', formatValue: '3 days · Hands-on · AI-assisted', durationValue: '≈ 16 hours',
+      audienceValue: 'PM · BA · Product Design', formatValue: '3 days · Hands-on · AI-assisted', durationValue: '≈ 17.5 hours',
       progress: 'Progress', complete: 'Mark lesson complete', completed: 'Completed',
       next: 'Next lesson', previous: 'Previous lesson', copy: 'Copy', copied: 'Copied',
       expected: 'Reveal expected result', hideExpected: 'Hide expected result',
@@ -94,7 +95,8 @@
     quiz: JSON.parse(localStorage.getItem(STORAGE.quiz) || '{}'),
     last: localStorage.getItem(STORAGE.last) || 'prerequisites',
     promptLang: localStorage.getItem(STORAGE.promptLang) || '',
-    agentTool: localStorage.getItem(STORAGE.agentTool) || ''
+    agentTool: localStorage.getItem(STORAGE.agentTool) || '',
+    repoHost: localStorage.getItem(STORAGE.repoHost) || ''
   };
 
   const esc = (s='') => String(s).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
@@ -140,6 +142,8 @@
     else localStorage.removeItem(STORAGE.promptLang);
     if (state.agentTool) localStorage.setItem(STORAGE.agentTool, state.agentTool);
     else localStorage.removeItem(STORAGE.agentTool);
+    if (state.repoHost) localStorage.setItem(STORAGE.repoHost, state.repoHost);
+    else localStorage.removeItem(STORAGE.repoHost);
   }
 
   const promptLang = () => state.promptLang || state.lang;
@@ -325,10 +329,11 @@
   }
 
   function agentSetupBlock(block) {
-    const active = block.tools.find(x => x.id === state.agentTool) || block.tools[0];
+    const store = block.store || 'agentTool';
+    const active = block.tools.find(x => x.id === state[store]) || block.tools[0];
     const tabs = block.tools.map(tool => `<button type="button" class="tool-tab${tool.id===active.id?' active':''}" data-agent-tool="${esc(tool.id)}" role="tab" aria-selected="${tool.id===active.id}">${esc(t(tool.name))}</button>`).join('');
     const panels = block.tools.map(tool => `<div class="agent-panel" data-agent-panel="${esc(tool.id)}" role="tabpanel"${tool.id===active.id?'':' hidden'}><ol class="cmd-list">${agentSteps(tool)}</ol></div>`).join('');
-    return `<section class="block commands agent-setup" data-agent-setup>
+    return `<section class="block commands agent-setup" data-agent-setup="${esc(store)}">
       <div class="practice-label">${U('setupLabel')}</div>
       <h2>${esc(t(block.title))}</h2>
       ${lead(block)}
@@ -352,8 +357,9 @@
 
   function applyAgentTool() {
     document.querySelectorAll('[data-agent-setup]').forEach(section => {
+      const store = section.dataset.agentSetup || 'agentTool';
       const btns = [...section.querySelectorAll('[data-agent-tool]')];
-      const active = btns.find(b => b.dataset.agentTool === state.agentTool) || btns[0];
+      const active = btns.find(b => b.dataset.agentTool === state[store]) || btns[0];
       if (!active) return;
       btns.forEach(b => {
         const on = b === active;
@@ -707,7 +713,8 @@
       }
       const agentToolBtn = e.target.closest('[data-agent-tool]');
       if (agentToolBtn) {
-        state.agentTool = agentToolBtn.dataset.agentTool;
+        const setupSection = agentToolBtn.closest('[data-agent-setup]');
+        state[setupSection?.dataset.agentSetup || 'agentTool'] = agentToolBtn.dataset.agentTool;
         persist();
         applyAgentTool();
       }
