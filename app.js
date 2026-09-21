@@ -8,7 +8,8 @@
     completed: 'his-ai-course.completed',
     last: 'his-ai-course.last',
     quiz: 'his-ai-course.quiz',
-    promptLang: 'his-ai-course.promptLang'
+    promptLang: 'his-ai-course.promptLang',
+    agentTool: 'his-ai-course.agentTool'
   };
 
   const ui = {
@@ -40,7 +41,8 @@
       promptLangNote: 'เลือกภาษาของ prompt ได้ ระบบจะจำและใช้กับทุก prompt ในเว็บนี้',
       whenToUse: 'ใช้เมื่อไร', afterPrompt: 'หลังส่ง prompt ให้ตรวจสิ่งนี้',
       commandsLabel: 'ทีละคำสั่ง', expectLabel: 'ควรเห็นอะไร',
-      readDiagram: 'อ่านภาพนี้อย่างไร', noCommand: 'ขั้นนี้ไม่ต้องพิมพ์คำสั่ง'
+      readDiagram: 'อ่านภาพนี้อย่างไร', noCommand: 'ขั้นนี้ไม่ต้องพิมพ์คำสั่ง',
+      setupLabel: 'ทีละขั้น', toolChoice: 'เลือกเครื่องมือที่จะใช้'
     },
     en: {
       start: 'Start learning', continue: 'Continue where you left off', curriculum: 'View curriculum',
@@ -70,7 +72,8 @@
       promptLangNote: 'Choose the prompt language. Your choice is remembered and applied to every prompt on this site.',
       whenToUse: 'When to use it', afterPrompt: 'After sending, check this',
       commandsLabel: 'Step by step', expectLabel: 'What you should see',
-      readDiagram: 'How to read this diagram', noCommand: 'No command to type in this step'
+      readDiagram: 'How to read this diagram', noCommand: 'No command to type in this step',
+      setupLabel: 'Step by step', toolChoice: 'Choose your tool'
     }
   };
 
@@ -80,7 +83,8 @@
     completed: new Set(JSON.parse(localStorage.getItem(STORAGE.completed) || '[]')),
     quiz: JSON.parse(localStorage.getItem(STORAGE.quiz) || '{}'),
     last: localStorage.getItem(STORAGE.last) || 'prerequisites',
-    promptLang: localStorage.getItem(STORAGE.promptLang) || ''
+    promptLang: localStorage.getItem(STORAGE.promptLang) || '',
+    agentTool: localStorage.getItem(STORAGE.agentTool) || ''
   };
 
   const esc = (s='') => String(s).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
@@ -124,6 +128,8 @@
     localStorage.setItem(STORAGE.last, state.last);
     if (state.promptLang) localStorage.setItem(STORAGE.promptLang, state.promptLang);
     else localStorage.removeItem(STORAGE.promptLang);
+    if (state.agentTool) localStorage.setItem(STORAGE.agentTool, state.agentTool);
+    else localStorage.removeItem(STORAGE.agentTool);
   }
 
   const promptLang = () => state.promptLang || state.lang;
@@ -186,7 +192,7 @@
       <header class="topbar">
         <a class="brand" href="#/">
           <span class="brand-mark">${icon('spark',20)}</span>
-          <span class="brand-copy"><small>HIS learning path</small><span>AI Product Workshop</span></span>
+          <span class="brand-copy"><span>AI Product Workshop</span></span>
         </a>
         <div class="top-actions">
           <button class="icon-btn mobile-menu" id="menuBtn" aria-label="Menu">${icon('menu')}</button>
@@ -211,7 +217,6 @@
         </aside>
         <main class="main" id="main">${content}</main>
       </div>
-      <footer class="footer">HIS AI Product Workshop · Mock/synthetic data only · Built for progressive, human-supervised AI learning</footer>
     </div>`;
   }
 
@@ -265,6 +270,7 @@
       case 'diagram': return `<section class="block"><h2>${esc(t(block.title))}</h2>${lead(block)}<div class="diagram"><button class="diagram-expand" type="button" data-diagram-title="${esc(t(block.title))}" aria-label="${state.lang==='th'?'ดูภาพขยาย':'View full size'}">${icon('expand',15)}<span>${state.lang==='th'?'ขยาย':'Expand'}</span></button><div class="mermaid">${esc(block.diagram)}</div></div>${block.notes?`<div class="diagram-notes"><strong>${U('readDiagram')}</strong><ul class="clean">${t(block.notes).map(n=>`<li>${rich(n)}</li>`).join('')}</ul></div>`:''}${block.outro?`<p class="block-outro">${rich(t(block.outro))}</p>`:''}</section>`;
       case 'prose': return `<section class="block prose">${block.title?`<h2>${esc(t(block.title))}</h2>`:''}${t(block.body).map(pg=>`<p>${rich(pg)}</p>`).join('')}${block.points?`<ul class="clean">${t(block.points).map(x=>`<li>${rich(x)}</li>`).join('')}</ul>`:''}</section>`;
       case 'commands': return commandsBlock(block);
+      case 'agent-setup': return agentSetupBlock(block);
       case 'prompt': return promptBlock(block);
       case 'practice': return practiceBlock(block);
       case 'capstone': return `<section class="block"><div class="practice-label">${U('guided')}</div><div class="capstone-steps">${block.steps.map((s,i)=>`<details class="capstone-step"><summary>${esc(t(s.title))}<span>${String(i+1).padStart(2,'0')}</span></summary><div class="inside"><p><strong>${U('hint')}:</strong> ${linkify(t(s.hint))}</p><div class="reveal"><button class="btn btn-secondary btn-small reveal-btn" type="button">${U('guide')}</button><div class="reveal-panel"><p>${linkify(t(s.guide))}</p></div></div></div></details>`).join('')}</div></section>`;
@@ -305,6 +311,46 @@
       <ol class="cmd-list">${steps}</ol>
       ${block.outro ? `<p class="block-outro">${rich(t(block.outro))}</p>` : ''}
     </section>`;
+  }
+
+  function agentSetupBlock(block) {
+    const active = block.tools.find(x => x.id === state.agentTool) || block.tools[0];
+    const tabs = block.tools.map(tool => `<button type="button" class="tool-tab${tool.id===active.id?' active':''}" data-agent-tool="${esc(tool.id)}" role="tab" aria-selected="${tool.id===active.id}">${esc(t(tool.name))}</button>`).join('');
+    const panels = block.tools.map(tool => `<div class="agent-panel" data-agent-panel="${esc(tool.id)}" role="tabpanel"${tool.id===active.id?'':' hidden'}><ol class="cmd-list">${agentSteps(tool)}</ol></div>`).join('');
+    return `<section class="block commands agent-setup" data-agent-setup>
+      <div class="practice-label">${U('setupLabel')}</div>
+      <h2>${esc(t(block.title))}</h2>
+      ${lead(block)}
+      <div class="tool-tabs" role="tablist" aria-label="${U('toolChoice')}">${tabs}</div>
+      ${panels}
+      ${block.outro ? `<p class="block-outro">${rich(t(block.outro))}</p>` : ''}
+    </section>`;
+  }
+
+  function agentSteps(tool) {
+    return tool.steps.map((s, i) => `<li class="cmd-step">
+      <div class="cmd-index">${String(i+1).padStart(2,'0')}</div>
+      <div class="cmd-body">
+        <h3>${esc(t(s.title))}</h3>
+        <p>${rich(t(s.what))}</p>
+        ${s.cmd ? codeBlock(s.cmd, s.label || 'command') : ''}
+        ${s.expect ? `<div class="cmd-expect"><strong>${U('expectLabel')}</strong> ${rich(t(s.expect))}</div>` : ''}
+      </div>
+    </li>`).join('');
+  }
+
+  function applyAgentTool() {
+    document.querySelectorAll('[data-agent-setup]').forEach(section => {
+      const btns = [...section.querySelectorAll('[data-agent-tool]')];
+      const active = btns.find(b => b.dataset.agentTool === state.agentTool) || btns[0];
+      if (!active) return;
+      btns.forEach(b => {
+        const on = b === active;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-selected', String(on));
+      });
+      section.querySelectorAll('[data-agent-panel]').forEach(p => { p.hidden = p.dataset.agentPanel !== active.dataset.agentTool; });
+    });
   }
 
   function promptBody(block) {
@@ -466,7 +512,7 @@
   }
 
   function setDiagramZoom(scale, resetPan=true) {
-    diagramModal.scale = Math.min(3, Math.max(0.4, Math.round(scale * 10) / 10));
+    diagramModal.scale = Math.min(5, Math.max(0.4, Math.round(scale * 10) / 10));
     if (resetPan) { diagramModal.panX = 0; diagramModal.panY = 0; }
     applyDiagramTransform();
     diagramModal.zoomLabel.textContent = Math.round(diagramModal.scale * 100) + '%';
@@ -558,6 +604,12 @@
         state.promptLang = langBtn.dataset.promptLang;
         persist();
         applyPromptLang();
+      }
+      const agentToolBtn = e.target.closest('[data-agent-tool]');
+      if (agentToolBtn) {
+        state.agentTool = agentToolBtn.dataset.agentTool;
+        persist();
+        applyAgentTool();
       }
     });
   }
