@@ -1240,5 +1240,75 @@ Answer briefly as a numbered list, and do not act until I tell you to.`},
     title:{th:'สิ่งที่คุณทำได้หลังจบเส้นทางนี้',en:'What you can do after this journey'},
     intro:{th:'คุณไม่จำเป็นต้องเรียกตัวเองว่า Developer แต่ควรสามารถรับ Requirement หนึ่งเรื่องและกำกับ AI Agent จนกลายเป็นงาน Frontend ที่ตรวจสอบและส่งต่อได้',en:'You do not need to call yourself a developer. You should be able to take one requirement and supervise an AI agent until it becomes verifiable frontend work ready for handoff.'},
     skills:{th:['Requirement → Component/State','Git branch + worktree','Agent Explore/Plan','Storybook review','Mock states','Browser/Terminal debugging','git diff + quality gates','Commit/Push/MR'],en:['Requirement → Component/State','Git branch + worktree','Agent Explore/Plan','Storybook review','Mock states','Browser/Terminal debugging','git diff + quality gates','Commit/Push/MR']}
+  },
+  glossary: {
+    categories: [
+      {
+        id:'git', name:{th:'Git & การจัดการเวอร์ชัน',en:'Git & Version Control'}, terms:[
+          {term:'Repository',alias:'Repo',th:'คลังเก็บไฟล์และประวัติการเปลี่ยนแปลงทั้งหมดของโปรเจกต์ หนึ่งโปรเจกต์มี repository หลักบน server (เช่น GitHub หรือ GitLab) และสำเนาในเครื่องของเรา',en:'The project folder plus its full change history. One main repository lives on a server such as GitHub or GitLab, and each person clones a copy to their machine.'},
+          {term:'Clone',th:'คำสั่งคัดลอก repository จาก server มาไว้ในเครื่อง พร้อมประวัติการเปลี่ยนแปลงทั้งหมด ไม่ใช่แค่ไฟล์ล่าสุด',en:'The command that copies a repository from the server to your machine, including its full change history — not just the latest files.'},
+          {term:'Commit',th:'การบันทึกการเปลี่ยนแปลงหนึ่งชุดพร้อมข้อความอธิบาย เปรียบเหมือน “จุดเซฟ” ที่ย้อนกลับมาดูได้',en:'A saved set of changes with a short message describing it — like a save point you can look back on.'},
+          {term:'Branch',th:'สายงานย่อยที่แยกออกจาก main เพื่อทำงานเรื่องเดียวโดยไม่กระทบงานหลัก สร้างใหม่ด้วยคำสั่ง `git switch -c` ตามด้วยชื่อ branch',en:'A separate line of work branched off main so one task never disturbs the main line. Create one with `git switch -c` followed by a branch name.'},
+          {term:'main',th:'branch สายหลักของโปรเจกต์ที่ถือว่าพร้อมใช้งานเสมอ กติกาของทีมคือไม่แก้งานบน main โดยตรง แต่ส่งงานเข้ามาผ่าน Merge Request',en:'The main branch of the project, always considered ready. Team rule: never edit main directly — work arrives through a Merge Request.'},
+          {term:'Worktree',th:'โฟลเดอร์ทำงานเพิ่มเติมที่ผูกกับ branch อื่นจาก repository เดียวกัน ทำให้เปิดหลายงานพร้อมกันได้โดยไม่ต้องสลับ branch ไปมา',en:'An extra working folder tied to another branch of the same repository, so several tasks can stay open at once without switching branches.'},
+          {term:'git status',th:'คำสั่งดูว่าตอนนี้มีไฟล์ไหนถูกแก้และไฟล์ไหนรอ commit ใช้ตรวจว่า AI Agent แตะไฟล์อะไรไปบ้าง',en:'The command that lists which files changed and which are waiting to be committed. Use it to see exactly which files the AI agent touched.'},
+          {term:'git diff',th:'คำสั่งเทียบโค้ดก่อนกับหลังว่าเปลี่ยนกี่บรรทัด ตรงไหน เป็นหลักฐานชิ้นสำคัญในการตรวจงานที่ AI ทำ',en:'The command that shows the before and after of every changed line. It is the key piece of evidence when reviewing AI work.'},
+          {term:'Push',th:'คำสั่งส่ง commit จากเครื่องเราขึ้นไปเก็บบน server เพื่อให้ทีมเห็นงานและนำไป merge ต่อได้',en:'The command that uploads your commits from your machine to the server so the team can see the work and merge it.'},
+          {term:'Merge Request',alias:'MR · Pull Request (PR)',th:'คำขอรวมงานจาก branch ของเราเข้า main โดยต้องเปิดให้ทีมหรือ developer review ก่อน GitLab เรียกว่า Merge Request ส่วน GitHub เรียกว่า Pull Request',en:'A request to merge your branch into main, opened for teammates or developers to review first. GitLab calls it a Merge Request; GitHub calls it a Pull Request.'},
+          {term:'Conflict',th:'สถานการณ์ที่สอง branch แก้บรรทัดเดียวกัน ทำให้รวมงานอัตโนมัติไม่ได้ ต้องมีคนเปรียบเทียบและเลือกว่าจะเก็บแบบไหน',en:'When two branches edited the same lines, Git cannot merge automatically — a person must compare and choose which change to keep.'}
+        ]
+      },
+      {
+        id:'agent', name:{th:'AI Agent & Prompt',en:'AI Agent & Prompting'}, terms:[
+          {term:'AI Agent',th:'AI ที่ต่อกับโฟลเดอร์โปรเจกต์ของเราได้ อ่านไฟล์ เสนอแผน แก้โค้ด และรันคำสั่งได้ แต่การตัดสินใจว่างานถูกต้องยังเป็นของคน',en:'An AI connected to your project folder that can read files, propose plans, edit code, and run commands — while the human still decides what is correct.'},
+          {term:'Prompt',th:'ข้อความสั่งงานหรือคำถามที่เราให้ AI ยิ่งระบุบริบท ขอบเขต และผลลัพธ์ที่ต้องการชัดเท่าไร งานที่ได้ก็ตรงเท่านั้น',en:'The instruction or question you give the AI. The clearer the context, scope, and expected result, the closer the output lands.'},
+          {term:'Context',th:'ข้อมูลชุดที่ AI มองเห็นในขณะทำงาน เช่น ไฟล์ที่เปิดและประวัติการคุย ถ้าบริบทน้อย AI จะเดาเองมากขึ้น',en:'What the AI can see while working — open files, conversation history, project rules. The less context it has, the more it guesses.'},
+          {term:'Explore',th:'ขั้นแรกของการสั่งงาน ให้ Agent อ่านโครงสร้างโปรเจกต์และไฟล์ที่เกี่ยวข้องก่อน โดยยังไม่ให้แก้ไฟล์ใด ๆ',en:'The first step of any task: have the agent read the project structure and related files before it is allowed to change anything.'},
+          {term:'Plan',th:'ขั้นให้ Agent เสนอขั้นตอนที่จะทำเป็นรายการก่อนลงมือ เราอนุมัติหรือแก้แผนได้ก่อนที่ไฟล์จะถูกแตะ',en:'The step where the agent proposes its steps as a list before starting. You approve or adjust the plan before any file is touched.'},
+          {term:'AGENTS.md',th:'ไฟล์คู่มือประจำโปรเจกต์ที่ AI Agent อ่านก่อนทำงาน ใช้เขียนกติกาของทีม เช่น ห้ามแก้ main และห้ามใช้ข้อมูลผู้ป่วยจริง',en:'A per-project instruction file the AI agent reads before working. Team rules live here, such as never touching main and never using real patient data.'},
+          {term:'Hallucination',th:'อาการที่ AI ตอบอย่างมั่นใจแต่ไม่ตรงความจริง เช่น อ้างฟังก์ชันหรือไฟล์ที่ไม่มีอยู่ในโปรเจกต์ ทางแก้คือตรวจด้วยหลักฐานเสมอ',en:'When the AI states something confidently but wrongly, such as citing a function or file that does not exist. The cure is verifying with evidence.'}
+        ]
+      },
+      {
+        id:'tools', name:{th:'เครื่องมือพื้นฐาน',en:'Essential Tools'}, terms:[
+          {term:'Node.js',th:'โปรแกรมที่ทำให้รัน JavaScript บนเครื่องเราได้โดยไม่ต้องผ่าน browser เป็นตัวรันทั้ง Next.js และ Storybook',en:'The program that runs JavaScript on your machine without a browser. It powers both Next.js and Storybook.'},
+          {term:'npm',th:'เครื่องมือที่มาพร้อม Node.js ใช้ติดตั้ง library และรันคำสั่งของโปรเจกต์ เช่น `npm install` และ `npm run dev`',en:'The tool bundled with Node.js. It installs libraries and runs project commands such as `npm install` and `npm run dev`.'},
+          {term:'Dependency',th:'library ของคนอื่นที่โปรเจกต์นำมาใช้ ติดตั้งครั้งแรกด้วย `npm install` ตามรายการใน `package.json`',en:'Third-party libraries the project builds on, installed with `npm install` according to the list in `package.json`.'},
+          {term:'package.json',th:'ไฟล์บัตรประจำตัวของโปรเจกต์ บอกชื่อโปรเจกต์ รายการ dependency และคำสั่ง run ทั้งหมด เช่น dev และ storybook',en:'The project ID card: its name, its dependency list, and every run script such as dev and storybook.'},
+          {term:'Terminal',th:'หน้าต่างสำหรับพิมพ์คำสั่งลงเครื่องโดยตรง เช่น คำสั่ง git และ npm ที่ใช้ตลอดคอร์สนี้',en:'The window where you type commands directly, such as the git and npm commands used throughout this course.'},
+          {term:'localhost & Port',alias:'localhost · port',th:'localhost คือเครื่องของเราเอง ส่วน port คือเลข “ประตู” ของแต่ละโปรแกรม เช่น Next.js อยู่ port 3000 และ Storybook อยู่ port 6006',en:'localhost means this machine; a port is the numbered “door” of each program — Next.js uses 3000 and Storybook uses 6006.'},
+          {term:'Dev Server',th:'server สำหรับช่วงพัฒนาที่รันค้างไว้และรีเฟรชหน้าเว็บอัตโนมัติเมื่อไฟล์เปลี่ยน เปิดด้วยคำสั่ง `npm run dev`',en:'A development server that keeps running and refreshes the page automatically when files change. Start it with `npm run dev`.'},
+          {term:'DevTools',th:'เครื่องมือของนักพัฒนาใน browser (กด F12) ใช้ดู error ในแท็บ Console และตรวจหน้าจอได้ทีละส่วน',en:'The developer tools inside the browser (F12). The Console tab shows errors; the inspector examines each part of the page.'},
+          {term:'Environment Variable',alias:'.env',th:'ค่า config ของระบบ เช่น รหัสเชื่อมต่อฐานข้อมูล มักเก็บในไฟล์ `.env` ห้าม commit ขึ้น Git และห้ามนำไปใส่ใน prompt เด็ดขาด',en:'System configuration values such as database credentials, usually kept in a `.env` file. Never commit them to Git and never paste them into a prompt.'}
+        ]
+      },
+      {
+        id:'ui', name:{th:'Next.js, Component & Storybook',en:'Next.js, Components & Storybook'}, terms:[
+          {term:'Next.js',th:'framework สร้างเว็บแอปพลิเคชันบนฐาน React เป็นตัวรันหน้าเว็บจริงของโปรเจกต์นี้ที่ localhost:3000',en:'A React-based web app framework. It runs the real page of this project at localhost:3000.'},
+          {term:'React',th:'library สร้างหน้าจอโดยแบ่งเป็นชิ้นย่อยที่ใช้ซ้ำได้ (component) เป็นฐานที่ Next.js สร้างทับอีกชั้น',en:'A UI library built around reusable pieces (components). It is the foundation Next.js sits on.'},
+          {term:'Component',th:'ชิ้นส่วนหน้าจอที่สร้างครั้งเดียวใช้ซ้ำได้ เช่น ปุ่ม ช่องค้นหา หรือการ์ดข้อมูลผู้ป่วย แล้วนำมาประกอบเป็นหน้าเว็บ',en:'A reusable screen part — a button, a search box, a patient card — that gets assembled into full pages.'},
+          {term:'Props',th:'ข้อมูลที่ส่งเข้าไปใน component เพื่อให้แสดงผลต่างกันได้ เช่น ปุ่มแบบเดียวกันแต่ข้อความและสีต่างกัน',en:'Data passed into a component so the same component can render differently — one button, different labels and colors.'},
+          {term:'State',th:'ข้อมูลภายใน component ที่เปลี่ยนค่าได้ระหว่างการใช้งาน เช่น กำลังโหลด มีรายการผลลัพธ์ หรือไม่พบข้อมูล',en:'Data inside a component that changes while it is used — loading, showing results, or showing nothing found.'},
+          {term:'Page / Route',th:'หน้าเว็บหนึ่งหน้าที่เข้าถึงผ่าน URL ใน Next.js หน้าหนึ่งสร้างขึ้นจากการนำ component หลายชิ้นมาประกอบกัน',en:'One web page reached through a URL. In Next.js a page is assembled from several components.'},
+          {term:'Storybook',th:'เครื่องมือที่เปิดดู component แยกทีละชิ้นที่ localhost:6006 ใช้ review หน้าตาและสถานะต่าง ๆ โดยไม่ต้องเปิดหน้าเว็บจริง',en:'A tool at localhost:6006 that shows components one at a time, so you review appearance and states without opening the real page.'},
+          {term:'Storybook Story',th:'ไฟล์ที่บอกว่า Storybook จะแสดง component หนึ่งชิ้นในแต่ละสถานะอย่างไร ระวังสับสน: Storybook story ไม่ใช่ user story ในงาน BA',en:'A file that tells Storybook how to display one component in each of its states. Careful: a Storybook story is not a BA user story.'},
+          {term:'Mock Data',th:'ข้อมูลสมมติที่สร้างขึ้นเพื่อให้หน้าเว็บแสดงผลได้โดยไม่ต้องต่อระบบจริง ทุกตัวอย่างในคอร์สนี้ใช้ mock data เท่านั้น',en:'Fake sample data that lets pages render without a real system. Every example in this course uses mock data only.'},
+          {term:'Mock API',th:'การจำลอง API ด้วยข้อมูลปลอม เพื่อให้ฝั่งหน้าเว็บพัฒนาต่อได้ทันทีโดยไม่ต้องรอ backend เสร็จ',en:'A stand-in API returning fake data, so the frontend keeps moving without waiting for the backend.'},
+          {term:'UI States',th:'สถานะหน้าจอที่ต้องออกแบบให้ครบก่อนถือว่างานเสร็จ เช่น ปกติ กำลังโหลด (loading) ไม่มีข้อมูล (empty) และเกิดข้อผิดพลาด (error)',en:'The screen conditions a finished design must cover: normal, loading, empty, and error.'}
+        ]
+      },
+      {
+        id:'quality', name:{th:'คุณภาพ & การส่งมอบ',en:'Quality & Delivery'}, terms:[
+          {term:'Debugging',th:'กระบวนการไล่หาสาเหตุว่าทำไมระบบทำงานผิด เริ่มจากอ่าน error และหลักฐานก่อนเสมอ แล้วจึงให้ AI ช่วยวิเคราะห์หรือแก้',en:'The process of finding why the system misbehaves. Always read the error and evidence first, then let the AI help analyze or fix.'},
+          {term:'Error & Log',th:'error คือข้อความบอกว่าอะไรพังและอยู่ไฟล์ไหน ส่วน log คือบันทึกการทำงานที่ช่วยไล่ลำดับเหตุการณ์ก่อนเกิดปัญหา',en:'An error says what broke and where; a log is the running record that helps you trace events leading up to it.'},
+          {term:'Evidence',th:'หลักฐานยืนยันผลงาน เช่น ภาพหน้าจอ git diff หรือผลจาก terminal ใช้ตัดสินว่างานเสร็จจริง ไม่ใช่เชื่อคำสรุปของ AI',en:'Proof of the result — screenshots, git diff, terminal output. Decisions are made on evidence, not on the AI’s summary.'},
+          {term:'Quality Gate',th:'จุดตรวจคุณภาพที่ต้องผ่านก่อนส่งงาน เช่น build สำเร็จ ไม่มี lint error และ Storybook แสดงผลครบทุกสถานะ',en:'Checks that must pass before handoff: build succeeds, no lint errors, and Storybook renders every state.'},
+          {term:'Lint',th:'เครื่องมือตรวจคุณภาพโค้ดอัตโนมัติ เช่น จับตัวแปรที่ประกาศแล้วไม่ใช้ หรือรูปแบบโค้ดที่ไม่ตรงมาตรฐานของทีม',en:'An automated code checker that catches issues such as unused variables or style that breaks team standards.'},
+          {term:'Scope',th:'ขอบเขตของงานหนึ่งชิ้น เวลาสั่ง AI ควรจำกัด scope ให้แคบ เช่น แก้ไฟล์เดียวหรือฟีเจอร์เดียว เพื่อให้ตรวจงานได้ง่าย',en:'The boundary of one task. When directing the AI, keep the scope narrow — one file or one feature — so review stays easy.'},
+          {term:'Acceptance Criteria',th:'เงื่อนไขที่ต้องเป็นจริงก่อนถือว่างานผ่าน ใช้เป็นเช็กลิสต์ตรวจงาน AI และแนบไว้ใน Merge Request',en:'The conditions that must be true for work to count as done. Use them as the checklist for reviewing AI work and attach them to the Merge Request.'},
+          {term:'UAT',alias:'User Acceptance Test',th:'การทดสอบโดยผู้ใช้งานจริงหรือเจ้าของงานก่อนขึ้นระบบจริง ยิ่งตรวจจุดผิดพลาดได้เร็วใน Storybook ยิ่งไม่ต้องแก้กันตอน UAT',en:'Testing by real users or the product owner before go-live. Catching issues early in Storybook means far less pain at UAT.'}
+        ]
+      }
+    ]
   }
 };

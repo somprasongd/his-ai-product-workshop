@@ -43,7 +43,11 @@
       promptExample: 'ตัวอย่าง', promptExampleNote: 'แท็บ “ตัวอย่าง” คือ prompt ที่ใส่รายการตัวอย่างแล้ว กดคัดลอกไปส่งได้ทันที แล้วเทียบผลกับรายการของคุณเอง',
       commandsLabel: 'ทีละคำสั่ง', expectLabel: 'ควรเห็นอะไร',
       readDiagram: 'อ่านภาพนี้อย่างไร', noCommand: 'ขั้นนี้ไม่ต้องพิมพ์คำสั่ง',
-      setupLabel: 'ทีละขั้น', toolChoice: 'เลือกเครื่องมือที่จะใช้'
+      setupLabel: 'ทีละขั้น', toolChoice: 'เลือกเครื่องมือที่จะใช้',
+      glossary: 'คลังคำศัพท์', glossaryTag: 'อ้างอิง', glossaryTitle: 'คลังคำศัพท์ที่ใช้ในเว็บนี้',
+      glossaryIntro: 'คำศัพท์เทคนิคที่พบในบทเรียนทุกบท พร้อมคำอธิบายภาษาคน ถ้าเจอคำที่ไม่คุ้นระหว่างเรียน กลับมาค้นที่นี่ได้ตลอด',
+      glossarySearchPh: 'พิมพ์คำศัพท์ที่อยากรู้ เช่น branch, mock, story',
+      glossaryEmpty: 'ไม่พบคำศัพท์ที่ตรงกับการค้นหา ลองพิมพ์คำอื่น เช่น diff, state หรือ prompt'
     },
     en: {
       start: 'Start learning', continue: 'Continue where you left off', curriculum: 'View curriculum',
@@ -75,7 +79,11 @@
       promptExample: 'Example', promptExampleNote: 'The “Example” tab shows this prompt with a sample list filled in. Copy and send it as-is, then compare the result with your own list.',
       commandsLabel: 'Step by step', expectLabel: 'What you should see',
       readDiagram: 'How to read this diagram', noCommand: 'No command to type in this step',
-      setupLabel: 'Step by step', toolChoice: 'Choose your tool'
+      setupLabel: 'Step by step', toolChoice: 'Choose your tool',
+      glossary: 'Glossary', glossaryTag: 'Reference', glossaryTitle: 'Glossary of terms used on this site',
+      glossaryIntro: 'The technical terms used across every lesson, explained in plain language. Come back and search here any time a word feels unfamiliar.',
+      glossarySearchPh: 'Search a term, e.g. branch, mock, story',
+      glossaryEmpty: 'No terms match your search. Try another word, such as diff, state, or prompt'
     }
   };
 
@@ -212,6 +220,7 @@
           ${nav}
           <div class="group-label">Links</div>
           <nav class="lesson-nav">
+            <a class="lesson-link ${activeId==='glossary'?'active':''}" href="#/glossary"><span class="lesson-num">${icon('book',14)}</span><span>${U('glossary')}</span></a>
             <a class="lesson-link" href="${course.meta.starterUrl}" target="_blank" rel="noreferrer"><span class="lesson-num">${icon('code',14)}</span><span>${U('starter')}</span></a>
             <a class="lesson-link" href="${course.meta.sourceUrl}" target="_blank" rel="noreferrer"><span class="lesson-num">${icon('github',14)}</span><span>${U('source')}</span></a>
             <button class="lesson-link" id="resetBtn" style="width:100%;border:0;cursor:pointer;text-align:left;background:transparent"><span class="lesson-num">↺</span><span>${U('reset')}</span></button>
@@ -458,6 +467,59 @@
     return shell(html,'');
   }
 
+  function glossaryPage() {
+    const cats = course.glossary.categories;
+    const groups = cats.map(c => `<section class="block glossary-group" data-glossary-group>
+      <h2>${esc(t(c.name))}</h2>
+      <dl class="glossary-grid">${c.terms.map(term => {
+        const hay = [term.term, term.alias || '', term.th, term.en].join(' ').replace(/[`*]/g, '').toLowerCase();
+        return `<div class="glossary-item" data-search="${esc(hay)}">
+          <dt>${esc(term.term)}${term.alias ? `<span class="glossary-alias">${esc(term.alias)}</span>` : ''}</dt>
+          <dd>${rich(state.lang==='th'?term.th:term.en)}</dd>
+        </div>`;
+      }).join('')}</dl>
+    </section>`).join('');
+    const html = `<div class="content">
+      <header class="lesson-header">
+        <div class="lesson-kicker"><span class="pill">${icon('book',13)} ${U('glossaryTag')}</span></div>
+        <h1 class="lesson-title">${U('glossaryTitle')}</h1>
+        <p class="lesson-intro">${U('glossaryIntro')}</p>
+      </header>
+      <div class="glossary-toolbar">
+        <input id="glossarySearch" type="search" placeholder="${esc(U('glossarySearchPh'))}" aria-label="${esc(U('glossarySearchPh'))}" autocomplete="off"/>
+        <p class="glossary-count" id="glossaryCount" role="status"></p>
+      </div>
+      <div class="lesson-body">
+        ${groups}
+        <section class="block glossary-empty" id="glossaryEmpty" hidden>${esc(U('glossaryEmpty'))}</section>
+      </div>
+    </div>`;
+    return shell(html, 'glossary');
+  }
+
+  function applyGlossaryFilter(raw) {
+    const q = (raw || '').trim().toLowerCase();
+    const cats = course.glossary.categories;
+    const total = cats.reduce((n,c) => n + c.terms.length, 0);
+    let visible = 0;
+    document.querySelectorAll('[data-glossary-group]').forEach(sec => {
+      let inGroup = 0;
+      sec.querySelectorAll('.glossary-item').forEach(item => {
+        const show = !q || (item.dataset.search || '').includes(q);
+        item.hidden = !show;
+        if (show) inGroup++;
+      });
+      sec.hidden = inGroup === 0;
+      visible += inGroup;
+    });
+    const count = document.getElementById('glossaryCount');
+    if (count) count.textContent = q
+      ? (state.lang==='th' ? `พบ ${visible} จาก ${total} คำ` : `${visible} of ${total} terms`)
+      : (state.lang==='th' ? `${total} คำ · ${cats.length} หมวด` : `${total} terms · ${cats.length} categories`);
+    const empty = document.getElementById('glossaryEmpty');
+    if (empty) empty.hidden = visible > 0;
+  }
+
   function route() {
     const hash = location.hash || '#/';
     if (hash.startsWith('#/lesson/')) {
@@ -465,6 +527,7 @@
       const lesson = course.lessons.find(l=>l.id===id) || course.lessons[0];
       app.innerHTML = lessonPage(lesson);
     } else if (hash === '#/summary') app.innerHTML = summaryPage();
+    else if (hash === '#/glossary') app.innerHTML = glossaryPage();
     else app.innerHTML = home();
     bind();
     window.scrollTo({top:0,behavior:'instant'});
@@ -482,6 +545,11 @@
     document.getElementById('resetBtn')?.addEventListener('click',()=>{
       if(confirm(U('resetConfirm'))){ state.completed.clear(); state.quiz={}; state.last='prerequisites'; persist(); route(); }
     });
+    const gSearch = document.getElementById('glossarySearch');
+    if (gSearch) {
+      gSearch.addEventListener('input', () => applyGlossaryFilter(gSearch.value));
+      applyGlossaryFilter('');
+    }
     document.querySelectorAll('.reveal-btn').forEach(btn=>btn.addEventListener('click',()=>{
       const r=btn.closest('.reveal'); r.classList.toggle('open');
       if (r.querySelector('.reveal-panel') && btn.textContent.trim()===U('expected')) btn.textContent=r.classList.contains('open')?U('hideExpected'):U('expected');
