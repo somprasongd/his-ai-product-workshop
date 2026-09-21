@@ -114,7 +114,7 @@ Then answer briefly:
         {type:'diagram',title:{th:'เส้นทางของงาน',en:'The work journey'},
           lead:{th:'อ่านจากซ้ายไปขวา ทุกกล่องคือสิ่งที่จับต้องได้ ไม่ใช่นามธรรม และมีอย่างน้อยหนึ่งจุดที่คนต้องเข้ามาตัดสินใจ',en:'Read left to right. Every box is something concrete, not abstract, and at least one of them requires a human decision.'},
           diagram:`flowchart LR\nR[Requirement] --> I[GitLab Issue]\nI --> W[Branch + Worktree]\nW --> A[AI Agent]\nA --> C[Component + Storybook Story]\nC --> P[Next.js Page]\nP --> V[Human Verify]\nV --> D[git diff + checks]\nD --> M[Merge Request]`,
-          notes:{th:['**Requirement → Issue**: เปลี่ยนความต้องการเป็นงานที่มีขอบเขตและเจ้าของ','**Branch + Worktree**: จองพื้นที่ทำงานแยก เพื่อไม่ให้งานที่ยังไม่เสร็จไปปนกับของคนอื่น','**AI Agent**: ผู้ลงมือแก้ไฟล์ — ไม่ใช่ผู้ตัดสินใจว่าอะไรถูกต้อง','**Component + Storybook Story** (Storybook story ไม่ใช่ user story): ผลงานชิ้นเล็กที่ review ได้ทีละชิ้น ก่อนประกอบเป็นหน้าจริง','**Human Verify**: คนเปิดดูของจริงด้วยตา ไม่ใช่เชื่อคำสรุปของ Agent','**git diff + checks**: หลักฐานว่าเปลี่ยนอะไรไปบ้าง และระบบยังทำงานได้','**Merge Request**: จุดส่งมอบให้ Developer review'],en:['**Requirement → Issue**: turn a need into scoped work with an owner','**Branch + Worktree**: reserve a separate workspace so unfinished work does not mix with anyone else’s','**AI Agent**: the one who edits files — not the one who decides what is correct','**Component + Storybook Story** (a Storybook story, not a user story): small pieces reviewable one at a time, before assembly into a real page','**Human Verify**: a person looks at the real thing instead of trusting the agent’s summary','**git diff + checks**: evidence of what changed and that the system still works','**Merge Request**: the handoff point for developer review']}},
+          notes:{th:['**Requirement → Issue**: เปลี่ยนความต้องการเป็นงานที่มีขอบเขตและเจ้าของ (ลงรายละเอียดในบทที่ 02)','**Branch + Worktree**: จองพื้นที่ทำงานแยก เพื่อไม่ให้งานที่ยังไม่เสร็จไปปนกับของคนอื่น','**AI Agent**: ผู้ลงมือแก้ไฟล์ — ไม่ใช่ผู้ตัดสินใจว่าอะไรถูกต้อง','**Component + Storybook Story** (Storybook story ไม่ใช่ user story): ผลงานชิ้นเล็กที่ review ได้ทีละชิ้น ก่อนประกอบเป็นหน้าจริง','**Human Verify**: คนเปิดดูของจริงด้วยตา ไม่ใช่เชื่อคำสรุปของ Agent','**git diff + checks**: หลักฐานว่าเปลี่ยนอะไรไปบ้าง และระบบยังทำงานได้','**Merge Request**: จุดส่งมอบให้ Developer review'],en:['**Requirement → Issue**: turn a need into scoped work with an owner (detailed in lesson 02)','**Branch + Worktree**: reserve a separate workspace so unfinished work does not mix with anyone else’s','**AI Agent**: the one who edits files — not the one who decides what is correct','**Component + Storybook Story** (a Storybook story, not a user story): small pieces reviewable one at a time, before assembly into a real page','**Human Verify**: a person looks at the real thing instead of trusting the agent’s summary','**git diff + checks**: evidence of what changed and that the system still works','**Merge Request**: the handoff point for developer review']}},
         {type:'two',title:{th:'ใครรับผิดชอบอะไร',en:'Who owns what'},left:{title:{th:'Human',en:'Human'},items:{th:['นิยาม outcome และ acceptance criteria','ตรวจ scope, state, edge case และ usability','อนุมัติ plan ก่อนเปลี่ยนไฟล์สำคัญ','ตรวจ Storybook, running app และ git diff'],en:['Define outcomes and acceptance criteria','Review scope, states, edge cases, and usability','Approve plans before significant changes','Review Storybook, running app, and git diff']}},right:{title:{th:'AI Agent',en:'AI Agent'},items:{th:['สำรวจ repository','เสนอ plan','สร้าง/แก้ component และ Storybook story','รัน command, test และช่วยวิเคราะห์ error'],en:['Explore the repository','Propose a plan','Create/edit components and Storybook stories','Run commands/tests and help analyze errors']}}},
         {type:'prose',title:{th:'คำศัพท์ 7 คำที่ต้องแปลเป็นภาษาของตัวเองให้ได้',en:'Seven words you should be able to explain in your own language'},body:{th:[
           'คุณไม่ต้องท่องนิยามทางเทคนิค แต่ควรอธิบายคำเหล่านี้ได้ในประโยคเดียว เพราะมันจะโผล่มาในทุกบทถัดไป'
@@ -166,7 +166,141 @@ Cite real file names for every point.`},
       wrap:{th:['เข้าใจ end-to-end workflow','แยก Human judgment กับ Agent execution','รู้ว่าการ verify เป็นส่วนหนึ่งของ Definition of Done'],en:['Understand the end-to-end workflow','Separate human judgment from agent execution','Know that verification is part of the Definition of Done']}
     },
     {
-      id:'git-basics', group:'day1', no:'02', duration:'60 min',
+      id:'requirement-issue', group:'day1', no:'02', duration:'45 min',
+      title:{th:'จาก Requirement สู่ Issue ที่ AI ทำงานต่อได้',en:'From Requirement to an Agent-Ready Issue'},
+      intro:{th:'ก่อนจะเปิด branch หรือสั่ง Agent ต้องมี Issue หนึ่งใบที่บอกได้ว่างานนี้คืออะไร แค่ไหนถึงพอ และจะรู้ได้อย่างไรว่าเสร็จ',en:'Before any branch or any agent, one issue must say what the work is, where it stops, and how you will know it is done.'},
+      outcomes:{th:['แยกให้ออกระหว่าง Requirement, Issue และ Acceptance Criteria','เขียน Issue ที่มี Context, In/Out of scope, AC และ Definition of Done','เขียน AC สองแบบ คือ AC ที่เป็นสถานะ และ AC ที่เป็นพฤติกรรม','ตัดงานที่ใหญ่เกินให้เหลือขนาดที่ 1 branch จบได้'],en:['Tell requirement, issue, and acceptance criteria apart','Write an issue with context, in/out of scope, ACs, and a definition of done','Write both kinds of AC: state ACs and behaviour ACs','Cut oversized work down to something one branch can finish']},
+      blocks:[
+        {type:'prose',title:{th:'กล่องเดียวในภาพที่ AI ทำแทนคุณไม่ได้',en:'The one box in the picture the AI cannot fill for you'},body:{th:[
+          'ในบทที่แล้วเราเห็นเส้นทางของงานทั้งเส้น กล่องแรกสุดคือ **Requirement → Issue** และนี่คือกล่องเดียวในภาพที่เป็นการตัดสินใจว่า “อะไรคือสิ่งที่ถูกต้อง” ไม่ใช่ “ทำอย่างไร” — ซึ่งเป็นงานของคุณ ไม่ใช่ของ Agent',
+          'Requirement เขียนไว้ให้คนอ่านแล้วเข้าใจภาพรวม ส่วน Issue เขียนไว้ให้คนลงมือทำได้ทันที ความต่างอยู่ตรงที่ Issue ต้องตอบสามคำถามให้ครบ คือ **ทำอะไร**, **แค่ไหนถึงพอ** และ **จะรู้ได้อย่างไรว่าเสร็จ**',
+          'เมื่อผู้ลงมือคือ AI Agent ความต่างนี้ยิ่งสำคัญ เพราะ Agent ไม่ถามกลับเวลาไม่แน่ใจ มันจะเดาแล้วเขียนโค้ดต่อทันที ทุกช่องว่างใน Issue จึงเท่ากับการตัดสินใจทางธุรกิจที่ถูกยกให้ Agent ทำแทนคุณโดยที่คุณไม่รู้ตัว และคุณจะเพิ่งมาเห็นตอน review',
+          'ข่าวดีคือ Issue ที่ดีไม่จำเป็นต้องยาว มันแค่ต้องคมในสี่จุด คือ **บริบท**, **ขอบเขต**, **เงื่อนไขการยอมรับ (AC)** และ **นิยามว่าเสร็จ (Definition of Done)** ที่เหลือปล่อยให้เป็นเรื่องของแผนที่ Agent จะเสนอมาให้คุณตรวจในบทที่ 05'
+        ],en:[
+          'The previous lesson showed the whole journey. Its very first box is **Requirement → Issue**, and it is the only box in that picture that decides “what is correct” rather than “how to build it” — which makes it your job, not the agent’s.',
+          'A requirement is written so people understand the big picture. An issue is written so someone can start working immediately. The difference is that an issue must answer three questions: **what are we building**, **where does it stop**, and **how will we know it is done**.',
+          'When the builder is an AI agent, that difference matters even more, because the agent never asks you back when it is unsure. It guesses and keeps writing code. Every gap in the issue is therefore a business decision handed to the agent without you noticing — and you only see it at review time.',
+          'The good news is that a good issue is not a long one. It only has to be sharp on four things: **context**, **scope**, **acceptance criteria**, and **definition of done**. Everything else belongs in the plan the agent proposes for your review in lesson 05.'
+        ]}},
+        {type:'diagram',title:{th:'Requirement หนึ่งฉบับ แตกเป็น Issue ได้หลายใบ',en:'One requirement, several issues'},
+          lead:{th:'Requirement คือเอกสารเล่าเรื่อง ส่วน Issue คือหน่วยของงาน หนึ่ง Issue ควรจบได้ใน 1 branch และ review ได้ในครั้งเดียว',en:'A requirement is a narrative document; an issue is a unit of work. One issue should finish in one branch and be reviewable in one sitting.'},
+          diagram:`flowchart TD\nR[Requirement doc: OPD Check-in Lite] --> P{Split by user outcome}\nP --> I1[Issue US-001 Patient Check-in]\nP --> I2[Issue US-002 Queue Board]\nP --> I3[Issue US-003 Daily Report]\nI1 --> C[Context + In / Out of scope]\nI1 --> A[Acceptance Criteria]\nI1 --> D[Definition of Done]\nC --> B[Branch + Worktree]\nA --> B\nD --> B\nB --> AG[AI Agent]`,
+          notes:{th:['เอกสาร requirement หนึ่งฉบับมักมีงานหลายก้อนซ่อนอยู่ อย่าเปิด Issue ใบเดียวแล้วโยนทั้งเอกสารให้ Agent','US-001 ที่เราใช้ตลอดคอร์สคือหนึ่ง Issue ที่ถูกตัดมาแล้วให้พอดีกับหนึ่ง branch','สามกล่องใต้ Issue คือส่วนที่คุณต้องเขียนเอง ไม่ใช่ copy จาก requirement มาทั้งดุ้น','ลูกศรสุดท้ายคือประเด็นสำคัญ — Agent เห็นเฉพาะสิ่งที่อยู่ใน Issue สิ่งที่คุณคิดไว้ในหัวแต่ไม่ได้เขียน มันไม่เห็น'],en:['One requirement document usually hides several chunks of work; do not open a single issue and hand the agent the whole document','The US-001 we use all course is one issue already cut to fit one branch','The three boxes under the issue are yours to write — not copied wholesale from the requirement','The last arrow is the point: the agent sees only what is in the issue, never what stayed in your head']}},
+        {type:'two',title:{th:'Requirement กับ Issue ต่างกันตรงไหน',en:'Requirement vs. issue'},left:{title:{th:'Requirement',en:'Requirement'},items:{th:['เล่าว่าทำไมธุรกิจถึงต้องการสิ่งนี้','ครอบคลุมหลายหน้าจอและหลายรอบการส่งงาน','เปลี่ยนช้า มีเจ้าของเป็นฝ่ายธุรกิจ','อ่านแล้วเข้าใจ แต่ยังลงมือทำทันทีไม่ได้'],en:['Explains why the business needs this','Spans several screens and several deliveries','Changes slowly, owned by the business side','Understandable, but not yet actionable']}},right:{title:{th:'Issue',en:'Issue'},items:{th:['บอกว่าจะทำอะไรในรอบนี้','จบได้ใน 1 branch และ review ได้ครั้งเดียว','มี AC ที่ตอบได้ว่า ผ่าน หรือ ไม่ผ่าน','มีเจ้าของ มีสถานะ และอ้างอิงกลับไปที่ requirement ได้'],en:['States what gets built this round','Finishes in one branch, reviewable in one sitting','Has ACs that answer pass or fail','Has an owner, a status, and a link back to the requirement']}}},
+        {type:'code',title:{th:'Issue Template ที่ใช้ได้ทันที',en:'A ready-to-use issue template'},
+          lead:{th:'คัดลอกไปวางใน GitLab หรือ GitHub ได้เลย ตัวอย่างนี้กรอกด้วย US-001 ซึ่งเป็นโจทย์ที่เราจะใช้ต่อกันทั้งคอร์ส',en:'Copy it straight into GitLab or GitHub. This one is filled in with US-001, the scenario we carry through the whole course.'},
+          label:'GitLab Issue · US-001',code:`Title: US-001 OPD Patient Check-in (Lite)
+
+## Context
+OPD staff currently record walk-in check-in on paper, so the queue is
+rebuilt by hand every morning. This issue covers the check-in screen only.
+Requirement: docs/requirements/US-001-opd-checkin.md
+
+## In scope
+- Search a patient by HN or name
+- Select a patient and see their basic information
+- Choose a clinic (required) and a chief complaint (optional)
+- Preview, confirm, and show a success screen with a queue number
+
+## Out of scope
+- Real HIS / backend integration
+- Authentication and permissions
+- Printing and the physical queue display
+
+## Acceptance Criteria - states
+- AC1 While a search runs, a loading state is shown
+- AC2 When nothing matches, an empty state with a retry hint is shown
+- AC3 When the search fails, an error state with a retry action is shown
+- AC4 A result row shows HN, full name, age, and gender
+
+## Acceptance Criteria - behaviour
+- AC5 Given the search screen, when HN 65000123 is searched,
+      then the patient "Somchai Jaidee" is listed
+- AC6 Given a selected patient, when Confirm is clicked with no clinic,
+      then a validation message appears and nothing is submitted
+- AC7 Given a clinic is selected, when Confirm is clicked,
+      then a success screen shows a synthetic queue number
+
+## Definition of Done
+- Every state above exists as a Storybook story
+- At least one behaviour AC is covered by an interaction test
+- lint / test / build pass
+- git diff reviewed and a Draft MR is open
+
+## Data
+Synthetic/mock data only. No production data, no real patient records.`,
+          note:{th:'สังเกตว่าทั้งใบไม่มีคำว่า component, props หรือชื่อไฟล์เลยสักคำ — Issue บอกว่า “อะไร” ส่วน “อย่างไร” คือแผนที่ Agent จะเสนอมาให้คุณ review ในบทที่ 05',en:'Notice the whole issue never says component, props, or a file name. The issue states the what; the how is the plan the agent proposes for review in lesson 05.'}},
+        {type:'prose',title:{th:'AC สองแบบ และทำไมต้องแยกกัน',en:'Two kinds of AC, and why they are separated'},body:{th:[
+          'AC ที่เป็น **สถานะ (state)** อธิบายว่าหน้าจอต้องหน้าตาแบบไหนในแต่ละสถานการณ์ เช่น กำลังโหลด ไม่พบข้อมูล หรือเกิดข้อผิดพลาด ส่วน AC ที่เป็น **พฤติกรรม (behaviour)** อธิบายลำดับเหตุการณ์ว่า เมื่อผู้ใช้ทำอะไร แล้วระบบต้องตอบสนองอย่างไร',
+          'เหตุผลที่ต้องแยกไม่ใช่เรื่องความสวยงามของเอกสาร แต่เพราะ **สองแบบนี้ตรวจด้วยเครื่องมือคนละตัว** AC ที่เป็นสถานะจะถูกตรวจด้วยการเปิด Storybook ดูทีละสถานะ ส่วน AC ที่เป็นพฤติกรรมจะถูกตรวจด้วย interaction test หรือการเดิน flow จริงในแอป',
+          'ถ้าคุณเขียนปนกัน เวลาตรวจงานคุณจะไม่รู้ว่าข้อไหนต้องดูที่ไหน และมักจบลงด้วยการเชื่อคำสรุปของ Agent แทนที่จะดูของจริง',
+          'เคล็ดลับที่ทำให้ AC ตรวจได้จริงคือ **ใช้ค่าตายตัวจาก mock data** เช่น HN `65000123` แทนคำว่า “ผู้ป่วยคนหนึ่ง” เพราะค่าตายตัวทดสอบซ้ำแล้วได้ผลเดิมทุกครั้ง'
+        ],en:[
+          '**State ACs** describe what the screen must look like in a given situation — loading, nothing found, error. **Behaviour ACs** describe a sequence: when the user does this, the system must respond like that.',
+          'Separating them is not documentation tidiness. The two kinds **are verified with different tools**: state ACs are checked by opening Storybook state by state, behaviour ACs by an interaction test or by walking the real flow in the app.',
+          'Mix them together and, at review time, you will not know where to look for each one — which usually ends with trusting the agent’s summary instead of looking at the real thing.',
+          'The trick that makes ACs truly checkable is **using fixed values from the mock data**, such as HN `65000123` instead of “a patient”, because a fixed value reproduces the same result every time.'
+        ]}},
+        {type:'list',title:{th:'เช็กลิสต์ก่อนกด Create Issue',en:'Checklist before you click Create Issue'},items:{th:['หัวข้อบอกผลลัพธ์ต่อผู้ใช้ ไม่ใช่แค่ชื่อหน้าจอ','มีลิงก์กลับไปยัง requirement ฉบับเต็ม','ระบุ Out of scope อย่างน้อย 2 ข้อ','AC ทุกข้อตอบได้ว่า ผ่าน หรือ ไม่ผ่าน โดยไม่ต้องตีความ','AC ที่เป็นพฤติกรรมใช้ค่าตายตัวจาก mock data','ไม่มีคำว่า “ใช้งานง่าย” หรือ “สวยงาม” ลอย ๆ โดยไม่มีเกณฑ์','งานจบได้ใน 1 branch ถ้าไม่จบ ให้ตัดเป็นสองใบ','ระบุชัดว่าใช้ข้อมูลสมมติเท่านั้น'],en:['The title states a user outcome, not just a screen name','It links back to the full requirement','It names at least two out-of-scope items','Every AC answers pass or fail with no interpretation','Behaviour ACs use fixed values from the mock data','No floating “easy to use” or “looks nice” without a criterion','The work fits in one branch — if not, split it into two issues','It states explicitly that only synthetic data is used']}},
+        {type:'callout',tone:'danger',title:{th:'Red flag',en:'Red flag'},text:{th:'AC ที่เขียนว่า “ระบบต้องค้นหาผู้ป่วยได้อย่างรวดเร็วและใช้งานง่าย” ตรวจไม่ได้ว่าผ่านหรือไม่ผ่าน Agent จะตีความเอง และตอน review คุณจะเถียงไม่ได้ เพราะไม่เคยมีเกณฑ์ตั้งแต่แรก',en:'An AC that reads “patient search must be fast and easy to use” cannot be judged pass or fail. The agent will interpret it for you, and at review time you have no ground to disagree because no criterion ever existed.'}},
+        {type:'prompt',title:{th:'Prompt: ให้ Agent หาช่องว่างใน Issue ก่อนเริ่มงาน',en:'Prompt: have the agent find the gaps in your issue'},
+          when:{th:'ใช้หลังร่าง Issue เสร็จ แต่ยังไม่เปิด branch จุดสำคัญคือให้มันบอก “สิ่งที่มันจะต้องเดา” ไม่ใช่ให้มันเติมช่องว่างแทนคุณ เพราะการเติมช่องว่างคือการตัดสินใจทางธุรกิจ',en:'Use it once your issue draft is ready but before any branch exists. The point is to make it list what it would have to guess — not to let it fill the gaps, because filling them is a business decision.'},
+          prompt:{th:`นี่คือร่าง Issue ของฉัน ห้ามแก้ไขไฟล์ใด ๆ และห้ามเขียน Issue ฉบับใหม่ให้
+
+[วางร่าง Issue ของคุณตรงนี้]
+
+ช่วยตรวจให้ 4 ข้อ
+1. ถ้าคุณต้องลงมือทำตาม Issue นี้ มีจุดไหนบ้างที่คุณจะต้องเดา และคุณจะเดาว่าอะไร
+2. AC ข้อไหนที่ยังตรวจไม่ได้ว่าผ่านหรือไม่ผ่าน และเพราะอะไร
+3. มีสถานะหน้าจอหรือ edge case อะไรที่ยังไม่ถูกพูดถึง
+4. งานนี้ใหญ่เกินไปสำหรับหนึ่ง branch หรือไม่ ถ้าใหญ่เกิน ควรตัดตรงไหน
+
+ตอบกลับเป็นคำถามถึงฉัน อย่าตอบแทนฉันเอง`,en:`Here is my draft issue. Do not modify any files, and do not rewrite the issue for me.
+
+[paste your draft issue here]
+
+Check four things:
+1. If you had to implement this issue, where would you have to guess, and what would you guess?
+2. Which ACs cannot be judged pass or fail, and why?
+3. Which UI states or edge cases are still unmentioned?
+4. Is this too large for one branch? If so, where would you split it?
+
+Answer as questions back to me. Do not answer them on my behalf.`},
+          example:{th:`นี่คือร่าง Issue ของฉัน ห้ามแก้ไขไฟล์ใด ๆ และห้ามเขียน Issue ฉบับใหม่ให้
+
+Title: ทำหน้า OPD Check-in
+- ค้นหาผู้ป่วยแล้วเลือกคนไข้
+- กรอกข้อมูลแล้วกดยืนยัน
+- หน้าจอต้องใช้งานง่ายและรองรับมือถือ
+
+ช่วยตรวจให้ 4 ข้อ
+1. ถ้าคุณต้องลงมือทำตาม Issue นี้ มีจุดไหนบ้างที่คุณจะต้องเดา และคุณจะเดาว่าอะไร
+2. AC ข้อไหนที่ยังตรวจไม่ได้ว่าผ่านหรือไม่ผ่าน และเพราะอะไร
+3. มีสถานะหน้าจอหรือ edge case อะไรที่ยังไม่ถูกพูดถึง
+4. งานนี้ใหญ่เกินไปสำหรับหนึ่ง branch หรือไม่ ถ้าใหญ่เกิน ควรตัดตรงไหน
+
+ตอบกลับเป็นคำถามถึงฉัน อย่าตอบแทนฉันเอง`,en:`Here is my draft issue. Do not modify any files, and do not rewrite the issue for me.
+
+Title: Build the OPD check-in page
+- Search for a patient and pick one
+- Fill in the details and press confirm
+- The screen should be easy to use and work on mobile
+
+Check four things:
+1. If you had to implement this issue, where would you have to guess, and what would you guess?
+2. Which ACs cannot be judged pass or fail, and why?
+3. Which UI states or edge cases are still unmentioned?
+4. Is this too large for one branch? If so, where would you split it?
+
+Answer as questions back to me. Do not answer them on my behalf.`},
+          after:{th:['ทุกข้อที่ Agent ตอบว่า “จะเดา” คือช่องว่างที่คุณต้องกลับไปเขียนเพิ่มใน Issue ไม่ใช่ปล่อยให้มันเดา','ถ้าข้อ 4 บอกว่าใหญ่เกิน ให้ตัด Issue ก่อนเปิด branch ดีกว่าไปตัดตอนทำไปครึ่งทาง','บันทึกคำตอบของมันไว้เทียบกับแผนในบทที่ 05 — ถ้าแผนยังมีเรื่องที่มันเคยบอกว่า “ต้องเดา” แปลว่า Issue ยังไม่ถูกแก้','อัปเดต Issue ให้เป็นฉบับล่าสุดเสมอ เพราะบทถัดไปจะใช้เลข Issue ตั้งชื่อ branch และใช้ AC ตรวจงาน'],en:['Everything it says it would guess is a gap you go back and write into the issue, not something to leave to it','If answer 4 says it is too large, split the issue before opening a branch rather than halfway through','Keep its answers to compare against the plan in lesson 05 — if the plan still contains something it once had to guess, the issue was never fixed','Keep the issue up to date: the next lesson names the branch after the issue and reviews work against these ACs']}},
+        {type:'practice',title:{th:'ลงมือทำ: เขียน Issue ของ US-001 ด้วยตัวเอง',en:'Practice: write the US-001 issue yourself'},steps:{th:['เปิด `docs/requirements/US-001-opd-checkin.md` ใน starter repo แล้วอ่านให้จบก่อน','ร่าง Issue ตาม template ด้านบน โดยยังไม่เปิดกลับมาดู template ระหว่างเขียน','แยก AC ออกเป็นสองกอง คือสถานะ และพฤติกรรม แล้วนับว่าแต่ละกองมีกี่ข้อ','ส่ง Prompt ด้านบนให้ Agent แล้วจดรายการ “สิ่งที่มันจะเดา” ไว้ทุกข้อ','แก้ Issue จนรายการนั้นเหลือเฉพาะเรื่องที่คุณตั้งใจให้เป็นอิสระของ Agent เช่น ชื่อไฟล์หรือโครงสร้างโฟลเดอร์','เปิด Issue จริงบน GitLab หรือ GitHub แล้วจดเลข Issue ไว้ใช้ตั้งชื่อ branch ในบทถัดไป'],en:['Open `docs/requirements/US-001-opd-checkin.md` in the starter repo and read it through first','Draft the issue using the template above, without looking back at it while you write','Sort your ACs into two piles — states and behaviours — and count each pile','Send the prompt above and write down every item the agent says it would guess','Revise the issue until that list contains only what you deliberately leave to the agent, such as file names or folder structure','Open the real issue in GitLab or GitHub and note its number — the next lesson names the branch after it']},expected:{th:'ได้ Issue หนึ่งใบที่มี Context, In/Out of scope, AC แยกสถานะกับพฤติกรรม และ Definition of Done โดยไม่มีข้อใดที่ต้องตีความ และคุณอธิบายได้ว่าทำไมแต่ละข้อใน Out of scope ถึงถูกตัดออก',en:'One issue with context, in/out of scope, ACs split into states and behaviours, and a definition of done — with nothing left to interpretation, and you can explain why each out-of-scope item was cut.'}}
+      ],
+      quiz:{q:{th:'AC ข้อใดพร้อมให้ AI Agent ทำงานต่อมากที่สุด?',en:'Which AC is most ready for an AI agent to work from?'},options:{th:['ระบบต้องค้นหาผู้ป่วยได้อย่างรวดเร็วและใช้งานง่าย','เมื่อค้นหาด้วย HN 65000123 ต้องแสดงผู้ป่วยชื่อ Somchai Jaidee','หน้าจอ check-in ต้องออกแบบให้ตรงกับ design system'],en:['Patient search must be fast and easy to use','Searching HN 65000123 must list the patient Somchai Jaidee','The check-in screen must match the design system']},answer:1,why:{th:'AC ที่ดีต้องตรวจได้ว่าผ่านหรือไม่ผ่านโดยไม่ต้องตีความ และใช้ค่าตายตัวที่ทดสอบซ้ำแล้วได้ผลเดิม',en:'A good AC is judged pass or fail with no interpretation, and uses a fixed value that reproduces the same result every time.'}},
+      wrap:{th:['เขียน Issue ที่ลงมือทำต่อได้ทันที ไม่ใช่เอกสารเล่าเรื่อง','AC ทุกข้อตรวจได้ว่าผ่านหรือไม่ผ่าน และรู้ว่าจะไปตรวจที่ไหน','Issue หนึ่งใบมีขนาดพอดีกับ 1 branch และ 1 Agent session'],en:['Write issues that can be acted on, not narratives','Every AC is pass/fail, and you know where to verify it','One issue is sized to fit one branch and one agent session']}
+    },
+    {
+      id:'git-basics', group:'day1', no:'03', duration:'60 min',
       title:{th:'Git Fundamentals สำหรับคนที่ไม่ได้เป็น Developer',en:'Git Fundamentals for Non-Developers'},
       intro:{th:'เรียน Git เท่าที่ต้องใช้เพื่อควบคุมงานของ AI: รู้ว่าเราอยู่ตรงไหน เปลี่ยนอะไร และจะส่งงานอย่างไรอย่างปลอดภัย',en:'Learn only the Git needed to supervise AI work: where you are, what changed, and how to deliver safely.'},
       outcomes:{th:['เข้าใจ Local/Remote, main, Branch, Commit, Push/Pull และ MR','ใช้ git status และ git diff เป็นนิสัย','รู้คำสั่งที่ควรหลีกเลี่ยงในช่วงเริ่มต้น'],en:['Understand Local/Remote, main, Branch, Commit, Push/Pull, and MR','Build the habit of git status and git diff','Know which commands to avoid early on']},
@@ -213,7 +347,7 @@ Cite real file names for every point.`},
       wrap:{th:['Git คือระบบควบคุมการเปลี่ยนแปลง ไม่ใช่เรื่องเฉพาะ Developer','status ก่อนทำ และ diff หลังทำ','main ไม่ใช่พื้นที่ทดลอง'],en:['Git is change control, not just a developer tool','status before work, diff after work','main is not a playground']}
     },
     {
-      id:'worktree', group:'day1', no:'03', duration:'60 min',
+      id:'worktree', group:'day1', no:'04', duration:'60 min',
       title:{th:'Git Worktree & Parallel AI',en:'Git Worktree & Parallel AI'},
       intro:{th:'แยก workspace ต่อ task เพื่อให้หลาย Agent หรือหลายงานทำพร้อมกันโดยไม่สลับ branch และไม่เอาไฟล์มาปนกัน',en:'Separate workspaces per task so multiple agents or tasks can run in parallel without branch switching or mixed file changes.'},
       outcomes:{th:['เข้าใจ 1 Issue = 1 Branch = 1 Worktree = 1 Agent Session','สร้าง/ดู/ลบ worktree ได้','รู้เรื่อง port conflict และ dependency ต่อ worktree','รู้ว่า parallel เหมาะเมื่อ task แยกกันจริง'],en:['Understand 1 Issue = 1 Branch = 1 Worktree = 1 Agent Session','Create/list/remove worktrees','Understand port conflicts and per-worktree dependencies','Use parallel work only when tasks are truly independent']},
@@ -259,7 +393,7 @@ git status`,expect:{th:'`On branch feature/us001-patient-checkin` — ถ้า�
       wrap:{th:['Worktree คือ workspace ของ branch','Parallel ไม่ได้แปลว่าต้องเปิด Agent เยอะที่สุด','ตรวจ context ก่อนให้ Agent ทำงานเสมอ'],en:['A worktree is a workspace for a branch','Parallel does not mean “run as many agents as possible”','Confirm context before the agent starts']}
     },
     {
-      id:'agent-plan', group:'day1', no:'04', duration:'75 min',
+      id:'agent-plan', group:'day1', no:'05', duration:'75 min',
       title:{th:'AI Agent: Explore → Plan → Human Review',en:'AI Agent: Explore → Plan → Human Review'},
       intro:{th:'ฝึกสั่ง Agent ให้สำรวจระบบและอธิบายแผนก่อนแตะไฟล์ เพื่อให้คนที่ไม่เขียนโค้ดสามารถควบคุม scope ได้',en:'Train the agent to inspect and explain before touching files, giving non-coders a strong scope-control point.'},
       outcomes:{th:['เขียน prompt ที่มี context, constraints และ expected output','ให้ Agent อ่าน AGENTS.md ก่อนทำ','review plan ได้ด้วยคำถามด้าน scope/state/files/tests','รู้ว่า CLAUDE.md ใช้ reference ไปที่ AGENTS.md เพื่อลดกฎซ้ำ'],en:['Write prompts with context, constraints, and expected output','Make the agent read AGENTS.md first','Review plans using scope/state/files/tests questions','Use CLAUDE.md as a reference to AGENTS.md to avoid duplicated rules']},
@@ -363,7 +497,7 @@ When finished, run the relevant checks and summarize every changed file and why 
       wrap:{th:['AGENTS.md คือกติกาหลัก','Explore ก่อน Implement','Human review plan ก่อนอนุญาตให้แก้ไฟล์'],en:['AGENTS.md is the primary rulebook','Explore before implement','Human reviews the plan before file changes']}
     },
     {
-      id:'next-literacy', group:'day2', no:'05', duration:'60 min',
+      id:'next-literacy', group:'day2', no:'06', duration:'60 min',
       title:{th:'อ่าน Next.js Project โดยไม่ต้องเขียน React',en:'Read a Next.js Project Without Writing React'},
       intro:{th:'เรียนแผนที่ของ project เพื่อรู้ว่า Agent กำลังแตะส่วนไหน ไม่ได้เรียน React syntax แบบ Developer course',en:'Learn the project map so you know what the agent is touching — not React syntax as in a developer course.'},
       outcomes:{th:['หา page, feature, component, mock และ configuration ได้','อ่าน JSX/TSX ระดับ component + props ได้','รู้จัก package.json และ npm scripts','รู้ว่า route /opd/check-in มาจากโครงสร้าง app อย่างไร'],en:['Find pages, features, components, mocks, and configuration','Read JSX/TSX at component + props level','Understand package.json and npm scripts','Know how /opd/check-in maps to the app directory']},
@@ -425,7 +559,7 @@ Answer briefly as a numbered list with file paths.`},
       wrap:{th:['อ่าน structure ก่อนอ่าน syntax','รู้ตำแหน่ง page/component/mock','package.json คือจุดดูคำสั่งหลักของ project'],en:['Read structure before syntax','Know where pages/components/mocks live','package.json is the place to discover project commands']}
     },
     {
-      id:'component-state', group:'day2', no:'06', duration:'75 min',
+      id:'component-state', group:'day2', no:'07', duration:'75 min',
       title:{th:'Component Thinking & UI State',en:'Component Thinking & UI State'},
       intro:{th:'เปลี่ยน Requirement ที่เป็นข้อความให้เป็นหน่วย UI ที่เล็กพอสำหรับ Agent ทำงานและ Human review ได้',en:'Turn a textual requirement into UI units small enough for the agent to build and humans to review.'},
       outcomes:{th:['แตก Page → Component → State → Interaction','ระบุ meaningful states โดยไม่สร้าง Storybook story เกินจำเป็น','เชื่อมบทบาท PM/BA/Design ผ่าน artifact เดียวกัน','มอง edge case ก่อน Agent implement'],en:['Decompose Page → Component → State → Interaction','Define meaningful states without inflating Storybook stories','Connect PM/BA/Design through one shared artifact','Surface edge cases before implementation']},
@@ -539,7 +673,7 @@ Answer as a short list with one line of reasoning each.`},
       wrap:{th:['Component Thinking สำคัญกว่า React syntax สำหรับกลุ่มนี้','State inventory ช่วยจับ requirement ที่ตกหล่น','ไม่ใช่ทุก div ต้องเป็น component หรือ Storybook story'],en:['Component thinking matters more than React syntax for this audience','State inventory catches missing requirements','Not every div needs a component or Storybook story']}
     },
     {
-      id:'storybook', group:'day2', no:'07', duration:'75 min',
+      id:'storybook', group:'day2', no:'08', duration:'75 min',
       title:{th:'Component + Storybook ต้องเกิดคู่กัน',en:'Build Components and Stories Together'},
       intro:{th:'ใช้ Storybook เป็น review surface ของ Product Component ก่อนประกอบเข้า Page โดยให้ AI เขียน code แต่ Human นิยาม states',en:'Use Storybook as the review surface for product components before page integration. AI writes code; humans define states.'},
       outcomes:{th:['เข้าใจ Story = ตัวอย่าง state ที่ทำซ้ำได้','สั่ง Agent สร้าง Component.tsx + Component.stories.tsx คู่กัน','review UI ผ่าน browser โดยไม่ต้องอ่านโค้ดทุกบรรทัด','ใช้ mock data ที่ deterministic ใน stories'],en:['Understand a Story as a repeatable UI state','Ask the agent to create Component.tsx + Component.stories.tsx together','Review UI in the browser without reading every line of code','Use deterministic mock data in stories']},
@@ -645,7 +779,7 @@ Summarize how you addressed each point.`},
       wrap:{th:['Storybook คือพื้นที่ review ไม่ใช่แค่เอกสารของ Dev','Component และ Story เดินคู่กัน','Human ระบุ state; AI รับผิดชอบ implementation'],en:['Storybook is a review surface, not just dev documentation','Components and stories move together','Humans define states; AI handles implementation']}
     },
     {
-      id:'acceptance-interaction', group:'day2', no:'08', duration:'60 min',
+      id:'acceptance-interaction', group:'day2', no:'09', duration:'60 min',
       title:{th:'Storybook as Acceptance Example & Interaction',en:'Storybook as Acceptance Example & Interaction'},
       intro:{th:'เชื่อม Acceptance Criteria กับ Story และ interaction scenario เพื่อให้ BA/PM อ่านแล้วเห็น behavior ที่คาดหวัง',en:'Connect acceptance criteria to stories and interaction scenarios so PM/BA can see expected behavior directly.'},
       outcomes:{th:['map AC → Story ได้','เขียน Given/When/Then ในภาษาธุรกิจ','ให้ AI แปลง scenario เป็น Storybook interaction test','แยก visual state กับ behavior flow'],en:['Map AC → Story','Write Given/When/Then in business language','Let AI translate scenarios into Storybook interaction tests','Separate visual states from behavioral flows']},
@@ -708,7 +842,7 @@ Also tell me how to view this test running inside Storybook.`},
       wrap:{th:['Story = state example','Interaction = behavior example','Acceptance Criteria สามารถ trace ไปยังสิ่งที่เปิดดู/รันได้'],en:['Story = state example','Interaction = behavior example','Acceptance criteria can trace to something visible/runnable']}
     },
     {
-      id:'mock-data', group:'day3', no:'09', duration:'45 min',
+      id:'mock-data', group:'day3', no:'10', duration:'45 min',
       title:{th:'Mock Data / Mock API โดยไม่ต้องเรียน Backend',en:'Mock Data / Mock API Without Learning Backend'},
       intro:{th:'จำลอง response ที่ UI ต้องรับมือให้ครบ โดยไม่เสียเวลาเรียน server, database หรือ authentication',en:'Simulate the responses the UI must handle without spending course time on servers, databases, or authentication.'},
       outcomes:{th:['เข้าใจ request/response แค่ระดับ concept','สร้าง scenario success/empty/slow/error ด้วย mock','ใช้ synthetic HIS data อย่างปลอดภัย','รู้ว่า mock contract ควร stable และ deterministic'],en:['Understand request/response at concept level','Model success/empty/slow/error using mocks','Use safe synthetic HIS data','Keep mock contracts stable and deterministic']},
@@ -776,7 +910,7 @@ Propose the plan first and wait for my approval before implementing.`},
       wrap:{th:['ตัด Backend ได้โดยไม่เสียเป้าหมายหลัก','Mock ใช้สร้าง state ที่ต้อง review','Training HIS ต้องใช้ synthetic data'],en:['Backend can be removed without losing the course goal','Mocks create reviewable states','HIS training must use synthetic data']}
     },
     {
-      id:'integration', group:'day3', no:'10', duration:'60 min',
+      id:'integration', group:'day3', no:'11', duration:'60 min',
       title:{th:'Assemble Components into OPD Check-in Page',en:'Assemble Components into the OPD Check-in Page'},
       intro:{th:'เมื่อ component ผ่าน Storybook review แล้ว ค่อยให้ Agent ประกอบเป็น flow จริงบน Next.js page',en:'After components pass Storybook review, let the agent assemble them into the real Next.js flow.'},
       outcomes:{th:['เห็นความต่างระหว่าง isolated component กับ integrated flow','review state transition ทั้งหน้า','ตรวจ validation และ confirmation flow','ใช้ mock service เดิมโดยไม่สร้าง backend'],en:['See the difference between isolated components and an integrated flow','Review state transitions across the page','Check validation and confirmation flow','Reuse the mock service without adding a backend']},
@@ -847,7 +981,7 @@ When finished, describe step by step how the screen changes state from the first
       wrap:{th:['Review isolated ก่อน integrated','ตรวจ state transition ไม่ใช่แค่ screenshot','ยังใช้ mock ได้ครบโดยไม่มี backend'],en:['Review isolated before integrated','Review state transitions, not just screenshots','Mocks remain sufficient without a backend']}
     },
     {
-      id:'debugging', group:'day3', no:'11', duration:'75 min',
+      id:'debugging', group:'day3', no:'12', duration:'75 min',
       title:{th:'Debugging Literacy สำหรับผู้ใช้ AI Agent',en:'Debugging Literacy for AI-Agent Users'},
       intro:{th:'ไม่ต้องแก้ error เองทุกครั้ง แต่ต้องหา evidence, ระบุตำแหน่งปัญหา และให้ Agent อธิบาย root cause ก่อนแก้',en:'You do not have to fix every error yourself, but you must gather evidence, locate the problem, and ask the agent to explain root cause before fixing it.'},
       outcomes:{th:['รู้ 4 แหล่งหลัก: Terminal, Browser UI, Console, Network','อ่าน Error type → message → file → line','แยก UI symptom กับ data/service failure','หยุดวงจร “fix ซ้ำโดยไม่เข้าใจ”'],en:['Know the four evidence sources: Terminal, Browser UI, Console, Network','Read Error type → message → file → line','Separate UI symptoms from data/service failures','Stop the “blind repeated fix” loop']},
@@ -1009,7 +1143,7 @@ Do not modify any further files in this round.`},
       wrap:{th:['อ่าน evidence ก่อนถาม AI','ขอ root cause ก่อน fix','verify ด้วย case ที่เคยพัง'],en:['Read evidence before asking AI','Ask for root cause before a fix','Verify using the case that previously failed']}
     },
     {
-      id:'diff-quality', group:'day3', no:'12', duration:'60 min',
+      id:'diff-quality', group:'day3', no:'13', duration:'60 min',
       title:{th:'Git Diff, Scope Review & Quality Gates',en:'Git Diff, Scope Review & Quality Gates'},
       intro:{th:'ก่อนเชื่อว่า Agent ทำงานเสร็จ ตรวจสิ่งที่เปลี่ยนจริงและให้เครื่องมือพื้นฐานช่วยจับปัญหา',en:'Before trusting that the agent is finished, inspect the actual changes and run basic quality gates.'},
       outcomes:{th:['ใช้ status/diff เพื่อจับ scope creep','ให้ Agent อธิบาย changed files ทีละไฟล์','รัน lint/test/build','รู้สัญญาณ red flag แม้อ่าน code ไม่ลึก'],en:['Use status/diff to catch scope creep','Ask the agent to explain changed files one by one','Run lint/test/build','Recognize red flags without deep code-reading']},
@@ -1067,7 +1201,7 @@ If you cannot justify a file, say so plainly.`},
           lead:{th:'รันทีละคำสั่งและอ่านผลให้จบก่อนไปตัวถัดไป ถ้าตัวแรกไม่ผ่าน มักไม่มีประโยชน์ที่จะรันตัวถัดไป',en:'Run one at a time and read each result fully before the next. If the first fails, running the next is usually pointless.'},
           steps:[
             {title:{th:'ตรวจความสม่ำเสมอของโค้ด',en:'Check code consistency'},what:{th:'`lint` ตรวจว่าโค้ดเขียนตามมาตรฐานที่ทีมตั้งไว้หรือไม่ เช่น มีตัวแปรที่ประกาศแล้วไม่ได้ใช้ ซึ่งมักเป็นร่องรอยของโค้ดที่ Agent เขียนทิ้งไว้ตอนลองผิดลองถูก',en:'`lint` checks the code against the team’s standards — for example variables declared and never used, which is often a trace of the agent’s trial and error.'},cmd:`npm run lint`,expect:{th:'ไม่มี error ส่วน warning พออนุโลมได้ แต่ควรถามว่าคืออะไร',en:'No errors. Warnings are tolerable but worth asking about.'}},
-            {title:{th:'รันชุดทดสอบอัตโนมัติ',en:'Run the automated tests'},what:{th:'`test` รัน test ทั้งหมดรวมถึง interaction test ที่เราให้ Agent สร้างในบทที่ 08 นี่คือจุดที่จะจับได้ว่าการแก้ครั้งล่าสุดไปทำให้ของเดิมพังหรือไม่',en:'`test` runs everything, including the interaction tests the agent wrote in lesson 08. This is where you catch the latest change breaking something that used to work.'},cmd:`npm run test`,expect:{th:'ทุก test ผ่าน ถ้ามี test ที่ fail ห้ามให้ Agent ลบ test ทิ้งเพื่อให้ผ่าน',en:'All tests pass. If one fails, never let the agent delete the test to make it pass.'}},
+            {title:{th:'รันชุดทดสอบอัตโนมัติ',en:'Run the automated tests'},what:{th:'`test` รัน test ทั้งหมดรวมถึง interaction test ที่เราให้ Agent สร้างในบทที่ 09 นี่คือจุดที่จะจับได้ว่าการแก้ครั้งล่าสุดไปทำให้ของเดิมพังหรือไม่',en:'`test` runs everything, including the interaction tests the agent wrote in lesson 09. This is where you catch the latest change breaking something that used to work.'},cmd:`npm run test`,expect:{th:'ทุก test ผ่าน ถ้ามี test ที่ fail ห้ามให้ Agent ลบ test ทิ้งเพื่อให้ผ่าน',en:'All tests pass. If one fails, never let the agent delete the test to make it pass.'}},
             {title:{th:'ตรวจว่าระบบ build ขึ้นจริง',en:'Confirm the system actually builds'},what:{th:'`build` จำลองการเตรียมโค้ดเพื่อนำขึ้นใช้งานจริง มันจับ error บางประเภทที่ไม่ปรากฏตอนรัน dev เช่น type ไม่ตรงกัน คำสั่งนี้ช้าที่สุด จึงรันเป็นตัวสุดท้าย',en:'`build` simulates preparing the code for real use. It catches errors that never appear in dev mode, such as type mismatches. It is the slowest, so it runs last.'},cmd:`npm run build`,expect:{th:'จบด้วยสถานะสำเร็จ ไม่มี error',en:'It finishes successfully with no errors.'}}
           ],
           outro:{th:'จำไว้ว่าทั้งสามคำสั่งนี้ตรวจได้แค่ว่า “โค้ดทำงานได้” ไม่ได้ตรวจว่า “ทำในสิ่งที่ธุรกิจต้องการ” ข้อหลังยังต้องใช้คนเปิดดู Storybook และเดิน flow เองอยู่ดี',en:'Remember: these three only check that the code works, not that it does what the business asked. That still requires a human opening Storybook and walking the flow.'}},
@@ -1077,7 +1211,7 @@ If you cannot justify a file, say so plainly.`},
       wrap:{th:['Diff เป็นเครื่องมือตรวจ AI ที่สำคัญที่สุดตัวหนึ่ง','Quality gate หลายชั้นดีกว่า “AI said done”','Scope ต้องอธิบายได้ทุกไฟล์'],en:['Diff is one of the most important AI-review tools','Layered quality gates beat “AI said done”','Every changed file should be explainable']}
     },
     {
-      id:'delivery', group:'day3', no:'13', duration:'30 min',
+      id:'delivery', group:'day3', no:'14', duration:'30 min',
       title:{th:'Commit, Push & Merge Request',en:'Commit, Push & Merge Request'},
       intro:{th:'ส่งงานให้ Developer review ด้วย MR ที่บอก intent, scope, states และ evidence ชัดเจน',en:'Deliver work for developer review with an MR that clearly communicates intent, scope, states, and evidence.'},
       outcomes:{th:['commit งานที่ผ่าน review แล้ว','push feature branch โดยไม่แตะ main','เขียน MR ที่ review ง่าย','ย้าย workflow จาก GitHub starter ไป GitLab self-hosted ได้'],en:['Commit reviewed work','Push a feature branch without touching main','Write an easy-to-review MR','Move the starter workflow from GitHub to self-hosted GitLab']},
@@ -1177,18 +1311,18 @@ Keep it short and never include anything that was not actually done.`},
       wrap:{th:['Feature branch → MR → Developer review','MR คือ handoff artifact','GitHub starter สามารถย้ายไป GitLab workflow ได้'],en:['Feature branch → MR → Developer review','The MR is the handoff artifact','The GitHub starter can move into a GitLab workflow']}
     },
     {
-      id:'capstone', group:'capstone', no:'14', duration:'90 min', kind:'capstone',
+      id:'capstone', group:'capstone', no:'15', duration:'90 min', kind:'capstone',
       title:{th:'Capstone · OPD Patient Check-in Lite',en:'Capstone · OPD Patient Check-in Lite'},
       intro:{th:'ทำ flow เดิมให้ครบด้วยตัวเองตั้งแต่ Issue จนถึง Draft MR โดยมี Guided Mode แบบเปิดทีละขั้นเมื่อจำเป็น — ไม่โชว์เฉลยทั้งหมดตั้งแต่แรก',en:'Complete the same flow independently from Issue to Draft MR, with a progressive Guided Mode you reveal only when needed — not a full solution upfront.'},
       outcomes:{th:['รวมทุกทักษะในสถานการณ์ HIS เดียว','รู้ว่าเมื่อไรควรขอ hint และเมื่อไรควรให้ Agent ทำต่อ','สร้าง reviewable evidence ครบทั้ง Storybook, app, checks และ diff','ประเมินความพร้อมก่อนเข้า course หลัก'],en:['Combine all skills in one HIS scenario','Know when to use a hint and when to let the agent continue','Produce reviewable evidence across Storybook, app, checks, and diff','Assess readiness for the main course']},
       blocks:[
         {type:'prose',title:{th:'วิธีใช้บทนี้ให้ได้ผลจริง',en:'How to get real value from this lesson'},body:{th:[
-          'บทนี้ไม่มีเนื้อหาใหม่ ทุกอย่างที่ต้องใช้ผ่านมาหมดแล้วในบทที่ 00–13 สิ่งที่เปลี่ยนไปคือ **ไม่มีใครบอกลำดับให้คุณอีกแล้ว** คุณต้องเป็นคนตัดสินใจเองว่าขั้นถัดไปคืออะไร',
+          'บทนี้ไม่มีเนื้อหาใหม่ ทุกอย่างที่ต้องใช้ผ่านมาหมดแล้วในบทที่ 00–14 สิ่งที่เปลี่ยนไปคือ **ไม่มีใครบอกลำดับให้คุณอีกแล้ว** คุณต้องเป็นคนตัดสินใจเองว่าขั้นถัดไปคืออะไร',
           'ข้อแนะนำสำคัญคือ อย่าเพิ่งเปิด Hint ทันทีที่ติด ให้ลองด้วยตัวเองอย่างน้อย 10 นาทีก่อน เพราะช่วงเวลาที่รู้สึกติดนี่แหละคือช่วงที่เกิดการเรียนรู้จริง การเปิดเฉลยเร็วเกินไปทำให้คุณจำได้แค่ขั้นตอน แต่ไม่ได้เข้าใจเหตุผล',
           'ถ้าเปิด Hint แล้วยังไปต่อไม่ได้ ค่อยเปิด Step-by-step ซึ่งจะบอกลำดับที่ชัดเจนขึ้น และถ้ายังติดอีก ให้ใช้วิธีที่เราสอนมาตลอดคอร์ส คือถาม Agent ให้อธิบายสถานการณ์ปัจจุบัน ไม่ใช่ให้มันทำแทน',
           'ตัววัดความสำเร็จของบทนี้ไม่ใช่ “ทำเสร็จเร็วแค่ไหน” แต่คือ **คุณอธิบายทุกขั้นที่ทำไปได้หรือไม่** ถ้ามีขั้นไหนที่คุณทำตามแล้วอธิบายไม่ได้ ให้ย้อนกลับไปทบทวนบทนั้น'
         ],en:[
-          'There is no new material here. Everything you need appeared in lessons 00–13. What changes is that **nobody tells you the order any more** — you decide what comes next.',
+          'There is no new material here. Everything you need appeared in lessons 00–14. What changes is that **nobody tells you the order any more** — you decide what comes next.',
           'One important tip: do not open the hint the moment you get stuck. Try for at least ten minutes first, because the stuck feeling is where the learning actually happens. Revealing too early leaves you remembering steps without understanding reasons.',
           'If the hint is not enough, open the step-by-step guide. If you are still stuck, use what we practised all course: ask the agent to explain the current situation rather than to do it for you.',
           'The success measure here is not speed. It is **whether you can explain every step you took**. Any step you followed but cannot explain is a signal to revisit that lesson.'
@@ -1200,15 +1334,16 @@ Keep it short and never include anything that was not actually done.`},
           notes:{th:['ทุกเส้นทางในภาพต้องเดินได้จริงบนแอป ไม่ใช่แค่มี story ใน Storybook','จุดตัดสินใจสองจุด (R และ V) คือที่ที่มักมีปัญหามากที่สุด','หมายเลขคิวเป็นข้อมูลสมมติ ไม่ต้องเชื่อมกับระบบคิวจริง'],en:['Every path must actually work in the app, not merely exist as a story in Storybook','The two decision points (R and V) are where most problems hide','The queue number is synthetic — do not connect it to a real queue system']}},
         {type:'list',title:{th:'Definition of Done',en:'Definition of Done'},items:{th:['Search ด้วย HN หรือชื่อ','Loading / Empty / Error / WithResults','เลือกผู้ป่วยและแสดงข้อมูล','Clinic required; Chief Complaint optional','Preview/Confirm ก่อน final action','Success พร้อม synthetic queue number','Meaningful Storybook stories','อย่างน้อย 1 interaction scenario','lint/test/build ผ่าน','git diff reviewed และ Draft MR พร้อม'],en:['Search by HN or name','Loading / Empty / Error / WithResults','Select and display a patient','Clinic required; Chief Complaint optional','Preview/Confirm before final action','Success with a synthetic queue number','Meaningful Storybook stories','At least one interaction scenario','lint/test/build pass','git diff reviewed and Draft MR ready']}},
         {type:'capstone',steps:[
-          {title:{th:'1 · ตั้ง Workspace',en:'1 · Set up the workspace'},hint:{th:'เริ่มจาก main ที่ clean แล้วใช้ worktree แยก task',en:'Start from clean main and isolate the task with a worktree'},guide:{th:['รัน `git status`','รัน `git pull`','รัน `git worktree add ../wt-us001-capstone -b feature/us001-capstone main`','`cd` เข้า worktree ที่สร้างใหม่','รัน `git status` ยืนยันว่าอยู่ branch ใหม่','รัน `npm install` (ดูรายละเอียดในบทที่ 03)'],en:['Run `git status`','Run `git pull`','Run `git worktree add ../wt-us001-capstone -b feature/us001-capstone main`','`cd` into the new worktree','Run `git status` to confirm the new branch','Run `npm install` (details in lesson 03)']}},
-          {title:{th:'2 · Explore & Plan',en:'2 · Explore & Plan'},hint:{th:'ยังไม่ให้ Agent แก้ไฟล์ ให้มันอ่าน AGENTS.md + requirement และรายงาน component/state/file scope',en:'Do not allow edits yet. Ask it to read AGENTS.md + the requirement and report component/state/file scope'},guide:{th:['ใช้ Explore Prompt จากบทที่ 04','รัน `git status` ยืนยันว่ายังไม่มีไฟล์ถูกแก้','review ว่าครบ Loading/Empty/Error/Validation/Success และ file scope แคบพอ','ถ้าไม่ครบ ใช้ Refine Prompt วนอีกรอบ'],en:['Use the Explore Prompt from lesson 04','Run `git status` to confirm nothing changed','Review Loading/Empty/Error/Validation/Success coverage and that file scope is narrow','If gaps remain, loop with the Refine Prompt']}},
-          {title:{th:'3 · Component + State Map',en:'3 · Component + State Map'},hint:{th:'อย่าเริ่มจากหน้าใหญ่ก้อนเดียว และเขียนรายการของตัวเองก่อนถาม Agent',en:'Do not start with one giant page component, and write your own list before asking the agent'},guide:{th:['เขียน state map ตามลำดับ PatientSearch → PatientResults → SelectedPatient → CheckInForm → Confirmation → Success','กำหนด meaningful states เฉพาะที่แต่ละ component ต้องรับผิดชอบ','ใช้ Prompt วิจารณ์จากบทที่ 06'],en:['Draft the state map in order: PatientSearch → PatientResults → SelectedPatient → CheckInForm → Confirmation → Success','Define only the meaningful states each component owns','Use the critique prompt from lesson 06']}},
-          {title:{th:'4 · Storybook First',en:'4 · Storybook First'},hint:{th:'สร้าง component + Storybook story คู่กัน และใช้ mock deterministic',en:'Create component + Storybook story pairs with deterministic mocks'},guide:{th:['ให้ Agent ทำ PatientSearch ก่อน พร้อม Default/Loading/Empty/WithResults/Error (ใช้ Prompt จากบทที่ 07)','เปิด Storybook review ทีละ story','ส่ง feedback เป็นภาษา product','ผ่านแล้วค่อยทำ component ถัดไป'],en:['Have the agent build PatientSearch first with Default/Loading/Empty/WithResults/Error (prompt in lesson 07)','Open Storybook and review story by story','Send product-language feedback','Only then move to the next component']}},
-          {title:{th:'5 · Interaction',en:'5 · Interaction'},hint:{th:'เลือก behavior สำคัญ 1 flow เขียน Given/When/Then',en:'Choose one important behavior and write Given/When/Then'},guide:{th:['เขียน Given/When/Then เช่น Given หน้าค้นหาแสดงอยู่ / When กรอก HN 65000123 แล้วกดค้นหา / Then แสดง Somchai Jaidee','ส่ง Prompt จากบทที่ 08','เปิดดู interaction ทีละขั้นใน Storybook'],en:['Write Given/When/Then, e.g. Given the search screen is displayed / When HN 65000123 is entered and Search clicked / Then Somchai Jaidee appears','Send the prompt from lesson 08','Watch the interaction step by step in Storybook']}},
-          {title:{th:'6 · Integrate Page',en:'6 · Integrate the page'},hint:{th:'ประกอบเฉพาะ component ที่ review แล้ว และ reuse mock service',en:'Assemble only reviewed components and reuse the mock service'},guide:{th:['ใช้ Integration Prompt จากบทที่ 10','เปิด `/opd/check-in`','เดินครบทั้ง 5 รอบ (happy path, ไม่เลือกคลินิก, empty, error, ย้อนกลับ/เริ่มใหม่)','จดปัญหาเป็นพฤติกรรม แล้วส่งแก้ทีละข้อ'],en:['Use the integration prompt from lesson 10','Open `/opd/check-in`','Walk all five rounds (happy path, no clinic, empty, error, back/restart)','Note issues as behaviour and send them one at a time']}},
-          {title:{th:'7 · Diagnose Intentional Error',en:'7 · Diagnose an intentional error'},hint:{th:'อ่าน error ก่อน fix และขอ root cause',en:'Read the error before fixing and ask for root cause'},guide:{th:['เลือก error จาก `docs/workshop-errors.md`','เก็บหลักฐานครบ 4 แหล่ง (Terminal, UI, Console, Network)','ใช้ Root-cause Prompt จากบทที่ 11','อธิบายด้วยคำตัวเองก่อนอนุญาตให้แก้','ใช้ Verify Prompt แล้ว reproduce เคสเดิม'],en:['Pick an error from `docs/workshop-errors.md`','Collect evidence from all four sources (terminal, UI, console, network)','Use the Root-cause Prompt from lesson 11','Explain it in your own words before approving a fix','Use the Verify Prompt and reproduce the original case']}},
-          {title:{th:'8 · Diff & Quality Gates',en:'8 · Diff & Quality Gates'},hint:{th:'คาดการณ์ changed files ก่อนดูจริง',en:'Predict the changed files before reviewing them'},guide:{th:['เขียนคาดการณ์ changed files ก่อน','รัน `git status`','รัน `git diff --stat`','เปิด diff ของไฟล์ที่ไม่คาดคิด','ใช้ Diff Review Prompt จากบทที่ 12','รัน `npm run lint`','รัน `npm run test`','รัน `npm run build`'],en:['Write your prediction first','Run `git status`','Run `git diff --stat`','Open diffs of unexpected files','Use the Diff Review Prompt from lesson 12','Run `npm run lint`','Run `npm run test`','Run `npm run build`']}},
-          {title:{th:'9 · Draft MR',en:'9 · Draft MR'},hint:{th:'MR ต้องเล่า intent, scope, states และ evidence',en:'The MR should tell intent, scope, states, and evidence'},guide:{th:['รัน `git status` ยืนยัน branch','รัน `git add .`','รัน `git commit -m "feat(us001): ..."`','รัน `git push -u origin <branch>`','ใช้ Prompt ร่าง MR จากบทที่ 13','ตัดสิ่งที่ยังไม่ได้ทดสอบจริงออก','เปิด Draft MR แล้วให้เพื่อน review ความชัดเจน'],en:['Run `git status` to confirm the branch','Run `git add .`','Run `git commit -m "feat(us001): ..."`','Run `git push -u origin <branch>`','Use the MR draft prompt from lesson 13','Remove anything you did not actually test','Open a Draft MR and have a peer review its clarity']}}
+          {title:{th:'1 · เขียน Issue และ Acceptance Criteria',en:'1 · Write the issue and acceptance criteria'},hint:{th:'อย่าเพิ่งเปิด branch จนกว่า AC ทุกข้อจะตอบได้ว่า ผ่าน หรือ ไม่ผ่าน',en:'Do not open a branch until every AC answers pass or fail'},guide:{th:['อ่าน `docs/requirements/US-001-opd-checkin.md` ให้จบก่อน','ร่าง Issue ตาม template ในบทที่ 02 ให้ครบทั้ง Context, In/Out of scope, AC และ Definition of Done','แยก AC เป็นสองกอง คือสถานะ (Loading/Empty/Error/Validation/Success) และพฤติกรรม (Given/When/Then)','ใช้ค่าตายตัวจาก mock data ใน AC ที่เป็นพฤติกรรม เช่น HN 65000123','ส่ง Prompt ตรวจช่องว่างจากบทที่ 02 แล้วแก้ Issue ตามรายการ “สิ่งที่ Agent จะเดา”','เปิด Issue จริง แล้วจดเลข Issue ไว้ใช้ตั้งชื่อ branch ในขั้นถัดไป'],en:['Read `docs/requirements/US-001-opd-checkin.md` all the way through','Draft the issue with the lesson 02 template: context, in/out of scope, ACs, definition of done','Split the ACs into states (Loading/Empty/Error/Validation/Success) and behaviours (Given/When/Then)','Use fixed mock-data values in behaviour ACs, e.g. HN 65000123','Send the gap-check prompt from lesson 02 and fix everything the agent said it would guess','Open the real issue and note its number for the branch name in the next step']}},
+          {title:{th:'2 · ตั้ง Workspace',en:'2 · Set up the workspace'},hint:{th:'เริ่มจาก main ที่ clean แล้วใช้ worktree แยก task',en:'Start from clean main and isolate the task with a worktree'},guide:{th:['รัน `git status`','รัน `git pull`','รัน `git worktree add ../wt-us001-capstone -b feature/us001-capstone main`','`cd` เข้า worktree ที่สร้างใหม่','รัน `git status` ยืนยันว่าอยู่ branch ใหม่','รัน `npm install` (ดูรายละเอียดในบทที่ 04)'],en:['Run `git status`','Run `git pull`','Run `git worktree add ../wt-us001-capstone -b feature/us001-capstone main`','`cd` into the new worktree','Run `git status` to confirm the new branch','Run `npm install` (details in lesson 04)']}},
+          {title:{th:'3 · Explore & Plan',en:'3 · Explore & Plan'},hint:{th:'ยังไม่ให้ Agent แก้ไฟล์ ให้มันอ่าน AGENTS.md + requirement และรายงาน component/state/file scope',en:'Do not allow edits yet. Ask it to read AGENTS.md + the requirement and report component/state/file scope'},guide:{th:['ใช้ Explore Prompt จากบทที่ 05','รัน `git status` ยืนยันว่ายังไม่มีไฟล์ถูกแก้','review ว่าครบ Loading/Empty/Error/Validation/Success และ file scope แคบพอ','ถ้าไม่ครบ ใช้ Refine Prompt วนอีกรอบ'],en:['Use the Explore Prompt from lesson 05','Run `git status` to confirm nothing changed','Review Loading/Empty/Error/Validation/Success coverage and that file scope is narrow','If gaps remain, loop with the Refine Prompt']}},
+          {title:{th:'4 · Component + State Map',en:'4 · Component + State Map'},hint:{th:'อย่าเริ่มจากหน้าใหญ่ก้อนเดียว และเขียนรายการของตัวเองก่อนถาม Agent',en:'Do not start with one giant page component, and write your own list before asking the agent'},guide:{th:['เขียน state map ตามลำดับ PatientSearch → PatientResults → SelectedPatient → CheckInForm → Confirmation → Success','กำหนด meaningful states เฉพาะที่แต่ละ component ต้องรับผิดชอบ','ใช้ Prompt วิจารณ์จากบทที่ 07'],en:['Draft the state map in order: PatientSearch → PatientResults → SelectedPatient → CheckInForm → Confirmation → Success','Define only the meaningful states each component owns','Use the critique prompt from lesson 07']}},
+          {title:{th:'5 · Storybook First',en:'5 · Storybook First'},hint:{th:'สร้าง component + Storybook story คู่กัน และใช้ mock deterministic',en:'Create component + Storybook story pairs with deterministic mocks'},guide:{th:['ให้ Agent ทำ PatientSearch ก่อน พร้อม Default/Loading/Empty/WithResults/Error (ใช้ Prompt จากบทที่ 08)','เปิด Storybook review ทีละ story','ส่ง feedback เป็นภาษา product','ผ่านแล้วค่อยทำ component ถัดไป'],en:['Have the agent build PatientSearch first with Default/Loading/Empty/WithResults/Error (prompt in lesson 08)','Open Storybook and review story by story','Send product-language feedback','Only then move to the next component']}},
+          {title:{th:'6 · Interaction',en:'6 · Interaction'},hint:{th:'เลือก behavior สำคัญ 1 flow เขียน Given/When/Then',en:'Choose one important behavior and write Given/When/Then'},guide:{th:['เขียน Given/When/Then เช่น Given หน้าค้นหาแสดงอยู่ / When กรอก HN 65000123 แล้วกดค้นหา / Then แสดง Somchai Jaidee','ส่ง Prompt จากบทที่ 09','เปิดดู interaction ทีละขั้นใน Storybook'],en:['Write Given/When/Then, e.g. Given the search screen is displayed / When HN 65000123 is entered and Search clicked / Then Somchai Jaidee appears','Send the prompt from lesson 09','Watch the interaction step by step in Storybook']}},
+          {title:{th:'7 · Integrate Page',en:'7 · Integrate the page'},hint:{th:'ประกอบเฉพาะ component ที่ review แล้ว และ reuse mock service',en:'Assemble only reviewed components and reuse the mock service'},guide:{th:['ใช้ Integration Prompt จากบทที่ 11','เปิด `/opd/check-in`','เดินครบทั้ง 5 รอบ (happy path, ไม่เลือกคลินิก, empty, error, ย้อนกลับ/เริ่มใหม่)','จดปัญหาเป็นพฤติกรรม แล้วส่งแก้ทีละข้อ'],en:['Use the integration prompt from lesson 11','Open `/opd/check-in`','Walk all five rounds (happy path, no clinic, empty, error, back/restart)','Note issues as behaviour and send them one at a time']}},
+          {title:{th:'8 · Diagnose Intentional Error',en:'8 · Diagnose an intentional error'},hint:{th:'อ่าน error ก่อน fix และขอ root cause',en:'Read the error before fixing and ask for root cause'},guide:{th:['เลือก error จาก `docs/workshop-errors.md`','เก็บหลักฐานครบ 4 แหล่ง (Terminal, UI, Console, Network)','ใช้ Root-cause Prompt จากบทที่ 12','อธิบายด้วยคำตัวเองก่อนอนุญาตให้แก้','ใช้ Verify Prompt แล้ว reproduce เคสเดิม'],en:['Pick an error from `docs/workshop-errors.md`','Collect evidence from all four sources (terminal, UI, console, network)','Use the Root-cause Prompt from lesson 12','Explain it in your own words before approving a fix','Use the Verify Prompt and reproduce the original case']}},
+          {title:{th:'9 · Diff & Quality Gates',en:'9 · Diff & Quality Gates'},hint:{th:'คาดการณ์ changed files ก่อนดูจริง',en:'Predict the changed files before reviewing them'},guide:{th:['เขียนคาดการณ์ changed files ก่อน','รัน `git status`','รัน `git diff --stat`','เปิด diff ของไฟล์ที่ไม่คาดคิด','ใช้ Diff Review Prompt จากบทที่ 13','รัน `npm run lint`','รัน `npm run test`','รัน `npm run build`'],en:['Write your prediction first','Run `git status`','Run `git diff --stat`','Open diffs of unexpected files','Use the Diff Review Prompt from lesson 13','Run `npm run lint`','Run `npm run test`','Run `npm run build`']}},
+          {title:{th:'10 · Draft MR',en:'10 · Draft MR'},hint:{th:'MR ต้องเล่า intent, scope, states และ evidence',en:'The MR should tell intent, scope, states, and evidence'},guide:{th:['รัน `git status` ยืนยัน branch','รัน `git add .`','รัน `git commit -m "feat(us001): ..."`','รัน `git push -u origin <branch>`','ใช้ Prompt ร่าง MR จากบทที่ 14','ตัดสิ่งที่ยังไม่ได้ทดสอบจริงออก','เปิด Draft MR แล้วให้เพื่อน review ความชัดเจน'],en:['Run `git status` to confirm the branch','Run `git add .`','Run `git commit -m "feat(us001): ..."`','Run `git push -u origin <branch>`','Use the MR draft prompt from lesson 14','Remove anything you did not actually test','Open a Draft MR and have a peer review its clarity']}}
         ]},
         {type:'prompt',title:{th:'Prompt สำรอง: เมื่อหลงทางระหว่างทำ Capstone',en:'Fallback prompt: when you lose your place mid-Capstone'},
           when:{th:'ใช้เมื่อทำไปหลายขั้นแล้วจำไม่ได้ว่าอยู่ตรงไหน หรือไม่แน่ใจว่าสิ่งที่ทำไปแล้วถูกต้องหรือยัง prompt นี้ให้ Agent ช่วย “ตั้งหลัก” ไม่ใช่ทำงานแทน',en:'Use it when you have done several steps and lost track, or you are unsure whether what you did so far is right. This asks the agent to help you re-orient, not to take over.'},
@@ -1239,13 +1374,14 @@ Answer briefly as a numbered list, and do not act until I tell you to.`},
   final: {
     title:{th:'สิ่งที่คุณทำได้หลังจบเส้นทางนี้',en:'What you can do after this journey'},
     intro:{th:'คุณไม่จำเป็นต้องเรียกตัวเองว่า Developer แต่ควรสามารถรับ Requirement หนึ่งเรื่องและกำกับ AI Agent จนกลายเป็นงาน Frontend ที่ตรวจสอบและส่งต่อได้',en:'You do not need to call yourself a developer. You should be able to take one requirement and supervise an AI agent until it becomes verifiable frontend work ready for handoff.'},
-    skills:{th:['Requirement → Component/State','Git branch + worktree','Agent Explore/Plan','Storybook review','Mock states','Browser/Terminal debugging','git diff + quality gates','Commit/Push/MR'],en:['Requirement → Component/State','Git branch + worktree','Agent Explore/Plan','Storybook review','Mock states','Browser/Terminal debugging','git diff + quality gates','Commit/Push/MR']}
+    skills:{th:['Requirement → Issue + AC','Requirement → Component/State','Git branch + worktree','Agent Explore/Plan','Storybook review','Mock states','Browser/Terminal debugging','git diff + quality gates','Commit/Push/MR'],en:['Requirement → Issue + AC','Requirement → Component/State','Git branch + worktree','Agent Explore/Plan','Storybook review','Mock states','Browser/Terminal debugging','git diff + quality gates','Commit/Push/MR']}
   },
   glossary: {
     categories: [
       {
         id:'git', name:{th:'Git & การจัดการเวอร์ชัน',en:'Git & Version Control'}, terms:[
           {term:'Repository',alias:'Repo',th:'คลังเก็บไฟล์และประวัติการเปลี่ยนแปลงทั้งหมดของโปรเจกต์ หนึ่งโปรเจกต์มี repository หลักบน server (เช่น GitHub หรือ GitLab) และสำเนาในเครื่องของเรา',en:'The project folder plus its full change history. One main repository lives on a server such as GitHub or GitLab, and each person clones a copy to their machine.'},
+          {term:'Issue',th:'ใบงานหนึ่งชิ้นบน GitLab หรือ GitHub ที่บอกว่าจะทำอะไร แค่ไหนถึงพอ และจะรู้ได้อย่างไรว่าเสร็จ หนึ่ง Issue ควรจบได้ใน 1 branch',en:'One unit of work in GitLab or GitHub stating what to build, where it stops, and how it will be judged done. One issue should fit in one branch.'},
           {term:'Clone',th:'คำสั่งคัดลอก repository จาก server มาไว้ในเครื่อง พร้อมประวัติการเปลี่ยนแปลงทั้งหมด ไม่ใช่แค่ไฟล์ล่าสุด',en:'The command that copies a repository from the server to your machine, including its full change history — not just the latest files.'},
           {term:'Commit',th:'การบันทึกการเปลี่ยนแปลงหนึ่งชุดพร้อมข้อความอธิบาย เปรียบเหมือน “จุดเซฟ” ที่ย้อนกลับมาดูได้',en:'A saved set of changes with a short message describing it — like a save point you can look back on.'},
           {term:'Branch',th:'สายงานย่อยที่แยกออกจาก main เพื่อทำงานเรื่องเดียวโดยไม่กระทบงานหลัก สร้างใหม่ด้วยคำสั่ง `git switch -c` ตามด้วยชื่อ branch',en:'A separate line of work branched off main so one task never disturbs the main line. Create one with `git switch -c` followed by a branch name.'},
@@ -1306,6 +1442,8 @@ Answer briefly as a numbered list, and do not act until I tell you to.`},
           {term:'Lint',th:'เครื่องมือตรวจคุณภาพโค้ดอัตโนมัติ เช่น จับตัวแปรที่ประกาศแล้วไม่ใช้ หรือรูปแบบโค้ดที่ไม่ตรงมาตรฐานของทีม',en:'An automated code checker that catches issues such as unused variables or style that breaks team standards.'},
           {term:'Scope',th:'ขอบเขตของงานหนึ่งชิ้น เวลาสั่ง AI ควรจำกัด scope ให้แคบ เช่น แก้ไฟล์เดียวหรือฟีเจอร์เดียว เพื่อให้ตรวจงานได้ง่าย',en:'The boundary of one task. When directing the AI, keep the scope narrow — one file or one feature — so review stays easy.'},
           {term:'Acceptance Criteria',th:'เงื่อนไขที่ต้องเป็นจริงก่อนถือว่างานผ่าน ใช้เป็นเช็กลิสต์ตรวจงาน AI และแนบไว้ใน Merge Request',en:'The conditions that must be true for work to count as done. Use them as the checklist for reviewing AI work and attach them to the Merge Request.'},
+          {term:'User Story',th:'วิธีเขียน requirement จากมุมผู้ใช้ในรูป “ในฐานะ… ฉันต้องการ… เพื่อ…” ใช้เล่าเจตนา ส่วน Issue คือหน่วยงานที่ตัดมาจาก user story อีกที',en:'A requirement written from the user’s point of view — “as a…, I want…, so that…”. It carries intent; an issue is the unit of work cut from it.'},
+          {term:'Definition of Done',alias:'DoD',th:'ข้อตกลงว่างานจะถือว่าเสร็จเมื่อมีหลักฐานอะไรครบบ้าง เช่น มี story ครบทุกสถานะ, lint/test/build ผ่าน และ review git diff แล้ว ต่างจาก AC ตรงที่ AC ผูกกับฟีเจอร์ แต่ DoD ใช้กับทุกงาน',en:'The team agreement on what evidence must exist before work counts as done — stories for every state, lint/test/build passing, git diff reviewed. ACs are per feature; the DoD applies to every task.'},
           {term:'UAT',alias:'User Acceptance Test',th:'การทดสอบโดยผู้ใช้งานจริงหรือเจ้าของงานก่อนขึ้นระบบจริง ยิ่งตรวจจุดผิดพลาดได้เร็วใน Storybook ยิ่งไม่ต้องแก้กันตอน UAT',en:'Testing by real users or the product owner before go-live. Catching issues early in Storybook means far less pain at UAT.'}
         ]
       }
