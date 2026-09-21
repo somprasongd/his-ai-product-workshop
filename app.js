@@ -100,7 +100,19 @@
   };
   const rich = (s='') => linkify(s)
     .replace(/`([^`]+)`/g, (_, c) => `<code class="inline-code">${c}</code>`)
-    .replace(/\*\*([^*]+)\*\*/g, (_, c) => `<strong>${c}</strong>`);
+    .replace(/\*\*([^*]+)\*\*/g, (_, c) => `<strong>${c}</strong>`)
+    .replace(/(?<!\/)\blocalhost:(\d{2,5})\b/g, (m, port) => `<a href="http://localhost:${port}" target="_blank" rel="noreferrer noopener">localhost:${port}</a>`);
+  const CMD_RE = /^(git|npm|npx|node|cd|ls|mkdir|curl|code|codex|claude|pnpm|yarn|touch|cat)\b/;
+  const extractCommands = raw => {
+    const cmds = [];
+    const codeRe = /`([^`]+)`/g;
+    let m;
+    while ((m = codeRe.exec(raw))) {
+      const c = m[1];
+      if (CMD_RE.test(c) || /\s--?\w/.test(c)) cmds.push(c);
+    }
+    return cmds;
+  };
   const t = obj => typeof obj === 'string' ? obj : (obj?.[state.lang] ?? obj?.en ?? '');
   const U = key => ui[state.lang][key];
 
@@ -254,13 +266,27 @@
       case 'prose': return `<section class="block prose">${block.title?`<h2>${esc(t(block.title))}</h2>`:''}${t(block.body).map(pg=>`<p>${rich(pg)}</p>`).join('')}${block.points?`<ul class="clean">${t(block.points).map(x=>`<li>${rich(x)}</li>`).join('')}</ul>`:''}</section>`;
       case 'commands': return commandsBlock(block);
       case 'prompt': return promptBlock(block);
-      case 'practice': return `<section class="block practice"><div class="practice-label">${U('practice')}</div><h2>${esc(t(block.title))}</h2>${block.code?codeBlock(block.code,'commands'):''}<ol class="steps">${t(block.steps).map(s=>`<li><span>${linkify(s)}</span></li>`).join('')}</ol><div class="reveal"><button class="btn btn-secondary btn-small reveal-btn" type="button">${U('expected')}</button><div class="reveal-panel"><strong>${state.lang==='th'?'ผลลัพธ์ที่คาดหวัง':'Expected result'}</strong><p>${linkify(t(block.expected))}</p></div></div></section>`;
+      case 'practice': return practiceBlock(block);
       case 'capstone': return `<section class="block"><div class="practice-label">${U('guided')}</div><div class="capstone-steps">${block.steps.map((s,i)=>`<details class="capstone-step"><summary>${esc(t(s.title))}<span>${String(i+1).padStart(2,'0')}</span></summary><div class="inside"><p><strong>${U('hint')}:</strong> ${linkify(t(s.hint))}</p><div class="reveal"><button class="btn btn-secondary btn-small reveal-btn" type="button">${U('guide')}</button><div class="reveal-panel"><p>${linkify(t(s.guide))}</p></div></div></div></details>`).join('')}</div></section>`;
       default: return '';
     }
   }
 
   const lead = block => block.lead ? `<p class="block-lead">${rich(t(block.lead))}</p>` : '';
+
+  function practiceBlock(block) {
+    const steps = t(block.steps).map(raw => {
+      const cmdHtml = extractCommands(raw).map(c => codeBlock(c, state.lang==='th'?'คำสั่ง':'command')).join('');
+      return `<li><div class="step-body"><span>${rich(raw)}</span>${cmdHtml}</div></li>`;
+    }).join('');
+    return `<section class="block practice">
+      <div class="practice-label">${U('practice')}</div>
+      <h2>${esc(t(block.title))}</h2>
+      ${block.code ? codeBlock(block.code, 'commands') : ''}
+      <ol class="steps">${steps}</ol>
+      <div class="cmd-expect"><strong>${state.lang==='th'?'ผลลัพธ์ที่คาดหวัง':'Expected result'}</strong> ${rich(t(block.expected))}</div>
+    </section>`;
+  }
 
   function commandsBlock(block) {
     const steps = block.steps.map((s, i) => `<li class="cmd-step">
@@ -423,18 +449,45 @@
     } catch(err){ console.warn('Mermaid render failed',err); }
   }
 
-  const diagramModal = { el:null, content:null, title:null, zoomLabel:null, scale:1 };
+  const diagramModal = { el:null, content:null, body:null, title:null, zoomLabel:null, scale:1, panX:0, panY:0 };
 
-  function setDiagramZoom(scale) {
+  function applyDiagramTransform() {
+    diagramModal.content.style.transform = `translate(${diagramModal.panX}px, ${diagramModal.panY}px) scale(${diagramModal.scale})`;
+  }
+
+  function setDiagramZoom(scale, resetPan=true) {
     diagramModal.scale = Math.min(3, Math.max(0.4, Math.round(scale * 10) / 10));
-    diagramModal.content.style.transform = `scale(${diagramModal.scale})`;
+    if (resetPan) { diagramModal.panX = 0; diagramModal.panY = 0; }
+    applyDiagramTransform();
     diagramModal.zoomLabel.textContent = Math.round(diagramModal.scale * 100) + '%';
+  }
+
+  function initDiagramPan() {
+    const body = diagramModal.body;
+    let dragging = false, startX = 0, startY = 0, startPanX = 0, startPanY = 0;
+    body.addEventListener('pointerdown', e => {
+      dragging = true;
+      body.classList.add('dragging');
+      body.setPointerCapture(e.pointerId);
+      startX = e.clientX; startY = e.clientY;
+      startPanX = diagramModal.panX; startPanY = diagramModal.panY;
+    });
+    body.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      diagramModal.panX = startPanX + (e.clientX - startX);
+      diagramModal.panY = startPanY + (e.clientY - startY);
+      applyDiagramTransform();
+    });
+    const stop = e => { dragging = false; body.classList.remove('dragging'); };
+    body.addEventListener('pointerup', stop);
+    body.addEventListener('pointercancel', stop);
   }
 
   function openDiagramModal(svg, title) {
     diagramModal.content.innerHTML = '';
     diagramModal.content.appendChild(svg.cloneNode(true));
     diagramModal.title.textContent = title;
+    diagramModal.panX = 0; diagramModal.panY = 0;
     setDiagramZoom(1);
     diagramModal.el.classList.add('open');
     diagramModal.el.setAttribute('aria-hidden', 'false');
@@ -452,16 +505,18 @@
     if (!modal) return;
     diagramModal.el = modal;
     diagramModal.content = document.getElementById('diagramModalContent');
+    diagramModal.body = document.getElementById('diagramModalBody');
     diagramModal.title = document.getElementById('diagramModalTitle');
     diagramModal.zoomLabel = document.getElementById('diagramZoomLabel');
     document.getElementById('diagramZoomIn').innerHTML = icon('zoomIn', 16);
     document.getElementById('diagramZoomOut').innerHTML = icon('zoomOut', 16);
     document.getElementById('diagramZoomReset').innerHTML = icon('reset', 16);
     document.getElementById('diagramModalClose').innerHTML = icon('close', 16);
-    document.getElementById('diagramZoomIn').addEventListener('click', () => setDiagramZoom(diagramModal.scale + 0.2));
-    document.getElementById('diagramZoomOut').addEventListener('click', () => setDiagramZoom(diagramModal.scale - 0.2));
+    document.getElementById('diagramZoomIn').addEventListener('click', () => setDiagramZoom(diagramModal.scale + 0.2, false));
+    document.getElementById('diagramZoomOut').addEventListener('click', () => setDiagramZoom(diagramModal.scale - 0.2, false));
     document.getElementById('diagramZoomReset').addEventListener('click', () => setDiagramZoom(1));
     modal.querySelectorAll('[data-modal-close]').forEach(el => el.addEventListener('click', closeDiagramModal));
+    initDiagramPan();
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape' && diagramModal.el.classList.contains('open')) closeDiagramModal();
     });
