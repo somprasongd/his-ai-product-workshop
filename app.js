@@ -530,7 +530,8 @@
     else if (hash === '#/glossary') app.innerHTML = glossaryPage();
     else app.innerHTML = home();
     bind();
-    window.scrollTo({top:0,behavior:'instant'});
+    // left:0 เคลียร์ pan แนวนอนที่อาจค้างจากหน้าก่อนหน้า (ระบบ Android บางเวอร์ชัน)
+    window.scrollTo({top:0,left:0,behavior:'instant'});
     setTimeout(renderMermaid, 0);
   }
 
@@ -589,6 +590,9 @@
         const {svg}=await window.mermaid.render(id,source); el.innerHTML=svg; el.dataset.rendered='1';
       }
     } catch(err){ console.warn('Mermaid render failed',err); }
+    // เคลียร์ pan แนวนอนที่อาจค้างจาก render ชั่วคราว (คุมทั้ง html และ body สำหรับ browser ที่ propagate ต่างกัน)
+    document.scrollingElement.scrollLeft = 0;
+    document.body.scrollLeft = 0;
   }
 
   const diagramModal = { el:null, content:null, body:null, title:null, zoomLabel:null, scale:1, panX:0, panY:0 };

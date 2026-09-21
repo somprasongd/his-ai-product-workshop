@@ -52,11 +52,16 @@ html {
      (ถ้า body เป็น scroll container position:sticky ของ topbar จะไม่ติดขอบจอ) */
   overflow-x: hidden;
   overflow-x: clip;
+  /* ตัด scroll chaining: ลากนิ้วในบล็อกโค้ด/แผนภาพแล้วแรงไม่ส่งต่อไปแพนทั้งหน้า */
+  overscroll-behavior-x: none;
 }
 body {
   margin: 0;
   min-height: 100vh;
   overflow-wrap: anywhere;
+  /* ครอบ ink ที่หลุดออกจาก body (รวมถึง div วัดขนาดชั่วคราวที่ mermaid แทรกตอน render)
+     — ใช้ clip ไม่ใช่ hidden เพื่อไม่ให้ body กลายเป็น scroll container ทำให้ sticky topbar เสีย */
+  overflow-x: clip;
   background:
     radial-gradient(circle at 10% 10%, color-mix(in srgb, var(--primary) 12%, transparent), transparent 30%),
     radial-gradient(circle at 90% 4%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 24%),
@@ -378,6 +383,10 @@ html[data-theme="dark"] .tool-tab.active { color:#05201c; }
   .hero-inner { width:min(100% - 28px,1180px); padding:42px 0; }
   .hero h1 { font-size:clamp(42px,13vw,66px); }
   .topbar { padding:0 12px; }
+  /* มือถือ: ปุ่มบทเรียนเรียงแนวตั้ง ปุ่มละบรรทัดเต็มความกว้าง */
+  .lesson-actions { flex-direction:column; align-items:stretch; gap:10px; }
+  .lesson-actions > div { width:100%; }
+  .lesson-actions .btn { width:100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
