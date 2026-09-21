@@ -190,7 +190,7 @@
         </a>
         <div class="top-actions">
           <button class="icon-btn mobile-menu" id="menuBtn" aria-label="Menu">${icon('menu')}</button>
-          <select class="select-btn" id="langSelect" aria-label="Language"><option value="th" ${state.lang==='th'?'selected':''}>ไทย</option><option value="en" ${state.lang==='en'?'selected':''}>EN</option></select>
+          <button class="icon-btn lang-btn" id="langBtn" aria-label="Language" title="${state.lang==='th'?'Switch to English':'เปลี่ยนเป็นภาษาไทย'}">${state.lang==='th'?'TH':'EN'}</button>
           <button class="icon-btn" id="themeBtn" aria-label="Theme">${state.theme==='dark'?icon('sun'):icon('moon')}</button>
         </div>
       </header>
@@ -409,8 +409,9 @@
 
   function bind() {
     document.getElementById('themeBtn')?.addEventListener('click',()=>setTheme(state.theme==='dark'?'light':'dark'));
-    document.getElementById('langSelect')?.addEventListener('change',e=>{
-      state.lang=e.target.value; document.documentElement.lang=state.lang; persist(); route();
+    document.getElementById('langBtn')?.addEventListener('click',()=>{
+      state.lang = state.lang==='th'?'en':'th';
+      document.documentElement.lang=state.lang; persist(); route();
     });
     document.getElementById('menuBtn')?.addEventListener('click',()=>document.body.classList.toggle('menu-open'));
     document.querySelectorAll('.lesson-link').forEach(a=>a.addEventListener('click',()=>document.body.classList.remove('menu-open')));
@@ -431,8 +432,17 @@
     }));
     document.querySelectorAll('[data-complete]').forEach(btn=>btn.addEventListener('click',()=>{
       const id=btn.dataset.complete;
-      if(state.completed.has(id)) state.completed.delete(id); else state.completed.add(id);
-      persist(); route(); showToast(state.completed.has(id)?U('completed'):(state.lang==='th'?'ยกเลิกสถานะแล้ว':'Completion removed'));
+      const wasDone = state.completed.has(id);
+      if(wasDone) state.completed.delete(id); else state.completed.add(id);
+      persist();
+      if(!wasDone){
+        const idx = course.lessons.findIndex(l=>l.id===id);
+        const next = course.lessons[idx+1];
+        showToast(U('completed'));
+        location.hash = next ? `#/lesson/${next.id}` : '#/summary';
+      } else {
+        route(); showToast(state.lang==='th'?'ยกเลิกสถานะแล้ว':'Completion removed');
+      }
     }));
   }
 
