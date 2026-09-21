@@ -83,13 +83,12 @@ a { color: inherit; }
 .brand-copy small { display:block; font-weight:600; color:var(--muted); font-size:11px; letter-spacing:.04em; text-transform:uppercase; }
 .brand-copy span { display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .top-actions { display:flex; align-items:center; gap:8px; }
-.icon-btn, .select-btn, .btn {
+.icon-btn, .btn {
   border:1px solid var(--line); background:var(--surface); border-radius:12px; cursor:pointer;
   transition:transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
 }
-.icon-btn:hover,.select-btn:hover,.btn:hover { transform: translateY(-1px); border-color:color-mix(in srgb,var(--primary) 45%,var(--line)); box-shadow:var(--shadow-sm); }
+.icon-btn:hover,.btn:hover { transform: translateY(-1px); border-color:color-mix(in srgb,var(--primary) 45%,var(--line)); box-shadow:var(--shadow-sm); }
 .icon-btn { width:42px; height:42px; display:grid; place-items:center; }
-.select-btn { padding:9px 11px; color:var(--text); }
 .lang-btn { width:auto; min-width:42px; padding:0 12px; font-weight:700; font-size:13px; letter-spacing:.02em; color:var(--text); }
 
 .layout { display:grid; grid-template-columns: var(--sidebar) minmax(0,1fr); min-height:calc(100vh - 70px); }
