@@ -84,7 +84,7 @@
   };
 
   const esc = (s='') => String(s).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
-  const RAW_URL_RE = /https?:\/\/[^\s<]+/g;
+  const RAW_URL_RE = /https?:\/\/[^\s<`]+/g;
   const linkifyRaw = html => html.replace(RAW_URL_RE, url => `<a href="${url}" target="_blank" rel="noreferrer noopener">${url}</a>`);
   const linkify = (s='') => {
     const escaped = esc(s);
