@@ -14,6 +14,24 @@
   <a class="skip-link" href="#main">Skip to content</a>
   <div id="app"></div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="diagramModal" class="diagram-modal" aria-hidden="true">
+    <div class="diagram-modal-backdrop" data-modal-close></div>
+    <div class="diagram-modal-panel" role="dialog" aria-modal="true" aria-label="Diagram viewer">
+      <div class="diagram-modal-toolbar">
+        <strong id="diagramModalTitle" class="diagram-modal-title"></strong>
+        <div class="diagram-modal-tools">
+          <button type="button" id="diagramZoomOut" aria-label="Zoom out"></button>
+          <span id="diagramZoomLabel" class="diagram-zoom-label">100%</span>
+          <button type="button" id="diagramZoomIn" aria-label="Zoom in"></button>
+          <button type="button" id="diagramZoomReset" aria-label="Reset zoom"></button>
+          <button type="button" id="diagramModalClose" aria-label="Close" data-modal-close></button>
+        </div>
+      </div>
+      <div class="diagram-modal-body" id="diagramModalBody">
+        <div class="diagram-modal-svg" id="diagramModalContent"></div>
+      </div>
+    </div>
+  </div>
   <script src="./content.js"></script>
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';

@@ -7,7 +7,8 @@
     theme: 'his-ai-course.theme',
     completed: 'his-ai-course.completed',
     last: 'his-ai-course.last',
-    quiz: 'his-ai-course.quiz'
+    quiz: 'his-ai-course.quiz',
+    promptLang: 'his-ai-course.promptLang'
   };
 
   const ui = {
@@ -34,7 +35,12 @@
       prerequisites: 'Prerequisites', finalSummary: 'สรุปหลังเรียนครบ',
       guided: 'Guided Mode', hint: 'ดู Hint', guide: 'เปิด Step-by-step', closeMenu: 'ปิดเมนู',
       reset: 'รีเซ็ต Progress', resetConfirm: 'ต้องการลบสถานะการเรียนใน browser นี้หรือไม่?',
-      source: 'Source', starter: 'Starter Repo'
+      source: 'Source', starter: 'Starter Repo',
+      promptLabel: 'Prompt สำหรับ AI Agent', promptLangLabel: 'ภาษาของ prompt',
+      promptLangNote: 'เลือกภาษาของ prompt ได้ ระบบจะจำและใช้กับทุก prompt ในเว็บนี้',
+      whenToUse: 'ใช้เมื่อไร', afterPrompt: 'หลังส่ง prompt ให้ตรวจสิ่งนี้',
+      commandsLabel: 'ทีละคำสั่ง', expectLabel: 'ควรเห็นอะไร',
+      readDiagram: 'อ่านภาพนี้อย่างไร', noCommand: 'ขั้นนี้ไม่ต้องพิมพ์คำสั่ง'
     },
     en: {
       start: 'Start learning', continue: 'Continue where you left off', curriculum: 'View curriculum',
@@ -59,7 +65,12 @@
       prerequisites: 'Prerequisites', finalSummary: 'Final learning summary',
       guided: 'Guided Mode', hint: 'Reveal hint', guide: 'Show step-by-step', closeMenu: 'Close menu',
       reset: 'Reset progress', resetConfirm: 'Clear learning progress stored in this browser?',
-      source: 'Source', starter: 'Starter Repo'
+      source: 'Source', starter: 'Starter Repo',
+      promptLabel: 'Prompt for the AI agent', promptLangLabel: 'Prompt language',
+      promptLangNote: 'Choose the prompt language. Your choice is remembered and applied to every prompt on this site.',
+      whenToUse: 'When to use it', afterPrompt: 'After sending, check this',
+      commandsLabel: 'Step by step', expectLabel: 'What you should see',
+      readDiagram: 'How to read this diagram', noCommand: 'No command to type in this step'
     }
   };
 
@@ -68,10 +79,28 @@
     theme: localStorage.getItem(STORAGE.theme) || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
     completed: new Set(JSON.parse(localStorage.getItem(STORAGE.completed) || '[]')),
     quiz: JSON.parse(localStorage.getItem(STORAGE.quiz) || '{}'),
-    last: localStorage.getItem(STORAGE.last) || 'prerequisites'
+    last: localStorage.getItem(STORAGE.last) || 'prerequisites',
+    promptLang: localStorage.getItem(STORAGE.promptLang) || ''
   };
 
   const esc = (s='') => String(s).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  const RAW_URL_RE = /https?:\/\/[^\s<]+/g;
+  const linkifyRaw = html => html.replace(RAW_URL_RE, url => `<a href="${url}" target="_blank" rel="noreferrer noopener">${url}</a>`);
+  const linkify = (s='') => {
+    const escaped = esc(s);
+    const mdLinkRe = /\[([^[\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
+    let out = '', last = 0, m;
+    while ((m = mdLinkRe.exec(escaped))) {
+      out += linkifyRaw(escaped.slice(last, m.index));
+      out += `<a href="${m[2]}" target="_blank" rel="noreferrer noopener">${m[1]}</a>`;
+      last = m.index + m[0].length;
+    }
+    out += linkifyRaw(escaped.slice(last));
+    return out;
+  };
+  const rich = (s='') => linkify(s)
+    .replace(/`([^`]+)`/g, (_, c) => `<code class="inline-code">${c}</code>`)
+    .replace(/\*\*([^*]+)\*\*/g, (_, c) => `<strong>${c}</strong>`);
   const t = obj => typeof obj === 'string' ? obj : (obj?.[state.lang] ?? obj?.en ?? '');
   const U = key => ui[state.lang][key];
 
@@ -81,7 +110,11 @@
     localStorage.setItem(STORAGE.completed, JSON.stringify([...state.completed]));
     localStorage.setItem(STORAGE.quiz, JSON.stringify(state.quiz));
     localStorage.setItem(STORAGE.last, state.last);
+    if (state.promptLang) localStorage.setItem(STORAGE.promptLang, state.promptLang);
+    else localStorage.removeItem(STORAGE.promptLang);
   }
+
+  const promptLang = () => state.promptLang || state.lang;
 
   function showToast(message) {
     toast.textContent = message;
@@ -113,7 +146,12 @@
       github:'<path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3.3-.4 6.8-1.6 6.8-7A5.4 5.4 0 0 0 19.4 4 5 5 0 0 0 19.3.5S18.2.1 15 2a13.4 13.4 0 0 0-7 0C4.8.1 3.7.5 3.7.5A5 5 0 0 0 3.6 4a5.4 5.4 0 0 0-1.4 3.7c0 5.4 3.5 6.6 6.8 7A4.8 4.8 0 0 0 8 18v4"/><path d="M8 19c-3 .9-3-1.5-4-2"/>',
       spark:'<path d="m12 3-1.9 4.9L5 10l5.1 2.1L12 17l1.9-4.9L19 10l-5.1-2.1L12 3Z"/><path d="m5 3-.7 1.8L2.5 5.5l1.8.7L5 8l.7-1.8 1.8-.7-1.8-.7L5 3Z"/>',
       book:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5v13Z"/><path d="M8 7h8M8 11h6"/>',
-      code:'<path d="m8 9-3 3 3 3M16 9l3 3-3 3M14 5l-4 14"/>'
+      code:'<path d="m8 9-3 3 3 3M16 9l3 3-3 3M14 5l-4 14"/>',
+      expand:'<path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/>',
+      zoomIn:'<circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/>',
+      zoomOut:'<circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3M8 11h6"/>',
+      close:'<path d="M18 6 6 18M6 6l12 12"/>',
+      reset:'<path d="M3 12a9 9 0 1 0 2.64-6.36M3 12V5m0 7h7"/>'
     };
     return `<svg ${common}>${p[name] || p.spark}</svg>`;
   }
@@ -206,19 +244,86 @@
 
   function renderBlock(block, index) {
     switch(block.type) {
-      case 'callout': return `<section class="block callout ${block.tone||''}"><div class="callout-title">${esc(t(block.title))}</div><p>${esc(t(block.text))}</p></section>`;
-      case 'list': return `<section class="block"><h2>${esc(t(block.title))}</h2><ul class="clean">${t(block.items).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>`;
-      case 'two': return `<section class="block"><h2>${esc(t(block.title))}</h2><div class="two-col"><div class="compare"><strong>${esc(t(block.left.title))}</strong><ul class="clean">${t(block.left.items).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div class="compare"><strong>${esc(t(block.right.title))}</strong><ul class="clean">${t(block.right.items).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div></section>`;
-      case 'code': return codeBlock(block.code, block.label || 'code');
-      case 'diagram': return `<section class="block"><h2>${esc(t(block.title))}</h2><div class="diagram"><div class="mermaid">${esc(block.diagram)}</div></div></section>`;
-      case 'practice': return `<section class="block practice"><div class="practice-label">${U('practice')}</div><h2>${esc(t(block.title))}</h2>${block.code?codeBlock(block.code,'commands'):''}<ol class="steps">${t(block.steps).map(s=>`<li><span>${esc(s)}</span></li>`).join('')}</ol><div class="reveal"><button class="btn btn-secondary btn-small reveal-btn" type="button">${U('expected')}</button><div class="reveal-panel"><strong>${state.lang==='th'?'ผลลัพธ์ที่คาดหวัง':'Expected result'}</strong><p>${esc(t(block.expected))}</p></div></div></section>`;
-      case 'capstone': return `<section class="block"><div class="practice-label">${U('guided')}</div><div class="capstone-steps">${block.steps.map((s,i)=>`<details class="capstone-step"><summary>${esc(t(s.title))}<span>${String(i+1).padStart(2,'0')}</span></summary><div class="inside"><p><strong>${U('hint')}:</strong> ${esc(t(s.hint))}</p><div class="reveal"><button class="btn btn-secondary btn-small reveal-btn" type="button">${U('guide')}</button><div class="reveal-panel"><p>${esc(t(s.guide))}</p></div></div></div></details>`).join('')}</div></section>`;
+      case 'callout': return `<section class="block callout ${block.tone||''}"><div class="callout-title">${esc(t(block.title))}</div><p>${linkify(t(block.text))}</p></section>`;
+      case 'list': return `<section class="block"><h2>${esc(t(block.title))}</h2><ul class="clean">${t(block.items).map(x=>`<li>${linkify(x)}</li>`).join('')}</ul></section>`;
+      case 'two': return `<section class="block"><h2>${esc(t(block.title))}</h2><div class="two-col"><div class="compare"><strong>${esc(t(block.left.title))}</strong><ul class="clean">${t(block.left.items).map(x=>`<li>${linkify(x)}</li>`).join('')}</ul></div><div class="compare"><strong>${esc(t(block.right.title))}</strong><ul class="clean">${t(block.right.items).map(x=>`<li>${linkify(x)}</li>`).join('')}</ul></div></div></section>`;
+      case 'code': return block.title || block.lead || block.note
+        ? `<section class="block">${block.title?`<h2>${esc(t(block.title))}</h2>`:''}${lead(block)}${codeBlock(block.code, block.label || 'code')}${block.note?`<p class="block-outro">${rich(t(block.note))}</p>`:''}</section>`
+        : codeBlock(block.code, block.label || 'code');
+      case 'diagram': return `<section class="block"><h2>${esc(t(block.title))}</h2>${lead(block)}<div class="diagram"><button class="diagram-expand" type="button" data-diagram-title="${esc(t(block.title))}" aria-label="${state.lang==='th'?'ดูภาพขยาย':'View full size'}">${icon('expand',15)}<span>${state.lang==='th'?'ขยาย':'Expand'}</span></button><div class="mermaid">${esc(block.diagram)}</div></div>${block.notes?`<div class="diagram-notes"><strong>${U('readDiagram')}</strong><ul class="clean">${t(block.notes).map(n=>`<li>${rich(n)}</li>`).join('')}</ul></div>`:''}${block.outro?`<p class="block-outro">${rich(t(block.outro))}</p>`:''}</section>`;
+      case 'prose': return `<section class="block prose">${block.title?`<h2>${esc(t(block.title))}</h2>`:''}${t(block.body).map(pg=>`<p>${rich(pg)}</p>`).join('')}${block.points?`<ul class="clean">${t(block.points).map(x=>`<li>${rich(x)}</li>`).join('')}</ul>`:''}</section>`;
+      case 'commands': return commandsBlock(block);
+      case 'prompt': return promptBlock(block);
+      case 'practice': return `<section class="block practice"><div class="practice-label">${U('practice')}</div><h2>${esc(t(block.title))}</h2>${block.code?codeBlock(block.code,'commands'):''}<ol class="steps">${t(block.steps).map(s=>`<li><span>${linkify(s)}</span></li>`).join('')}</ol><div class="reveal"><button class="btn btn-secondary btn-small reveal-btn" type="button">${U('expected')}</button><div class="reveal-panel"><strong>${state.lang==='th'?'ผลลัพธ์ที่คาดหวัง':'Expected result'}</strong><p>${linkify(t(block.expected))}</p></div></div></section>`;
+      case 'capstone': return `<section class="block"><div class="practice-label">${U('guided')}</div><div class="capstone-steps">${block.steps.map((s,i)=>`<details class="capstone-step"><summary>${esc(t(s.title))}<span>${String(i+1).padStart(2,'0')}</span></summary><div class="inside"><p><strong>${U('hint')}:</strong> ${linkify(t(s.hint))}</p><div class="reveal"><button class="btn btn-secondary btn-small reveal-btn" type="button">${U('guide')}</button><div class="reveal-panel"><p>${linkify(t(s.guide))}</p></div></div></div></details>`).join('')}</div></section>`;
       default: return '';
     }
   }
 
+  const lead = block => block.lead ? `<p class="block-lead">${rich(t(block.lead))}</p>` : '';
+
+  function commandsBlock(block) {
+    const steps = block.steps.map((s, i) => `<li class="cmd-step">
+      <div class="cmd-index">${String(i+1).padStart(2,'0')}</div>
+      <div class="cmd-body">
+        <h3>${esc(t(s.title))}</h3>
+        <p>${rich(t(s.what))}</p>
+        ${s.cmd ? codeBlock(s.cmd, s.label || 'command') : `<p class="cmd-nocmd">${U('noCommand')}</p>`}
+        ${s.expect ? `<div class="cmd-expect"><strong>${U('expectLabel')}</strong> ${rich(t(s.expect))}</div>` : ''}
+      </div>
+    </li>`).join('');
+    return `<section class="block commands">
+      <div class="practice-label">${U('commandsLabel')}</div>
+      <h2>${esc(t(block.title))}</h2>
+      ${lead(block)}
+      <ol class="cmd-list">${steps}</ol>
+      ${block.outro ? `<p class="block-outro">${rich(t(block.outro))}</p>` : ''}
+    </section>`;
+  }
+
+  function promptBody(block) {
+    const pl = promptLang();
+    const text = block.prompt[pl] ?? block.prompt.en;
+    return codeBlock(text, `prompt · ${pl === 'th' ? 'ไทย' : 'EN'}`);
+  }
+
+  function promptBlock(block) {
+    const pl = promptLang();
+    return `<section class="block prompt-block" data-prompt-th="${encodeURIComponent(block.prompt.th)}" data-prompt-en="${encodeURIComponent(block.prompt.en)}">
+      <div class="prompt-head">
+        <div class="prompt-heading">
+          <div class="practice-label">${U('promptLabel')}</div>
+          <h2>${esc(t(block.title))}</h2>
+        </div>
+        <div class="lang-switch" role="group" aria-label="${U('promptLangLabel')}">
+          <span class="lang-switch-label">${U('promptLangLabel')}</span>
+          <button type="button" class="lang-opt ${pl==='th'?'active':''}" data-prompt-lang="th" aria-pressed="${pl==='th'}">ไทย</button>
+          <button type="button" class="lang-opt ${pl==='en'?'active':''}" data-prompt-lang="en" aria-pressed="${pl==='en'}">EN</button>
+        </div>
+      </div>
+      ${block.when ? `<p class="block-lead"><strong>${U('whenToUse')}:</strong> ${rich(t(block.when))}</p>` : ''}
+      <div class="prompt-code">${promptBody(block)}</div>
+      ${block.after ? `<div class="prompt-after"><strong>${U('afterPrompt')}</strong><ul class="clean">${t(block.after).map(x=>`<li>${rich(x)}</li>`).join('')}</ul></div>` : ''}
+      <p class="prompt-hint">${U('promptLangNote')}</p>
+    </section>`;
+  }
+
+  function applyPromptLang() {
+    const pl = promptLang();
+    document.querySelectorAll('.prompt-block').forEach(bl => {
+      const raw = pl === 'th' ? bl.dataset.promptTh : bl.dataset.promptEn;
+      const holder = bl.querySelector('.prompt-code');
+      if (holder) holder.innerHTML = codeBlock(decodeURIComponent(raw || ''), `prompt · ${pl === 'th' ? 'ไทย' : 'EN'}`);
+      bl.querySelectorAll('[data-prompt-lang]').forEach(btn => {
+        const on = btn.dataset.promptLang === pl;
+        btn.classList.toggle('active', on);
+        btn.setAttribute('aria-pressed', String(on));
+      });
+    });
+  }
+
   function codeBlock(code, label='code') {
-    return `<section class="code-wrap"><div class="code-head"><span>${esc(label)}</span><button class="copy-btn" type="button" data-copy="${encodeURIComponent(code)}">${icon('copy',13)} ${U('copy')}</button></div><pre><code>${esc(code)}</code></pre></section>`;
+    return `<section class="code-wrap"><div class="code-head"><span>${esc(label)}</span><button class="copy-btn" type="button" data-copy="${encodeURIComponent(code)}">${icon('copy',13)} ${U('copy')}</button></div><pre><code>${linkifyRaw(esc(code))}</code></pre></section>`;
   }
 
   function lessonPage(lesson) {
@@ -286,11 +391,6 @@
     document.getElementById('resetBtn')?.addEventListener('click',()=>{
       if(confirm(U('resetConfirm'))){ state.completed.clear(); state.quiz={}; state.last='prerequisites'; persist(); route(); }
     });
-    document.querySelectorAll('.copy-btn').forEach(btn=>btn.addEventListener('click',async()=>{
-      const val=decodeURIComponent(btn.dataset.copy||'');
-      try { await navigator.clipboard.writeText(val); showToast(U('copied')); }
-      catch { const ta=document.createElement('textarea'); ta.value=val; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); showToast(U('copied')); }
-    }));
     document.querySelectorAll('.reveal-btn').forEach(btn=>btn.addEventListener('click',()=>{
       const r=btn.closest('.reveal'); r.classList.toggle('open');
       if (r.querySelector('.reveal-panel') && btn.textContent.trim()===U('expected')) btn.textContent=r.classList.contains('open')?U('hideExpected'):U('expected');
@@ -323,7 +423,83 @@
     } catch(err){ console.warn('Mermaid render failed',err); }
   }
 
+  const diagramModal = { el:null, content:null, title:null, zoomLabel:null, scale:1 };
+
+  function setDiagramZoom(scale) {
+    diagramModal.scale = Math.min(3, Math.max(0.4, Math.round(scale * 10) / 10));
+    diagramModal.content.style.transform = `scale(${diagramModal.scale})`;
+    diagramModal.zoomLabel.textContent = Math.round(diagramModal.scale * 100) + '%';
+  }
+
+  function openDiagramModal(svg, title) {
+    diagramModal.content.innerHTML = '';
+    diagramModal.content.appendChild(svg.cloneNode(true));
+    diagramModal.title.textContent = title;
+    setDiagramZoom(1);
+    diagramModal.el.classList.add('open');
+    diagramModal.el.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDiagramModal() {
+    diagramModal.el.classList.remove('open');
+    diagramModal.el.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  function initDiagramModal() {
+    const modal = document.getElementById('diagramModal');
+    if (!modal) return;
+    diagramModal.el = modal;
+    diagramModal.content = document.getElementById('diagramModalContent');
+    diagramModal.title = document.getElementById('diagramModalTitle');
+    diagramModal.zoomLabel = document.getElementById('diagramZoomLabel');
+    document.getElementById('diagramZoomIn').innerHTML = icon('zoomIn', 16);
+    document.getElementById('diagramZoomOut').innerHTML = icon('zoomOut', 16);
+    document.getElementById('diagramZoomReset').innerHTML = icon('reset', 16);
+    document.getElementById('diagramModalClose').innerHTML = icon('close', 16);
+    document.getElementById('diagramZoomIn').addEventListener('click', () => setDiagramZoom(diagramModal.scale + 0.2));
+    document.getElementById('diagramZoomOut').addEventListener('click', () => setDiagramZoom(diagramModal.scale - 0.2));
+    document.getElementById('diagramZoomReset').addEventListener('click', () => setDiagramZoom(1));
+    modal.querySelectorAll('[data-modal-close]').forEach(el => el.addEventListener('click', closeDiagramModal));
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && diagramModal.el.classList.contains('open')) closeDiagramModal();
+    });
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('.diagram-expand');
+      if (!btn) return;
+      const svg = btn.parentElement.querySelector('.mermaid svg');
+      if (!svg) return;
+      openDiagramModal(svg, btn.dataset.diagramTitle || '');
+    });
+  }
+
+  async function copyText(value) {
+    try { await navigator.clipboard.writeText(value); }
+    catch {
+      const ta = document.createElement('textarea');
+      ta.value = value; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); ta.remove();
+    }
+    showToast(U('copied'));
+  }
+
+  function initDelegation() {
+    document.addEventListener('click', e => {
+      const copyBtn = e.target.closest('.copy-btn');
+      if (copyBtn) { copyText(decodeURIComponent(copyBtn.dataset.copy || '')); return; }
+      const langBtn = e.target.closest('[data-prompt-lang]');
+      if (langBtn) {
+        state.promptLang = langBtn.dataset.promptLang;
+        persist();
+        applyPromptLang();
+      }
+    });
+  }
+
   window.addEventListener('hashchange', route);
   window.addEventListener('mermaid-ready', renderMermaid);
+  initDiagramModal();
+  initDelegation();
   route();
 })();
