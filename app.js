@@ -47,7 +47,7 @@
       setupLabel: 'ทีละขั้น', toolChoice: 'เลือกเครื่องมือที่จะใช้',
       glossary: 'คลังคำศัพท์', glossaryTag: 'อ้างอิง', glossaryTitle: 'คลังคำศัพท์ที่ใช้ในเว็บนี้',
       glossaryIntro: 'คำศัพท์เทคนิคที่พบในบทเรียนทุกบท พร้อมคำอธิบายภาษาคน ถ้าเจอคำที่ไม่คุ้นระหว่างเรียน กลับมาค้นที่นี่ได้ตลอด',
-      glossarySearchPh: 'พิมพ์คำศัพท์ที่อยากรู้ เช่น branch, mock, story',
+      glossarySearchPh: 'พิมพ์คำศัพท์ที่อยากรู้ เช่น branch, mock, worktree',
       glossaryEmpty: 'ไม่พบคำศัพท์ที่ตรงกับการค้นหา ลองพิมพ์คำอื่น เช่น diff, state หรือ prompt'
     },
     en: {
@@ -63,7 +63,7 @@
       heroTag: 'AI-assisted product development for non-developers',
       heroLead: 'Learn Git, worktrees, AI agents, Next.js literacy, Storybook, mock data, debugging, and Merge Requests through one continuous HIS scenario.',
       whyTitle: 'Designed to help you supervise AI work — not turn everyone into a developer',
-      whyText: 'Complexity grows gradually, every lesson continues the same OPD Patient Check-in Lite story, and every exercise shows the expected outcome.',
+      whyText: 'Complexity grows gradually, every lesson continues the same OPD Patient Check-in Lite scenario, and every exercise shows the expected outcome.',
       cards: [
         ['One continuous scenario','No context switching. Every lesson extends the same US-001.'],
         ['Review without deep coding','Use Storybook, browser evidence, errors, and git diff as review surfaces.'],
@@ -83,7 +83,7 @@
       setupLabel: 'Step by step', toolChoice: 'Choose your tool',
       glossary: 'Glossary', glossaryTag: 'Reference', glossaryTitle: 'Glossary of terms used on this site',
       glossaryIntro: 'The technical terms used across every lesson, explained in plain language. Come back and search here any time a word feels unfamiliar.',
-      glossarySearchPh: 'Search a term, e.g. branch, mock, story',
+      glossarySearchPh: 'Search a term, e.g. branch, mock, worktree',
       glossaryEmpty: 'No terms match your search. Try another word, such as diff, state, or prompt'
     }
   };
@@ -259,7 +259,7 @@
         <div class="hero-panel" aria-label="Learning journey preview">
           <div class="journey-mini">
             <div class="journey-step"><span class="dot">1</span><div><strong>Requirement & Git</strong><small>Think before code</small></div><span>→</span></div>
-            <div class="journey-step"><span class="dot">2</span><div><strong>Component & Story</strong><small>Review meaningful states</small></div><span>→</span></div>
+            <div class="journey-step"><span class="dot">2</span><div><strong>Components & Storybook</strong><small>Review meaningful states</small></div><span>→</span></div>
             <div class="journey-step"><span class="dot">3</span><div><strong>Debug & Diff</strong><small>Evidence before trust</small></div><span>→</span></div>
             <div class="journey-step"><span class="dot">4</span><div><strong>Draft MR</strong><small>Developer-ready handoff</small></div><span>✓</span></div>
           </div>
