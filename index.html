@@ -35,6 +35,7 @@
   <script src="./content.js"></script>
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.startOnLoad = false;
     window.mermaid = mermaid;
     window.dispatchEvent(new Event('mermaid-ready'));
   </script>
