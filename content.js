@@ -333,7 +333,7 @@ Return the revised plan for another review. Do not implement yet.`},
 ข้อกำหนด
 - จำกัดการเปลี่ยนแปลงให้อยู่ในขอบเขตของ US-001 เท่านั้น
 - ใช้ mock data / synthetic data เท่านั้น ห้ามต่อระบบจริง
-- component ที่นำกลับมาใช้ซ้ำได้ ต้องมีไฟล์ story คู่กันเสมอ
+- component ที่นำกลับมาใช้ซ้ำได้ ต้องมีไฟล์ Storybook story คู่กันเสมอ
 - ห้ามเพิ่ม backend, database, ระบบ authentication หรือ UI library ใหม่
 - ห้าม commit และห้าม push
 
@@ -342,18 +342,18 @@ Return the revised plan for another review. Do not implement yet.`},
 Constraints:
 - Keep changes scoped to US-001 only
 - Use mock/synthetic data only; never connect to a real system
-- Every reusable product component must come with its story file
+- Every reusable product component must come with its Storybook story file
 - Do not add a backend, database, auth system, or a new UI library
 - Do not commit and do not push
 
 When finished, run the relevant checks and summarize every changed file and why it changed.`},
           after:{th:['ยังไม่ใช่ตอนที่เชื่อว่าเสร็จ — ไปตรวจ Storybook, หน้าแอปจริง และ `git diff` ก่อน','เทียบรายการไฟล์ที่มันสรุป กับผลของ `git diff --stat` ว่าตรงกันหรือไม่','ถ้ามันเผลอ commit ให้บอกทันทีว่าผิดกติกา และตรวจว่า commit อะไรไป'],en:['This is not yet the moment to believe it is done — check Storybook, the running app, and `git diff` first','Compare its summary against `git diff --stat` and see whether they match','If it committed anyway, say so immediately and inspect what was committed']}},
         {type:'prose',title:{th:'AGENTS.md คือกติกาที่ไม่ต้องพิมพ์ซ้ำทุกครั้ง',en:'AGENTS.md is the rulebook you do not retype every time'},body:{th:[
-          'สังเกตว่า prompt ด้านบนสั้นกว่าที่ควรจะเป็น เพราะกฎจำนวนมากถูกย้ายไปอยู่ในไฟล์ `AGENTS.md` ของโปรเจกต์แล้ว เช่น ห้าม commit เอง, ต้องมี story คู่กับ component, ใช้ mock data เท่านั้น',
+          'สังเกตว่า prompt ด้านบนสั้นกว่าที่ควรจะเป็น เพราะกฎจำนวนมากถูกย้ายไปอยู่ในไฟล์ `AGENTS.md` ของโปรเจกต์แล้ว เช่น ห้าม commit เอง, ต้องมี Storybook story คู่กับ component, ใช้ mock data เท่านั้น',
           'ประโยชน์คือกฎเหล่านี้จะถูกใช้กับทุก session ของทุกคนในทีม โดยไม่ต้องหวังว่าแต่ละคนจะจำพิมพ์ครบ ถ้าคุณพบว่าต้องเตือน Agent เรื่องเดิมซ้ำ ๆ นั่นคือสัญญาณว่าควรเพิ่มกฎข้อนั้นลงใน `AGENTS.md` แทน',
           'สำหรับ Claude Code ไฟล์ `CLAUDE.md` สามารถอ้างอิงไปที่ `AGENTS.md` ได้ เพื่อไม่ให้ต้องดูแลกฎสองชุดที่อาจขัดกันเอง'
         ],en:[
-          'Notice the prompts above are shorter than you might expect. Many rules already live in the project’s `AGENTS.md` — no self-committing, components ship with stories, mock data only.',
+          'Notice the prompts above are shorter than you might expect. Many rules already live in the project’s `AGENTS.md` — no self-committing, components ship with Storybook stories, mock data only.',
           'The benefit is that those rules apply to every session for everyone on the team, without relying on each person remembering to type them. If you find yourself reminding the agent of the same thing repeatedly, that is a signal the rule belongs in `AGENTS.md`.',
           'For Claude Code, `CLAUDE.md` can simply point at `AGENTS.md` so you never maintain two rulebooks that can disagree.'
         ]}},
@@ -428,7 +428,7 @@ Answer briefly as a numbered list with file paths.`},
       id:'component-state', group:'day2', no:'06', duration:'75 min',
       title:{th:'Component Thinking & UI State',en:'Component Thinking & UI State'},
       intro:{th:'เปลี่ยน Requirement ที่เป็นข้อความให้เป็นหน่วย UI ที่เล็กพอสำหรับ Agent ทำงานและ Human review ได้',en:'Turn a textual requirement into UI units small enough for the agent to build and humans to review.'},
-      outcomes:{th:['แตก Page → Component → State → Interaction','ระบุ meaningful states โดยไม่สร้าง story เกินจำเป็น','เชื่อมบทบาท PM/BA/Design ผ่าน artifact เดียวกัน','มอง edge case ก่อน Agent implement'],en:['Decompose Page → Component → State → Interaction','Define meaningful states without story inflation','Connect PM/BA/Design through one shared artifact','Surface edge cases before implementation']},
+      outcomes:{th:['แตก Page → Component → State → Interaction','ระบุ meaningful states โดยไม่สร้าง Storybook story เกินจำเป็น','เชื่อมบทบาท PM/BA/Design ผ่าน artifact เดียวกัน','มอง edge case ก่อน Agent implement'],en:['Decompose Page → Component → State → Interaction','Define meaningful states without inflating Storybook stories','Connect PM/BA/Design through one shared artifact','Surface edge cases before implementation']},
       blocks:[
         {type:'prose',title:{th:'Component คือหน่วยของการตรวจงาน',en:'A component is a unit of review'},body:{th:[
           'คนมักอธิบาย component ว่าเป็น “ชิ้นส่วน UI ที่ใช้ซ้ำได้” ซึ่งถูก แต่สำหรับคอร์สนี้มีนิยามที่ใช้งานได้ดีกว่า คือ **component คือหน่วยที่เล็กที่สุดที่คุณสามารถเปิดดูและบอกได้ว่าผ่านหรือไม่ผ่าน**',
@@ -444,7 +444,7 @@ Answer briefly as a numbered list with file paths.`},
         {type:'diagram',title:{th:'จาก Page ลงสู่สิ่งที่ทดสอบได้',en:'From page to testable pieces'},
           lead:{th:'ชั้นบนคือสิ่งที่ผู้ใช้เห็นเป็นหน้าเดียว ชั้นกลางคือหน่วยที่ Agent สร้างทีละชิ้น ชั้นล่างคือสถานะที่เราจะเปิดตรวจใน Storybook',en:'The top layer is what the user sees as one page; the middle is what the agent builds piece by piece; the bottom is the states we open and check in Storybook.'},
           diagram:`flowchart TD\nP[OPD Check-in Page] --> S[PatientSearch]\nP --> R[PatientResults]\nP --> F[CheckInForm]\nP --> C[Confirmation]\nP --> X[Success]\nS --> S1[Default]\nS --> S2[Loading]\nS --> S3[Empty]\nS --> S4[WithResults]\nS --> S5[Error]`,
-          notes:{th:['ยิ่งแตกละเอียดเกินไป ยิ่งตรวจยากเพราะมีของให้ดูเยอะ — เป้าหมายคือ “เล็กพอที่จะตัดสินได้” ไม่ใช่ “เล็กที่สุดเท่าที่ทำได้”','เราแตก state เฉพาะของ PatientSearch ให้ดูเป็นตัวอย่าง component อื่นก็มี state ของตัวเองเช่นกัน','state ที่ไม่มีผลต่อผู้ใช้ ไม่ต้องทำเป็น story'],en:['Over-splitting makes review harder because there is more to look at — aim for “small enough to judge”, not “as small as possible”','Only PatientSearch’s states are expanded here as an example; every other component has its own','States with no user-visible difference do not need their own story']}},
+          notes:{th:['ยิ่งแตกละเอียดเกินไป ยิ่งตรวจยากเพราะมีของให้ดูเยอะ — เป้าหมายคือ “เล็กพอที่จะตัดสินได้” ไม่ใช่ “เล็กที่สุดเท่าที่ทำได้”','เราแตก state เฉพาะของ PatientSearch ให้ดูเป็นตัวอย่าง component อื่นก็มี state ของตัวเองเช่นกัน','state ที่ไม่มีผลต่อผู้ใช้ ไม่ต้องทำเป็น Storybook story'],en:['Over-splitting makes review harder because there is more to look at — aim for “small enough to judge”, not “as small as possible”','Only PatientSearch’s states are expanded here as an example; every other component has its own','States with no user-visible difference do not need their own Storybook story']}},
         {type:'two',title:{th:'มุมมองของแต่ละ Role',en:'Role lenses'},left:{title:{th:'PM + BA',en:'PM + BA'},items:{th:['Scope และ flow','Business rules','Validation','Acceptance criteria','Edge cases'],en:['Scope and flow','Business rules','Validation','Acceptance criteria','Edge cases']}},right:{title:{th:'Product Design',en:'Product Design'},items:{th:['Visual hierarchy','Component boundaries','Loading/empty/error states','Interaction','Responsive behavior'],en:['Visual hierarchy','Component boundaries','Loading/empty/error states','Interaction','Responsive behavior']}}},
         {type:'list',title:{th:'US-001 ที่เราจะสร้างต่อเนื่อง',en:'Our continuous US-001 example'},items:{th:['ค้นหาผู้ป่วยด้วย HN หรือชื่อ','ระหว่างค้นหาแสดง Loading','ไม่พบข้อมูลแสดง Empty','ผิดพลาดแสดง Error','เลือกผู้ป่วยและดูรายละเอียด','เลือก Clinic','Chief Complaint เป็น optional','Preview → Confirm → Success'],en:['Search patients by HN or name','Show Loading during search','Show Empty when no results','Show Error on failure','Select a patient and view details','Choose a Clinic','Chief Complaint is optional','Preview → Confirm → Success']}},
         {type:'prose',title:{th:'ลำดับที่แนะนำ: คิดเองก่อน แล้วค่อยให้ AI วิจารณ์',en:'Recommended order: think first, then let the AI critique'},body:{th:[
@@ -477,11 +477,66 @@ Do not modify any files. Critique this list as a product review:
 4. If we trimmed this to only what the acceptance criteria require, what would remain?
 
 Answer as a short list with one line of reasoning each.`},
+          example:{th:`นี่คือ component และ UI state ที่ฉันร่างไว้สำหรับ US-001 OPD Patient Check-in
+
+PatientSearch (ช่องค้นหาผู้ป่วย)
+- Default: ยังไม่ได้พิมพ์คำค้น
+- Loading: กำลังค้นหา
+- Empty: ค้นแล้วไม่พบผู้ป่วย
+- Error: ระบบค้นหาขัดข้อง
+
+PatientResults (รายการผู้ป่วยที่พบ)
+- WithResults: พบหลายรายการ เลือกได้รายการเดียว การ์ดแต่ละใบแสดง HN ชื่อ อายุ
+
+CheckInForm (ฟอร์มลงทะเบียนเข้ารับบริการ)
+- Default: ผู้ป่วยถูกเติมจากที่เลือกไว้ Clinic ยังว่าง
+- Validation: กดยืนยันโดยไม่เลือก Clinic แล้วแสดงข้อความเตือน
+
+Confirmation (ตรวจสอบก่อนบันทึก)
+- Preview: แสดงข้อมูลทั้งหมดที่จะบันทึก ก่อนกดยืนยัน
+
+Success (หลังบันทึกสำเร็จ)
+- Success: แสดงเลขที่การเข้ารับบริการ พร้อมปุ่มกลับหน้าค้นหา
+
+ห้ามแก้ไขไฟล์ ให้วิจารณ์รายการนี้ในมุมของ product review
+1. มี UI state ไหนที่ผู้ใช้จะเจอจริง แต่ฉันยังไม่ได้ระบุ
+2. มี component ไหนที่แตกย่อยเกินจำเป็นจนตรวจงานยากขึ้น
+3. มี edge case ของข้อมูลอะไรที่มักถูกลืม เช่น ชื่อยาวมาก หรือฟิลด์ที่ไม่มีค่า
+4. ถ้าต้องตัดให้เหลือเฉพาะสิ่งที่จำเป็นต่อ acceptance criteria จะเหลืออะไรบ้าง
+
+ตอบเป็นรายการสั้น ๆ พร้อมเหตุผลข้อละหนึ่งบรรทัด`,en:`Here is the component and UI-state list I drafted for US-001 OPD Patient Check-in.
+
+PatientSearch (patient search field)
+- Default: nothing typed yet
+- Loading: search in progress
+- Empty: search found no patient
+- Error: the search service failed
+
+PatientResults (list of matching patients)
+- WithResults: several matches, single selection; each card shows HN, name, and age
+
+CheckInForm (check-in form)
+- Default: patient pre-filled from the selection, Clinic still empty
+- Validation: pressing confirm without a Clinic shows a warning message
+
+Confirmation (review before saving)
+- Preview: shows everything that will be saved, before confirming
+
+Success (after saving)
+- Success: shows the visit number with a button back to the search page
+
+Do not modify any files. Critique this list as a product review:
+1. Which states will real users hit that I have not listed?
+2. Which components are split so finely that review becomes harder?
+3. Which data edge cases are commonly forgotten, e.g. very long names or empty optional fields?
+4. If we trimmed this to only what the acceptance criteria require, what would remain?
+
+Answer as a short list with one line of reasoning each.`},
           after:{th:['อย่ารับทุกข้อเสนอ เลือกเฉพาะที่ตอบ acceptance criteria จริง','ถ้ามันเสนอ component เพิ่มเยอะผิดปกติ ให้ถามว่าข้อไหน “จำเป็น” และข้อไหน “แค่ดีถ้ามี”'],en:['Do not accept every suggestion; keep only what the acceptance criteria demand','If it proposes an unusual number of extra components, ask which are “required” and which are “nice to have”']}},
         {type:'practice',title:{th:'ลงมือทำ: State inventory',en:'Practice: state inventory'},steps:{th:['เขียน component ที่คิดว่าจำเป็นก่อนถาม Agent','สำหรับแต่ละ component เขียน states ที่มีผลต่อผู้ใช้','ส่ง Prompt วิจารณ์ให้ Agent','ปรับให้เหลือชุดที่ Human review ได้ง่าย และอธิบายได้ว่าแต่ละ state มาจาก AC ข้อไหน'],en:['Write the components you think are needed before asking the agent','List user-visible states for each component','Send the critique prompt','Trim to a set humans can review easily, and be able to trace each state to an acceptance criterion']},expected:{th:'ได้ component/state map ที่ครอบคลุม Default, Loading, Empty, Error, Data, Validation และ Success เท่าที่เกี่ยวข้อง',en:'A component/state map covering Default, Loading, Empty, Error, Data, Validation, and Success where relevant.'}}
       ],
-      quiz:{q:{th:'Story “Default, DefaultWithPadding, DefaultWide, Default2” เป็นสัญญาณอะไร?',en:'What does a story set like “Default, DefaultWithPadding, DefaultWide, Default2” suggest?'},options:{th:['State design ชัดมาก','อาจกำลังสร้าง story ตาม implementation detail มากกว่า meaningful user state','ต้องเพิ่มอีก 10 stories'],en:['Excellent state design','Stories may be tracking implementation details rather than meaningful user states','Add ten more stories']},answer:1,why:{th:'Story ควรสื่อ state/behavior ที่มีความหมายต่อ requirement และ review',en:'Stories should communicate states/behaviors meaningful to requirements and review.'}},
-      wrap:{th:['Component Thinking สำคัญกว่า React syntax สำหรับกลุ่มนี้','State inventory ช่วยจับ requirement ที่ตกหล่น','ไม่ใช่ทุก div ต้องเป็น component หรือ story'],en:['Component thinking matters more than React syntax for this audience','State inventory catches missing requirements','Not every div needs a component or story']}
+      quiz:{q:{th:'ชุด Storybook story ที่ชื่อ “Default, DefaultWithPadding, DefaultWide, Default2” เป็นสัญญาณอะไร?',en:'What does a set of Storybook stories like “Default, DefaultWithPadding, DefaultWide, Default2” suggest?'},options:{th:['State design ชัดมาก','อาจกำลังสร้าง Storybook story ตาม implementation detail มากกว่า meaningful user state','ต้องเพิ่มอีก 10 Storybook stories'],en:['Excellent state design','Storybook stories may be tracking implementation details rather than meaningful user states','Add ten more Storybook stories']},answer:1,why:{th:'Storybook story คือ component หนึ่งตัวใน state หนึ่ง ไม่ใช่ user story มันควรสื่อ state/behavior ที่มีความหมายต่อ requirement และ review',en:'A Storybook story is one component in one state — not a user story. It should communicate states/behaviors meaningful to requirements and review.'}},
+      wrap:{th:['Component Thinking สำคัญกว่า React syntax สำหรับกลุ่มนี้','State inventory ช่วยจับ requirement ที่ตกหล่น','ไม่ใช่ทุก div ต้องเป็น component หรือ Storybook story'],en:['Component thinking matters more than React syntax for this audience','State inventory catches missing requirements','Not every div needs a component or Storybook story']}
     },
     {
       id:'storybook', group:'day2', no:'07', duration:'75 min',
@@ -870,6 +925,53 @@ Evidence from the browser console:
 
 Evidence from the Network tab:
 [state the status, e.g. 500, or that no request was made]
+
+Answer these points:
+1. What failed?
+2. Which piece of evidence supports that conclusion?
+3. What is the actual root cause, not just the symptom?
+4. Which files are involved?
+5. What is the smallest, safest fix?
+6. How will we confirm the fix really worked?
+
+Again: do not modify any files in this round.`},
+          example:{th:`ช่วยวิเคราะห์ปัญหานี้ก่อน ยังไม่ต้องแก้ไขอะไรทั้งสิ้น
+
+อาการที่พบ
+ในฟอร์ม Check-in กดปุ่ม Confirm แล้วหน้าค้างที่ Loading ไม่ไปต่อหน้า Preview และไม่มีข้อความ error ขึ้นบนหน้าจอ
+
+หลักฐานจาก Terminal
+ไม่มี — Terminal ของ Next.js แสดงแค่ log ปกติ ไม่มี error
+
+หลักฐานจาก Console ของเบราว์เซอร์
+TypeError: Cannot read properties of undefined (reading 'hn')
+    at CheckInForm (CheckInForm.tsx:42:35)
+
+หลักฐานจาก Network
+ไม่มี request เกิดขึ้น — กดปุ่มแล้วไม่มี call ออกไปที่ network เลย
+
+ตอบตามหัวข้อนี้
+1. อะไรทำงานล้มเหลว
+2. หลักฐานข้อไหนที่สนับสนุนข้อสรุปนั้น
+3. สาเหตุที่แท้จริงคืออะไร ไม่ใช่แค่อาการ
+4. เกี่ยวข้องกับไฟล์ไหนบ้าง
+5. วิธีแก้ที่เล็กและปลอดภัยที่สุดคืออะไร
+6. จะยืนยันได้อย่างไรว่าแก้แล้วหายจริง
+
+ย้ำอีกครั้ง: ห้ามแก้ไขไฟล์ในรอบนี้`,en:`Analyse this problem first. Do not change anything yet.
+
+Symptom:
+On the check-in form I press Confirm. The page stays stuck on Loading, never reaches Preview, and no error banner appears.
+
+Evidence from the terminal:
+None — the Next.js dev terminal shows only its usual request logs, no error.
+
+Evidence from the browser console:
+TypeError: Cannot read properties of undefined (reading 'hn')
+    at CheckInForm (CheckInForm.tsx:42:35)
+
+Evidence from the Network tab:
+No request was made — clicking the button never triggers a network call.
 
 Answer these points:
 1. What failed?

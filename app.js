@@ -40,6 +40,7 @@
       promptLabel: 'Prompt สำหรับ AI Agent', promptLangLabel: 'ภาษาของ prompt',
       promptLangNote: 'เลือกภาษาของ prompt ได้ ระบบจะจำและใช้กับทุก prompt ในเว็บนี้',
       whenToUse: 'ใช้เมื่อไร', afterPrompt: 'หลังส่ง prompt ให้ตรวจสิ่งนี้',
+      promptExample: 'ตัวอย่าง', promptExampleNote: 'แท็บ “ตัวอย่าง” คือ prompt ที่ใส่รายการตัวอย่างแล้ว กดคัดลอกไปส่งได้ทันที แล้วเทียบผลกับรายการของคุณเอง',
       commandsLabel: 'ทีละคำสั่ง', expectLabel: 'ควรเห็นอะไร',
       readDiagram: 'อ่านภาพนี้อย่างไร', noCommand: 'ขั้นนี้ไม่ต้องพิมพ์คำสั่ง',
       setupLabel: 'ทีละขั้น', toolChoice: 'เลือกเครื่องมือที่จะใช้'
@@ -71,6 +72,7 @@
       promptLabel: 'Prompt for the AI agent', promptLangLabel: 'Prompt language',
       promptLangNote: 'Choose the prompt language. Your choice is remembered and applied to every prompt on this site.',
       whenToUse: 'When to use it', afterPrompt: 'After sending, check this',
+      promptExample: 'Example', promptExampleNote: 'The “Example” tab shows this prompt with a sample list filled in. Copy and send it as-is, then compare the result with your own list.',
       commandsLabel: 'Step by step', expectLabel: 'What you should see',
       readDiagram: 'How to read this diagram', noCommand: 'No command to type in this step',
       setupLabel: 'Step by step', toolChoice: 'Choose your tool'
@@ -359,9 +361,34 @@
     return codeBlock(text, `prompt · ${pl === 'th' ? 'ไทย' : 'EN'}`);
   }
 
+  function promptCodeLabel(pl, isExample) {
+    return `prompt · ${isExample ? U('promptExample') + ' · ' : ''}${pl === 'th' ? 'ไทย' : 'EN'}`;
+  }
+
+  function renderPromptBlock(bl) {
+    const pl = promptLang();
+    const isExample = bl.dataset.exampleActive === '1';
+    const raw = isExample
+      ? (pl === 'th' ? bl.dataset.promptExampleTh : bl.dataset.promptExampleEn)
+      : (pl === 'th' ? bl.dataset.promptTh : bl.dataset.promptEn);
+    const holder = bl.querySelector('.prompt-code');
+    if (holder) holder.innerHTML = codeBlock(decodeURIComponent(raw || ''), promptCodeLabel(pl, isExample));
+    bl.querySelectorAll('[data-prompt-lang]').forEach(btn => {
+      const on = !isExample && btn.dataset.promptLang === pl;
+      btn.classList.toggle('active', on);
+      btn.setAttribute('aria-pressed', String(on));
+    });
+    bl.querySelectorAll('[data-prompt-example]').forEach(btn => {
+      btn.classList.toggle('active', isExample);
+      btn.setAttribute('aria-pressed', String(isExample));
+    });
+  }
+
   function promptBlock(block) {
     const pl = promptLang();
-    return `<section class="block prompt-block" data-prompt-th="${encodeURIComponent(block.prompt.th)}" data-prompt-en="${encodeURIComponent(block.prompt.en)}">
+    const hasExample = !!(block.example?.th || block.example?.en);
+    const exampleAttrs = hasExample ? ` data-prompt-example-th="${encodeURIComponent(block.example.th || '')}" data-prompt-example-en="${encodeURIComponent(block.example.en || '')}"` : '';
+    return `<section class="block prompt-block" data-prompt-th="${encodeURIComponent(block.prompt.th)}" data-prompt-en="${encodeURIComponent(block.prompt.en)}"${exampleAttrs}>
       <div class="prompt-head">
         <div class="prompt-heading">
           <div class="practice-label">${U('promptLabel')}</div>
@@ -371,27 +398,18 @@
           <span class="lang-switch-label">${U('promptLangLabel')}</span>
           <button type="button" class="lang-opt ${pl==='th'?'active':''}" data-prompt-lang="th" aria-pressed="${pl==='th'}">ไทย</button>
           <button type="button" class="lang-opt ${pl==='en'?'active':''}" data-prompt-lang="en" aria-pressed="${pl==='en'}">EN</button>
+          ${hasExample ? `<span class="lang-switch-divider" aria-hidden="true"></span><button type="button" class="lang-opt" data-prompt-example aria-pressed="false">${U('promptExample')}</button>` : ''}
         </div>
       </div>
       ${block.when ? `<p class="block-lead"><strong>${U('whenToUse')}:</strong> ${rich(t(block.when))}</p>` : ''}
       <div class="prompt-code">${promptBody(block)}</div>
       ${block.after ? `<div class="prompt-after"><strong>${U('afterPrompt')}</strong><ul class="clean">${t(block.after).map(x=>`<li>${rich(x)}</li>`).join('')}</ul></div>` : ''}
-      <p class="prompt-hint">${U('promptLangNote')}</p>
+      <p class="prompt-hint">${U('promptLangNote')}${hasExample ? ` ${U('promptExampleNote')}` : ''}</p>
     </section>`;
   }
 
   function applyPromptLang() {
-    const pl = promptLang();
-    document.querySelectorAll('.prompt-block').forEach(bl => {
-      const raw = pl === 'th' ? bl.dataset.promptTh : bl.dataset.promptEn;
-      const holder = bl.querySelector('.prompt-code');
-      if (holder) holder.innerHTML = codeBlock(decodeURIComponent(raw || ''), `prompt · ${pl === 'th' ? 'ไทย' : 'EN'}`);
-      bl.querySelectorAll('[data-prompt-lang]').forEach(btn => {
-        const on = btn.dataset.promptLang === pl;
-        btn.classList.toggle('active', on);
-        btn.setAttribute('aria-pressed', String(on));
-      });
-    });
+    document.querySelectorAll('.prompt-block').forEach(renderPromptBlock);
   }
 
   function codeBlock(code, label='code') {
@@ -599,10 +617,20 @@
     document.addEventListener('click', e => {
       const copyBtn = e.target.closest('.copy-btn');
       if (copyBtn) { copyText(decodeURIComponent(copyBtn.dataset.copy || '')); return; }
+      const exBtn = e.target.closest('[data-prompt-example]');
+      if (exBtn) {
+        const bl = exBtn.closest('.prompt-block');
+        if (bl) {
+          bl.dataset.exampleActive = bl.dataset.exampleActive === '1' ? '0' : '1';
+          renderPromptBlock(bl);
+        }
+      }
       const langBtn = e.target.closest('[data-prompt-lang]');
       if (langBtn) {
         state.promptLang = langBtn.dataset.promptLang;
         persist();
+        const bl = langBtn.closest('.prompt-block');
+        if (bl) bl.dataset.exampleActive = '0';
         applyPromptLang();
       }
       const agentToolBtn = e.target.closest('[data-agent-tool]');

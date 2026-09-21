@@ -278,6 +278,7 @@ ul.clean,ol.clean { margin:10px 0 0; padding-left:20px; }
 .prompt-head { display:flex; flex-wrap:wrap; gap:14px; align-items:flex-start; justify-content:space-between; margin-bottom:10px; }
 .prompt-heading h2 { margin:6px 0 0; }
 .lang-switch { display:inline-flex; align-items:center; gap:4px; padding:4px; border:1px solid var(--line); border-radius:12px; background:var(--surface-2); }
+.lang-switch-divider { width:1px; align-self:stretch; margin:3px 3px; background:var(--line); }
 .lang-switch-label { font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); padding:0 6px; }
 .lang-opt { border:1px solid transparent; background:transparent; border-radius:9px; padding:6px 12px; cursor:pointer; font-size:13px; font-weight:750; color:var(--muted); transition:.16s ease; }
 .lang-opt:hover { color:var(--text); }
@@ -301,7 +302,7 @@ html[data-theme="dark"] .tool-tab.active { color:#05201c; }
   .cmd-step { grid-template-columns:1fr; gap:10px; }
   .cmd-index { width:32px; height:32px; }
   .prompt-head { flex-direction:column; }
-  .lang-switch { width:100%; justify-content:flex-end; }
+  .lang-switch { width:100%; justify-content:flex-end; flex-wrap:wrap; }
   .tool-tabs { width:100%; }
   .tool-tab { flex:1; text-align:center; }
 }
