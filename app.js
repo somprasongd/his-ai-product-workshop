@@ -276,9 +276,9 @@
 
   function renderBlock(block, index) {
     switch(block.type) {
-      case 'callout': return `<section class="block callout ${block.tone||''}"><div class="callout-title">${esc(t(block.title))}</div><p>${linkify(t(block.text))}</p></section>`;
-      case 'list': return `<section class="block"><h2>${esc(t(block.title))}</h2><ul class="clean">${t(block.items).map(x=>`<li>${linkify(x)}</li>`).join('')}</ul></section>`;
-      case 'two': return `<section class="block"><h2>${esc(t(block.title))}</h2><div class="two-col"><div class="compare"><strong>${esc(t(block.left.title))}</strong><ul class="clean">${t(block.left.items).map(x=>`<li>${linkify(x)}</li>`).join('')}</ul></div><div class="compare"><strong>${esc(t(block.right.title))}</strong><ul class="clean">${t(block.right.items).map(x=>`<li>${linkify(x)}</li>`).join('')}</ul></div></div></section>`;
+      case 'callout': return `<section class="block callout ${block.tone||''}"><div class="callout-title">${esc(t(block.title))}</div><p>${rich(t(block.text))}</p></section>`;
+      case 'list': return `<section class="block"><h2>${esc(t(block.title))}</h2><ul class="clean">${t(block.items).map(x=>`<li>${rich(x)}</li>`).join('')}</ul></section>`;
+      case 'two': return `<section class="block"><h2>${esc(t(block.title))}</h2><div class="two-col"><div class="compare"><strong>${rich(t(block.left.title))}</strong><ul class="clean">${t(block.left.items).map(x=>`<li>${rich(x)}</li>`).join('')}</ul></div><div class="compare"><strong>${rich(t(block.right.title))}</strong><ul class="clean">${t(block.right.items).map(x=>`<li>${rich(x)}</li>`).join('')}</ul></div></div></section>`;
       case 'code': return block.title || block.lead || block.note
         ? `<section class="block">${block.title?`<h2>${esc(t(block.title))}</h2>`:''}${lead(block)}${codeBlock(block.code, block.label || 'code')}${block.note?`<p class="block-outro">${rich(t(block.note))}</p>`:''}</section>`
         : codeBlock(block.code, block.label || 'code');
@@ -444,7 +444,7 @@
         <h1 class="lesson-title">${esc(t(lesson.title))}</h1>
         <p class="lesson-intro">${esc(t(lesson.intro))}</p>
         <h3>${U('learned')}</h3>
-        <div class="lesson-goals">${t(lesson.outcomes).map(x=>`<div class="goal"><span class="goal-mark">${icon('check',16)}</span><span>${esc(x)}</span></div>`).join('')}</div>
+        <div class="lesson-goals">${t(lesson.outcomes).map(x=>`<div class="goal"><span class="goal-mark">${icon('check',16)}</span><span>${rich(x)}</span></div>`).join('')}</div>
       </header>
       <div class="lesson-body">
         ${lesson.blocks.map(renderBlock).join('')}
@@ -455,7 +455,7 @@
           <div class="check-result ${quizSaved?'show '+(quizSaved.correct?'good':'bad'):''}">${quizSaved?(quizSaved.correct?U('correct'):U('incorrect')):''}</div>
           <div class="reveal ${quizSaved?.correct?'open':''}"><div class="reveal-panel"><strong>${state.lang==='th'?'เหตุผล':'Why'}</strong><p>${esc(t(q.why))}</p></div></div>
         </section>
-        <section class="block wrapup"><div class="practice-label">Wrap-up</div><h2>${U('wrap')}</h2><ul class="wrapup-list">${t(lesson.wrap).map(x=>`<li>${icon('check',15)} ${esc(x)}</li>`).join('')}</ul></section>
+        <section class="block wrapup"><div class="practice-label">Wrap-up</div><h2>${U('wrap')}</h2><ul class="wrapup-list">${t(lesson.wrap).map(x=>`<li>${icon('check',15)} ${rich(x)}</li>`).join('')}</ul></section>
       </div>
       <div class="lesson-actions">
         <div>${prev?`<a class="btn btn-secondary" href="#/lesson/${prev.id}">${icon('back',16)} ${U('previous')}</a>`:''}</div>
