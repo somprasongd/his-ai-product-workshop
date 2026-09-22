@@ -859,7 +859,7 @@ When done, tell me which token groups you are confident about, which need the de
         {type:'list',title:{th:'Human ต้องตรวจอะไรก่อนอนุมัติ DESIGN.md',en:'What a human checks before approving DESIGN.md'},items:{th:['ค่าสี/ฟอนต์ตรงกับภาพต้นฉบับจริง ไม่ใช่ค่าที่ “ดูใกล้เคียง”','ชื่อ token สื่อหน้าที่ (เช่น primary, danger) ไม่ใช่ชื่อดิบ (blue1)','ทุก token มีคำอธิบายเหตุผลอย่างน้อยหนึ่งประโยค','Known Gaps เขียนตรงไปตรงมา ไม่ปิดบังว่ามีอะไรยังไม่ครอบคลุม','ไม่มีการเดาสีหรือแบรนด์ใหม่ที่ไม่มีในภาพต้นฉบับ','ผล lint รอบสุดท้าย (`npx @google/design.md lint DESIGN.md`) ผ่าน ไม่มี error หรือ warning ค้างอยู่'],en:['Colors and fonts match the source image exactly, not “close enough”','Token names describe a job (primary, danger), not a raw label (blue1)','Every token has at least one sentence of reasoning attached','Known Gaps is written honestly, not hiding what is uncovered','Nothing invents a color or brand element absent from the source image','The final lint run (`npx @google/design.md lint DESIGN.md`) passes with no errors or warnings left']}},
         {type:'prompt',title:{th:'Prompt: สร้างหน้า Style Guide ที่ /design จาก DESIGN.md',en:'Prompt: build the /design style guide page from DESIGN.md'},
           when:{th:'ใช้หลังจาก DESIGN.md ผ่านการตรวจข้างบนแล้วเท่านั้น ถ้า DESIGN.md ยังไม่นิ่ง หน้า Style Guide ที่สร้างจะต้องมาแก้ซ้ำตามไปด้วย',en:'Use it only after DESIGN.md has passed the checklist above. If DESIGN.md is still shifting, the style guide page will just have to be redone along with it.'},
-          prompt:{th:`อ่าน docs/design/DESIGN.md แล้วสร้างหน้า Style Guide ใหม่ที่ route /design
+          prompt:{th:`อ่าน DESIGN.md ที่ root ของโปรเจกต์ แล้วสร้างหน้า Style Guide ใหม่ที่ route /design
 
 ข้อกำหนด
 - ดึงค่าสี ตัวอักษร ระยะห่าง และ component ทุกอย่างจาก DESIGN.md เท่านั้น ห้าม hardcode ค่าใหม่ที่ไม่มีในไฟล์
@@ -868,7 +868,7 @@ When done, tell me which token groups you are confident about, which need the de
 - ห้ามแก้ไฟล์อื่นนอกจากหน้านี้ (และไฟล์ token/style ที่จำเป็นเพื่อให้ token ใช้ซ้ำได้จริงในโค้ด)
 - ห้าม commit
 
-บอกด้วยว่าเปิดดูผลลัพธ์ที่ URL ไหน`,en:`Read docs/design/DESIGN.md and build a new style guide page at the route /design.
+บอกด้วยว่าเปิดดูผลลัพธ์ที่ URL ไหน`,en:`Read DESIGN.md at the project root and build a new style guide page at the route /design.
 
 Constraints:
 - Pull every color, type style, spacing value, and component shown from DESIGN.md only; never hardcode a value that is not in the file
