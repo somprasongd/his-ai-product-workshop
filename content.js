@@ -221,10 +221,51 @@ Cite real file names for every point.`},
           lead:{th:'Requirement คือเอกสารเล่าเรื่อง ส่วน Issue คือหน่วยของงาน หนึ่ง Issue ควรจบได้ใน 1 branch และ review ได้ในครั้งเดียว',en:'A requirement is a narrative document; an issue is a unit of work. One issue should finish in one branch and be reviewable in one sitting.'},
           diagram:`flowchart TD\nR[Requirement doc: OPD Check-in Lite] --> P{Split by user outcome}\nP --> I1[Issue US-001 Patient Check-in]\nP --> I2[Issue US-002 Queue Board]\nP --> I3[Issue US-003 Daily Report]\nI1 --> C[Context + In / Out of scope]\nI1 --> A[Acceptance Criteria]\nI1 --> D[Definition of Done]\nC --> B[Branch + Worktree]\nA --> B\nD --> B\nB --> AG[AI Agent]`,
           notes:{th:['เอกสาร requirement หนึ่งฉบับมักมีงานหลายก้อนซ่อนอยู่ อย่าเปิด Issue ใบเดียวแล้วโยนทั้งเอกสารให้ Agent','US-001 ที่เราใช้ตลอดคอร์สคือหนึ่ง Issue ที่ถูกตัดมาแล้วให้พอดีกับหนึ่ง branch','สามกล่องใต้ Issue คือส่วนที่คุณต้องเขียนเอง ไม่ใช่ copy จาก requirement มาทั้งดุ้น','ลูกศรสุดท้ายคือประเด็นสำคัญ — Agent เห็นเฉพาะสิ่งที่อยู่ใน Issue สิ่งที่คุณคิดไว้ในหัวแต่ไม่ได้เขียน มันไม่เห็น'],en:['One requirement document usually hides several chunks of work; do not open a single issue and hand the agent the whole document','The US-001 we use all course is one issue already cut to fit one branch','The three boxes under the issue are yours to write — not copied wholesale from the requirement','The last arrow is the point: the agent sees only what is in the issue, never what stayed in your head']}},
-        {type:'two',title:{th:'Requirement กับ Issue ต่างกันตรงไหน',en:'Requirement vs. issue'},left:{title:{th:'Requirement',en:'Requirement'},items:{th:['เล่าว่าทำไมธุรกิจถึงต้องการสิ่งนี้','ครอบคลุมหลายหน้าจอและหลายรอบการส่งงาน','เปลี่ยนช้า มีเจ้าของเป็นฝ่ายธุรกิจ','อ่านแล้วเข้าใจ แต่ยังลงมือทำทันทีไม่ได้'],en:['Explains why the business needs this','Spans several screens and several deliveries','Changes slowly, owned by the business side','Understandable, but not yet actionable']}},right:{title:{th:'Issue',en:'Issue'},items:{th:['บอกว่าจะทำอะไรในรอบนี้','จบได้ใน 1 branch และ review ได้ครั้งเดียว','มี AC ที่ตอบได้ว่า ผ่าน หรือ ไม่ผ่าน','มีเจ้าของ มีสถานะ และอ้างอิงกลับไปที่ requirement ได้'],en:['States what gets built this round','Finishes in one branch, reviewable in one sitting','Has ACs that answer pass or fail','Has an owner, a status, and a link back to the requirement']}}},
+        {type:'two',title:{th:'Requirement กับ Issue ต่างกันตรงไหน',en:'Requirement vs. issue'},left:{title:{th:'Requirement',en:'Requirement'},items:{th:['เล่าว่าทำไมธุรกิจถึงต้องการสิ่งนี้','ครอบคลุมหลายหน้าจอและหลายรอบการส่งงาน','เปลี่ยนช้า มีเจ้าของเป็นฝ่ายธุรกิจ','อ่านแล้วเข้าใจ แต่ยังลงมือทำทันทีไม่ได้'],en:['Explains why the business needs this','Spans several screens and several deliveries','Changes slowly, owned by the business side','Understandable, but not yet actionable']},example:{th:'**ตัวอย่างจาก US-001:** “OPD ต้องการลดเวลารอคอย ให้ผู้ป่วยเช็คอินเองได้ตั้งแต่ค้นหาตัวเอง เลือกคลินิก ยืนยัน จนถึงรับบัตรคิว และหัวหน้างานเห็นสรุปคิวรายวัน”',en:'**US-001 example:** “OPD wants shorter waits — patients check themselves in, from searching for themselves to picking a clinic, confirming, and getting a queue number, and supervisors see a daily queue summary.”'}},right:{title:{th:'Issue',en:'Issue'},items:{th:['บอกว่าจะทำอะไรในรอบนี้','จบได้ใน 1 branch และ review ได้ครั้งเดียว','มี AC ที่ตอบได้ว่า ผ่าน หรือ ไม่ผ่าน','มีเจ้าของ มีสถานะ และอ้างอิงกลับไปที่ requirement ได้'],en:['States what gets built this round','Finishes in one branch, reviewable in one sitting','Has ACs that answer pass or fail','Has an owner, a status, and a link back to the requirement']},example:{th:'**ตัวอย่างจาก US-001:** “หน้าเช็คอินเท่านั้น — ค้นหาผู้ป่วย เลือกคลินิก ยืนยันแล้วได้เลขคิว · AC 7 ข้อ · จบใน 1 branch · ส่วนบอร์ดคิวและรายงานรายวันถูกตัดไปเป็น US-002 กับ US-003”',en:'**US-001 example:** “The check-in screen only — search patient, pick clinic, confirm, get a queue number · 7 ACs · one branch · the queue board and daily report become US-002 and US-003.”'}}},
         {type:'code',title:{th:'Issue Template ที่ใช้ได้ทันที',en:'A ready-to-use issue template'},
-          lead:{th:'คัดลอกไปวางใน GitLab หรือ GitHub ได้เลย ตัวอย่างนี้กรอกด้วย US-001 ซึ่งเป็นโจทย์ที่เราจะใช้ต่อกันทั้งคอร์ส',en:'Copy it straight into GitLab or GitHub. This one is filled in with US-001, the scenario we carry through the whole course.'},
-          label:'GitLab Issue · US-001',code:`Title: US-001 OPD Patient Check-in (Lite)
+          lead:{th:'คัดลอกไปวางใน GitLab หรือ GitHub ได้เลย เลือกภาษาของ template ได้จากปุ่มบนการ์ด — หัวข้อ (header) และ Title คงภาษาอังกฤษไว้เพราะเป็นรูปแบบมาตรฐานของ Issue ส่วนคำบรรยายปรับตามภาษา โดยศัพท์เทคนิคทับศัพท์อังกฤษไว้ ตัวอย่างนี้กรอกด้วย US-001 ซึ่งเป็นโจทย์ที่เราจะใช้ต่อกันทั้งคอร์ส',en:'Copy it straight into GitLab or GitHub. Pick the template language on the card — headers and the title stay in English because that is the issue convention, descriptions follow your language, and technical terms stay as English loanwords. This one is filled in with US-001, the scenario we carry through the whole course.'},
+          label:'GitLab Issue · US-001',code:{
+th:`Title: US-001 OPD Patient Check-in (Lite)
+
+## Context
+ปัจจุบันเจ้าหน้าที่ OPD จด check-in ของผู้ป่วย walk-in ลงกระดาษ
+ทำให้ต้องรื้อคิวใหม่ด้วยมือทุกเช้า Issue นี้ครอบคลุมเฉพาะหน้าจอ check-in
+Requirement ฉบับเต็ม: docs/requirements/US-001-opd-checkin.md
+
+## In scope
+- ค้นหาผู้ป่วยด้วย HN หรือชื่อ
+- เลือกผู้ป่วยแล้วเห็นข้อมูลพื้นฐานของผู้ป่วย
+- เลือก clinic (บังคับ) และ chief complaint (ไม่บังคับ)
+- Preview ยืนยัน แล้วขึ้นหน้า success พร้อมเลขคิว
+
+## Out of scope
+- การต่อกับ HIS / backend จริง
+- Authentication และ permissions
+- การสั่งพิมพ์ และจอแสดงคิวหน้าห้องตรวจ
+
+## Acceptance Criteria - states
+- AC1 ระหว่างกำลังค้นหา ต้องขึ้น loading state
+- AC2 เมื่อไม่พบข้อมูล ต้องขึ้น empty state พร้อม hint ให้ลองใหม่
+- AC3 เมื่อค้นหาล้มเหลว ต้องขึ้น error state พร้อมปุ่ม retry
+- AC4 แถวผลลัพธ์ต้องแสดง HN ชื่อ-นามสกุล อายุ และเพศ
+
+## Acceptance Criteria - behaviour
+- AC5 Given อยู่หน้าค้นหา, when ค้นหาด้วย HN 65000123,
+      then ต้องพบผู้ป่วย "Somchai Jaidee" ในรายการ
+- AC6 Given เลือกผู้ป่วยแล้ว, when กด Confirm โดยยังไม่เลือก clinic,
+      then ต้องขึ้น validation message และไม่มีการส่งข้อมูลออกไป
+- AC7 Given เลือก clinic แล้ว, when กด Confirm,
+      then หน้า success ต้องแสดงเลขคิวจาก mock data
+
+## Definition of Done
+- ทุก state ข้างบนมี Storybook story ของตัวเอง
+- behaviour AC อย่างน้อย 1 ข้อ มี interaction test ครอบ
+- lint / test / build ผ่านทั้งหมด
+- git diff ถูก review แล้ว และเปิด Draft MR แล้ว
+
+## Data
+ใช้ synthetic/mock data เท่านั้น ห้ามใช้ข้อมูลผู้ป่วยจริง`,
+en:`Title: US-001 OPD Patient Check-in (Lite)
 
 ## Context
 OPD staff currently record walk-in check-in on paper, so the queue is
@@ -263,18 +304,39 @@ Requirement: docs/requirements/US-001-opd-checkin.md
 - git diff reviewed and a Draft MR is open
 
 ## Data
-Synthetic/mock data only. No production data, no real patient records.`,
+Synthetic/mock data only. No production data, no real patient records.`},
           note:{th:'สังเกตว่าทั้งใบไม่มีคำว่า component, props หรือชื่อไฟล์เลยสักคำ — Issue บอกว่า “อะไร” ส่วน “อย่างไร” คือแผนที่ Agent จะเสนอมาให้คุณ review ในบทที่ 05',en:'Notice the whole issue never says component, props, or a file name. The issue states the what; the how is the plan the agent proposes for review in lesson 05.'}},
-        {type:'prose',title:{th:'AC สองแบบ และทำไมต้องแยกกัน',en:'Two kinds of AC, and why they are separated'},body:{th:[
-          'AC ที่เป็น **สถานะ (state)** อธิบายว่าหน้าจอต้องหน้าตาแบบไหนในแต่ละสถานการณ์ เช่น กำลังโหลด ไม่พบข้อมูล หรือเกิดข้อผิดพลาด ส่วน AC ที่เป็น **พฤติกรรม (behaviour)** อธิบายลำดับเหตุการณ์ว่า เมื่อผู้ใช้ทำอะไร แล้วระบบต้องตอบสนองอย่างไร',
-          'เหตุผลที่ต้องแยกไม่ใช่เรื่องความสวยงามของเอกสาร แต่เพราะ **สองแบบนี้ตรวจด้วยเครื่องมือคนละตัว** AC ที่เป็นสถานะจะถูกตรวจด้วยการเปิด Storybook ดูทีละสถานะ ส่วน AC ที่เป็นพฤติกรรมจะถูกตรวจด้วย interaction test หรือการเดิน flow จริงในแอป',
-          'ถ้าคุณเขียนปนกัน เวลาตรวจงานคุณจะไม่รู้ว่าข้อไหนต้องดูที่ไหน และมักจบลงด้วยการเชื่อคำสรุปของ Agent แทนที่จะดูของจริง',
+        {type:'two',title:{th:'AC สองแบบ: แบบสถานะ กับ แบบพฤติกรรม',en:'Two kinds of AC: state and behaviour'},left:{title:{th:'AC แบบสถานะ (state)',en:'State ACs'},items:{th:[
+          'อธิบายว่า **หน้าจอต้องหน้าตาแบบไหน** ในแต่ละสถานการณ์ เช่น กำลังโหลด ไม่พบข้อมูล เกิดข้อผิดพลาด',
+          'ตัวอย่างจาก US-001: “ระหว่างกำลังค้นหา ต้องขึ้น loading state”',
+          'เขียนสั้น ๆ หนึ่งข้อต่อหนึ่ง state',
+          'ตรวจด้วยการเปิด **Storybook** ไล่ดูทีละ state'
+        ],en:[
+          'Describe **what the screen must look like** in each situation — loading, nothing found, error',
+          'US-001 example: “while a search runs, a loading state is shown”',
+          'Short, one item per state',
+          'Verified by opening **Storybook** and checking state by state'
+        ]}},right:{title:{th:'AC แบบพฤติกรรม (behaviour)',en:'Behaviour ACs'},items:{th:[
+          'อธิบาย **ลำดับเหตุการณ์** ว่าผู้ใช้ทำอะไร แล้วระบบต้องตอบสนองอย่างไร',
+          'ตัวอย่างจาก US-001: “when กด Confirm โดยไม่เลือก clinic, then ต้องขึ้น validation message”',
+          'เขียนด้วยรูปแบบ **Given / When / Then**',
+          'ตรวจด้วย **interaction test** หรือเดิน flow จริงในแอป'
+        ],en:[
+          'Describe a **sequence**: when the user does this, the system must respond like that',
+          'US-001 example: “when Confirm is clicked with no clinic, then a validation message appears”',
+          'Written in the **Given / When / Then** format',
+          'Verified with an **interaction test** or by walking the real flow in the app'
+        ]}}},
+        {type:'list',title:{th:'ทำไมต้องแยกสองแบบนี้ออกจากกัน',en:'Why the two kinds are kept apart'},items:{th:[
+          'เพราะ **สองแบบนี้ตรวจด้วยเครื่องมือคนละตัว** — AC สถานะไปดูที่ Storybook ส่วน AC พฤติกรรมไปดูที่ interaction test หรือ flow จริง',
+          'ถ้าเขียนปนกัน เวลา review คุณจะไม่รู้ว่าข้อไหนต้องไปดูที่ไหน และมักจบด้วยการเชื่อคำสรุปของ Agent แทนการดูของจริง',
+          'เรื่องนี้ไม่ใช่ความสวยงามของเอกสาร แต่คือเงื่อนไขที่ทำให้คุณตรวจงานของ Agent ได้ด้วยตัวเอง',
           'เคล็ดลับที่ทำให้ AC ตรวจได้จริงคือ **ใช้ค่าตายตัวจาก mock data** เช่น HN `65000123` แทนคำว่า “ผู้ป่วยคนหนึ่ง” เพราะค่าตายตัวทดสอบซ้ำแล้วได้ผลเดิมทุกครั้ง'
         ],en:[
-          '**State ACs** describe what the screen must look like in a given situation — loading, nothing found, error. **Behaviour ACs** describe a sequence: when the user does this, the system must respond like that.',
-          'Separating them is not documentation tidiness. The two kinds **are verified with different tools**: state ACs are checked by opening Storybook state by state, behaviour ACs by an interaction test or by walking the real flow in the app.',
-          'Mix them together and, at review time, you will not know where to look for each one — which usually ends with trusting the agent’s summary instead of looking at the real thing.',
-          'The trick that makes ACs truly checkable is **using fixed values from the mock data**, such as HN `65000123` instead of “a patient”, because a fixed value reproduces the same result every time.'
+          'Because **the two kinds are verified with different tools** — state ACs are checked in Storybook, behaviour ACs in an interaction test or the real flow',
+          'Mix them together and, at review time, you will not know where to look for each one — which usually ends with trusting the agent’s summary instead of looking at the real thing',
+          'This is not documentation tidiness; it is what lets you verify the agent’s work yourself',
+          'The trick that makes ACs truly checkable is **using fixed values from the mock data**, such as HN `65000123` instead of “a patient”, because a fixed value reproduces the same result every time'
         ]}},
         {type:'list',title:{th:'เช็กลิสต์ก่อนกด Create Issue',en:'Checklist before you click Create Issue'},items:{th:['หัวข้อบอกผลลัพธ์ต่อผู้ใช้ ไม่ใช่แค่ชื่อหน้าจอ','มีลิงก์กลับไปยัง requirement ฉบับเต็ม','ระบุ Out of scope อย่างน้อย 2 ข้อ','AC ทุกข้อตอบได้ว่า ผ่าน หรือ ไม่ผ่าน โดยไม่ต้องตีความ','AC ที่เป็นพฤติกรรมใช้ค่าตายตัวจาก mock data','ไม่มีคำว่า “ใช้งานง่าย” หรือ “สวยงาม” ลอย ๆ โดยไม่มีเกณฑ์','งานจบได้ใน 1 branch ถ้าไม่จบ ให้ตัดเป็นสองใบ','ระบุชัดว่าใช้ข้อมูลสมมติเท่านั้น'],en:['The title states a user outcome, not just a screen name','It links back to the full requirement','It names at least two out-of-scope items','Every AC answers pass or fail with no interpretation','Behaviour ACs use fixed values from the mock data','No floating “easy to use” or “looks nice” without a criterion','The work fits in one branch — if not, split it into two issues','It states explicitly that only synthetic data is used']}},
         {type:'callout',tone:'danger',title:{th:'Red flag',en:'Red flag'},text:{th:'AC ที่เขียนว่า “ระบบต้องค้นหาผู้ป่วยได้อย่างรวดเร็วและใช้งานง่าย” ตรวจไม่ได้ว่าผ่านหรือไม่ผ่าน Agent จะตีความเอง และตอน review คุณจะเถียงไม่ได้ เพราะไม่เคยมีเกณฑ์ตั้งแต่แรก',en:'An AC that reads “patient search must be fast and easy to use” cannot be judged pass or fail. The agent will interpret it for you, and at review time you have no ground to disagree because no criterion ever existed.'}},

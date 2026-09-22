@@ -116,6 +116,7 @@
     return `<section class="code-wrap"><div class="code-head"><span>${esc(label)}</span><button class="copy-btn" type="button" data-copy="${encodeURIComponent(code)}">Copy</button></div><pre><code>${linkifyRaw(esc(code))}</code></pre></section>`;
   }
   const contentLead = block => block.lead ? `<p class="block-lead">${rich(t(block.lead))}</p>` : '';
+  const compareCol = col => `<div class="compare"><strong>${rich(t(col.title))}</strong><ul class="clean">${t(col.items).map(x => `<li>${rich(x)}</li>`).join('')}</ul>${col.example ? `<p class="compare-example">${rich(t(col.example))}</p>` : ''}</div>`;
   const expectLabel = () => state.lang === 'th' ? 'ควรเห็นอะไร' : 'What you should see';
 
   function commandSteps(steps) {
@@ -137,11 +138,15 @@
       case 'list':
         return `<section class="block"><h2>${esc(t(block.title))}</h2><ul class="clean">${t(block.items).map(x => `<li>${rich(x)}</li>`).join('')}</ul></section>`;
       case 'two':
-        return `<section class="block"><h2>${esc(t(block.title))}</h2><div class="two-col"><div class="compare"><strong>${rich(t(block.left.title))}</strong><ul class="clean">${t(block.left.items).map(x => `<li>${rich(x)}</li>`).join('')}</ul></div><div class="compare"><strong>${rich(t(block.right.title))}</strong><ul class="clean">${t(block.right.items).map(x => `<li>${rich(x)}</li>`).join('')}</ul></div></div></section>`;
-      case 'code':
+        return `<section class="block"><h2>${esc(t(block.title))}</h2><div class="two-col">${compareCol(block.left)}${compareCol(block.right)}</div></section>`;
+      case 'code': {
+        const codeHtml = block.code && typeof block.code === 'object'
+          ? contentCodeBlock(block.code[state.lang] ?? block.code.en, `${block.label || 'code'} · ${state.lang === 'th' ? 'ไทย' : 'EN'}`)
+          : contentCodeBlock(block.code, block.label || 'code');
         return block.title || block.lead || block.note
-          ? `<section class="block">${block.title ? `<h2>${esc(t(block.title))}</h2>` : ''}${contentLead(block)}${contentCodeBlock(block.code, block.label || 'code')}${block.note ? `<p class="block-outro">${rich(t(block.note))}</p>` : ''}</section>`
-          : `<section class="block">${contentCodeBlock(block.code, block.label || 'code')}</section>`;
+          ? `<section class="block">${block.title ? `<h2>${esc(t(block.title))}</h2>` : ''}${contentLead(block)}${codeHtml}${block.note ? `<p class="block-outro">${rich(t(block.note))}</p>` : ''}</section>`
+          : `<section class="block">${codeHtml}</section>`;
+      }
       case 'diagram':
         return `<section class="block"><h2>${esc(t(block.title))}</h2>${contentLead(block)}<div class="diagram"><div class="mermaid">${esc(block.diagram)}</div></div>${block.notes ? `<div class="diagram-notes"><strong>${state.lang === 'th' ? 'อ่านภาพนี้อย่างไร' : 'How to read this diagram'}</strong><ul class="clean">${t(block.notes).map(n => `<li>${rich(n)}</li>`).join('')}</ul></div>` : ''}${block.outro ? `<p class="block-outro">${rich(t(block.outro))}</p>` : ''}</section>`;
       case 'prose':
@@ -152,7 +157,8 @@
         return `<section class="block commands"><h2>${esc(t(block.title))}</h2>${contentLead(block)}${block.tools.map(tool => `<h3>${esc(t(tool.name))}</h3><ol class="cmd-list">${commandSteps(tool.steps)}</ol>`).join('')}${block.outro ? `<p class="block-outro">${rich(t(block.outro))}</p>` : ''}</section>`;
       case 'prompt': {
         const promptText = block.prompt[state.lang] ?? block.prompt.en;
-        return `<section class="block prompt-block"><h2>${esc(t(block.title))}</h2>${block.when ? `<p class="block-lead"><strong>${state.lang === 'th' ? 'ใช้เมื่อไร' : 'When to use it'}:</strong> ${rich(t(block.when))}</p>` : ''}${contentCodeBlock(promptText, 'prompt')}${block.after ? `<div class="prompt-after"><strong>${state.lang === 'th' ? 'หลังส่ง prompt ให้ตรวจสิ่งนี้' : 'After sending, check this'}</strong><ul class="clean">${t(block.after).map(x => `<li>${rich(x)}</li>`).join('')}</ul></div>` : ''}</section>`;
+        const exampleText = block.example ? (block.example[state.lang] ?? block.example.en) : null;
+        return `<section class="block prompt-block"><h2>${esc(t(block.title))}</h2>${block.when ? `<p class="block-lead"><strong>${state.lang === 'th' ? 'ใช้เมื่อไร' : 'When to use it'}:</strong> ${rich(t(block.when))}</p>` : ''}${contentCodeBlock(promptText, 'prompt')}${exampleText ? contentCodeBlock(exampleText, state.lang === 'th' ? 'prompt · ตัวอย่างที่กรอกแล้ว' : 'prompt · Worked example') : ''}${block.after ? `<div class="prompt-after"><strong>${state.lang === 'th' ? 'หลังส่ง prompt ให้ตรวจสิ่งนี้' : 'After sending, check this'}</strong><ul class="clean">${t(block.after).map(x => `<li>${rich(x)}</li>`).join('')}</ul></div>` : ''}</section>`;
       }
       case 'capstone':
         return `<section class="block">${block.steps.map((s, i) => `<h3>${String(i + 1).padStart(2, '0')} · ${esc(t(s.title))}</h3><p><strong>${state.lang === 'th' ? 'คำใบ้' : 'Hint'}:</strong> ${rich(t(s.hint))}</p><ol class="cmd-list">${t(s.guide).map((g, j) => `<li class="cmd-step"><div class="cmd-index">${String(j + 1).padStart(2, '0')}</div><div class="cmd-body"><p>${rich(g)}</p></div></li>`).join('')}</ol>`).join('')}</section>`;

@@ -282,10 +282,10 @@
     switch(block.type) {
       case 'callout': return `<section class="block callout ${block.tone||''}"><div class="callout-title">${esc(t(block.title))}</div><p>${rich(t(block.text))}</p></section>`;
       case 'list': return `<section class="block"><h2>${esc(t(block.title))}</h2><ul class="clean">${t(block.items).map(x=>`<li>${rich(x)}</li>`).join('')}</ul></section>`;
-      case 'two': return `<section class="block"><h2>${esc(t(block.title))}</h2><div class="two-col"><div class="compare"><strong>${rich(t(block.left.title))}</strong><ul class="clean">${t(block.left.items).map(x=>`<li>${rich(x)}</li>`).join('')}</ul></div><div class="compare"><strong>${rich(t(block.right.title))}</strong><ul class="clean">${t(block.right.items).map(x=>`<li>${rich(x)}</li>`).join('')}</ul></div></div></section>`;
+      case 'two': return `<section class="block"><h2>${esc(t(block.title))}</h2><div class="two-col">${compareCol(block.left)}${compareCol(block.right)}</div></section>`;
       case 'code': return block.title || block.lead || block.note
-        ? `<section class="block">${block.title?`<h2>${esc(t(block.title))}</h2>`:''}${lead(block)}${codeBlock(block.code, block.label || 'code')}${block.note?`<p class="block-outro">${rich(t(block.note))}</p>`:''}</section>`
-        : codeBlock(block.code, block.label || 'code');
+        ? `<section class="block">${block.title?`<h2>${esc(t(block.title))}</h2>`:''}${lead(block)}${codeSectionBody(block)}${block.note?`<p class="block-outro">${rich(t(block.note))}</p>`:''}</section>`
+        : codeSectionBody(block);
       case 'diagram': return `<section class="block"><h2>${esc(t(block.title))}</h2>${lead(block)}<div class="diagram"><button class="diagram-expand" type="button" data-diagram-title="${esc(t(block.title))}" aria-label="${state.lang==='th'?'ดูภาพขยาย':'View full size'}">${icon('expand',15)}<span>${state.lang==='th'?'ขยาย':'Expand'}</span></button><div class="mermaid">${esc(block.diagram)}</div></div>${block.notes?`<div class="diagram-notes"><strong>${U('readDiagram')}</strong><ul class="clean">${t(block.notes).map(n=>`<li>${rich(n)}</li>`).join('')}</ul></div>`:''}${block.outro?`<p class="block-outro">${rich(t(block.outro))}</p>`:''}</section>`;
       case 'prose': return `<section class="block prose">${block.title?`<h2>${esc(t(block.title))}</h2>`:''}${t(block.body).map(pg=>`<p>${rich(pg)}</p>`).join('')}${block.points?`<ul class="clean">${t(block.points).map(x=>`<li>${rich(x)}</li>`).join('')}</ul>`:''}</section>`;
       case 'commands': return commandsBlock(block);
@@ -298,6 +298,32 @@
   }
 
   const lead = block => block.lead ? `<p class="block-lead">${rich(t(block.lead))}</p>` : '';
+
+  const compareCol = col => `<div class="compare"><strong>${rich(t(col.title))}</strong><ul class="clean">${t(col.items).map(x=>`<li>${rich(x)}</li>`).join('')}</ul>${col.example?`<p class="compare-example">${rich(t(col.example))}</p>`:''}</div>`;
+
+  function codeSectionBody(block) {
+    return (block.code && typeof block.code === 'object')
+      ? bilingualCodeBlock(block.code, block.label || 'code')
+      : codeBlock(block.code, block.label || 'code');
+  }
+
+  function bilingualCodeBlock(codeObj, label='code') {
+    const pl = promptLang();
+    const text = codeObj[pl] ?? codeObj.en;
+    return `<section class="code-wrap code-bilingual" data-code-th="${encodeURIComponent(codeObj.th || '')}" data-code-en="${encodeURIComponent(codeObj.en || '')}">
+      <div class="code-head">
+        <span class="code-lang-label" data-label="${esc(label)}">${esc(label)} · ${pl==='th'?'ไทย':'EN'}</span>
+        <span class="code-head-actions">
+          <span class="lang-switch lang-switch-compact" role="group" aria-label="${U('promptLangLabel')}">
+            <button type="button" class="lang-opt ${pl==='th'?'active':''}" data-prompt-lang="th" aria-pressed="${pl==='th'}">ไทย</button>
+            <button type="button" class="lang-opt ${pl==='en'?'active':''}" data-prompt-lang="en" aria-pressed="${pl==='en'}">EN</button>
+          </span>
+          <button class="copy-btn" type="button" data-copy="${encodeURIComponent(text)}">${icon('copy',13)} ${U('copy')}</button>
+        </span>
+      </div>
+      <pre><code>${linkifyRaw(esc(text))}</code></pre>
+    </section>`;
+  }
 
   function practiceBlock(block) {
     const steps = t(block.steps).map(raw => {
@@ -429,6 +455,23 @@
 
   function applyPromptLang() {
     document.querySelectorAll('.prompt-block').forEach(renderPromptBlock);
+    document.querySelectorAll('.code-bilingual').forEach(renderBilingualCode);
+  }
+
+  function renderBilingualCode(bl) {
+    const pl = promptLang();
+    const text = decodeURIComponent((pl === 'th' ? bl.dataset.codeTh : bl.dataset.codeEn) || bl.dataset.codeEn || '');
+    const codeEl = bl.querySelector('pre code');
+    if (codeEl) codeEl.innerHTML = linkifyRaw(esc(text));
+    const copyBtn = bl.querySelector('.copy-btn');
+    if (copyBtn) copyBtn.dataset.copy = encodeURIComponent(text);
+    const labelEl = bl.querySelector('.code-lang-label');
+    if (labelEl) labelEl.textContent = `${labelEl.dataset.label || ''} · ${pl==='th'?'ไทย':'EN'}`;
+    bl.querySelectorAll('[data-prompt-lang]').forEach(btn => {
+      const on = btn.dataset.promptLang === pl;
+      btn.classList.toggle('active', on);
+      btn.setAttribute('aria-pressed', String(on));
+    });
   }
 
   function codeBlock(code, label='code') {
