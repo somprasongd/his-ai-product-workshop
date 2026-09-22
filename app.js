@@ -239,9 +239,9 @@
     const hasProgress = state.completed.size > 0;
     const cards = U('cards').map((c,i) => `<article class="card"><div class="card-icon">${['01','02','03'][i]}</div><h3>${esc(c[0])}</h3><p>${esc(c[1])}</p></article>`).join('');
     const dayCards = [
-      ['Day 1','Requirement → Git → Worktree → Agent Plan','4 h'],
-      ['Day 2','Next.js Literacy → Components → Storybook','4.5 h'],
-      ['Day 3','Mocks → Integration → Debug → MR','4.5 h']
+      ['Day 1','Mental Model → Requirement → Git → Worktree → Agent Plan','5 h'],
+      ['Day 2','Next.js Literacy → Design System → Components → Storybook','5.5 h'],
+      ['Day 3','Mocks → Integration → Debug → Delivery → Agent Skills','5.5 h']
     ].map(d => `<article class="card track-card"><span class="day">${d[0]}</span><h3>${d[1]}</h3><p>${d[2]}</p></article>`).join('');
     const html = `<section class="hero">
       <div class="hero-orb orb-a"></div><div class="hero-orb orb-b"></div>
