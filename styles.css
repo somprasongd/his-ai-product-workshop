@@ -167,6 +167,11 @@ a { color: inherit; }
 .track-card .day { color:var(--primary); font-weight:850; font-size:12px; text-transform:uppercase; letter-spacing:.08em; }
 .track-card ul { margin:0; padding-left:18px; color:var(--muted); }
 
+.share-page { padding-top:32px; }
+.share-topbar { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.share-badge { display:inline-flex; align-items:center; gap:8px; padding:7px 12px; border-radius:999px; background:var(--primary-soft); color:color-mix(in srgb,var(--primary) 82%,var(--text)); font-weight:800; font-size:12px; letter-spacing:.02em; }
+.share-actions { display:flex; align-items:center; gap:8px; }
+
 .lesson-header { padding:28px 0 12px; }
 .lesson-kicker { display:flex; flex-wrap:wrap; gap:8px; align-items:center; color:var(--muted); font-size:13px; }
 .pill { padding:5px 9px; border:1px solid var(--line); border-radius:999px; background:var(--surface); }

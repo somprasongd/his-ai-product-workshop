@@ -467,6 +467,27 @@
     return shell(content, lesson.id);
   }
 
+  function sharePage(lesson) {
+    const blocks = lesson.blocks.filter(b => b.type !== 'practice' && b.share !== false);
+    return `<div class="content share-page">
+      <div class="share-topbar">
+        <span class="share-badge">${icon('spark',14)} AI Product Workshop</span>
+        <div class="share-actions">
+          <button class="icon-btn lang-btn" id="langBtn" aria-label="Language" title="${state.lang==='th'?'Switch to English':'เปลี่ยนเป็นภาษาไทย'}">${state.lang==='th'?'TH':'EN'}</button>
+          <button class="icon-btn" id="themeBtn" aria-label="Theme">${state.theme==='dark'?icon('sun'):icon('moon')}</button>
+        </div>
+      </div>
+      <header class="lesson-header">
+        <div class="lesson-kicker"><span class="pill">${esc(lesson.no)}</span><span class="pill">${esc(lesson.duration)}</span></div>
+        <h1 class="lesson-title">${esc(t(lesson.title))}</h1>
+        <p class="lesson-intro">${esc(t(lesson.intro))}</p>
+      </header>
+      <div class="lesson-body">
+        ${blocks.map(renderBlock).join('')}
+      </div>
+    </div>`;
+  }
+
   function summaryPage() {
     const f = course.final;
     const pct = Math.round(state.completed.size/course.lessons.length*100);
@@ -529,7 +550,11 @@
 
   function route() {
     const hash = location.hash || '#/';
-    if (hash.startsWith('#/lesson/')) {
+    if (hash.startsWith('#/share/')) {
+      const id = hash.split('/')[2];
+      const lesson = course.lessons.find(l=>l.id===id);
+      app.innerHTML = lesson ? sharePage(lesson) : home();
+    } else if (hash.startsWith('#/lesson/')) {
       const id = hash.split('/')[2];
       const lesson = course.lessons.find(l=>l.id===id) || course.lessons[0];
       app.innerHTML = lessonPage(lesson);
