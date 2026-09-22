@@ -37,7 +37,7 @@
       prerequisites: 'Prerequisites', finalSummary: 'สรุปหลังเรียนครบ',
       guided: 'Guided Mode', hint: 'ดู Hint', guide: 'เปิด Step-by-step', closeMenu: 'ปิดเมนู',
       reset: 'รีเซ็ต Progress', resetConfirm: 'ต้องการลบสถานะการเรียนใน browser นี้หรือไม่?',
-      source: 'Source', starter: 'Starter Repo',
+      source: 'Source', starter: 'Starter Repo', slides: 'สไลด์สำหรับผู้สอน',
       promptLabel: 'Prompt สำหรับ AI Agent', promptLangLabel: 'ภาษาของ prompt',
       promptLangNote: 'เลือกภาษาของ prompt ได้ ระบบจะจำและใช้กับทุก prompt ในเว็บนี้',
       whenToUse: 'ใช้เมื่อไร', afterPrompt: 'หลังส่ง prompt ให้ตรวจสิ่งนี้',
@@ -73,7 +73,7 @@
       prerequisites: 'Prerequisites', finalSummary: 'Final learning summary',
       guided: 'Guided Mode', hint: 'Reveal hint', guide: 'Show step-by-step', closeMenu: 'Close menu',
       reset: 'Reset progress', resetConfirm: 'Clear learning progress stored in this browser?',
-      source: 'Source', starter: 'Starter Repo',
+      source: 'Source', starter: 'Starter Repo', slides: 'Instructor Slides',
       promptLabel: 'Prompt for the AI agent', promptLangLabel: 'Prompt language',
       promptLangNote: 'Choose the prompt language. Your choice is remembered and applied to every prompt on this site.',
       whenToUse: 'When to use it', afterPrompt: 'After sending, check this',
@@ -225,6 +225,7 @@
           <div class="group-label">Links</div>
           <nav class="lesson-nav">
             <a class="lesson-link ${activeId==='glossary'?'active':''}" href="#/glossary"><span class="lesson-num">${icon('book',14)}</span><span>${U('glossary')}</span></a>
+            <a class="lesson-link" href="./slides.html" target="_blank" rel="noreferrer"><span class="lesson-num">${icon('spark',14)}</span><span>${U('slides')}</span></a>
             <a class="lesson-link" href="${course.meta.starterUrl}" target="_blank" rel="noreferrer"><span class="lesson-num">${icon('code',14)}</span><span>${U('starter')}</span></a>
             <a class="lesson-link" href="${course.meta.sourceUrl}" target="_blank" rel="noreferrer"><span class="lesson-num">${icon('github',14)}</span><span>${U('source')}</span></a>
             <button class="lesson-link" id="resetBtn" style="width:100%;border:0;cursor:pointer;text-align:left;background:transparent"><span class="lesson-num">↺</span><span>${U('reset')}</span></button>

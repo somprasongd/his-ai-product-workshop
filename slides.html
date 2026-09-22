@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Instructor slide deck for the HIS AI Product Workshop — visual, keyword-first slides for teaching." />
+  <meta name="theme-color" content="#0f766e" />
+  <title>Instructor Slides — HIS AI Product Workshop</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./slides.css" />
+</head>
+<body class="slides-body">
+  <div class="deck">
+    <header class="deck-bar">
+      <a class="deck-home" href="index.html" title="Back to course">◂ HIS AI Product Workshop</a>
+      <div class="deck-actions">
+        <span class="deck-counter" id="counter">01 / 01</span>
+        <button class="deck-btn" id="langBtn" aria-label="Language">TH</button>
+        <button class="deck-btn" id="themeBtn" aria-label="Theme">☾</button>
+        <button class="deck-btn" id="fsBtn" aria-label="Fullscreen">⛶</button>
+      </div>
+    </header>
+    <main class="stage" id="stage"></main>
+    <button class="nav-arrow nav-prev" id="prevBtn" aria-label="Previous slide">‹</button>
+    <button class="nav-arrow nav-next" id="nextBtn" aria-label="Next slide">›</button>
+    <nav class="dots" id="dots" aria-label="Slides"></nav>
+  </div>
+  <script src="./content.js"></script>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.startOnLoad = false;
+    window.mermaid = mermaid;
+    window.dispatchEvent(new Event('mermaid-ready'));
+  </script>
+  <script src="./slides.js" defer></script>
+</body>
+</html>
