@@ -20,6 +20,7 @@
       audienceValue: 'PM · BA · Product Design', formatValue: '3 วัน · Hands-on · AI-assisted', durationValue: '≈ 18.5 ชั่วโมง',
       progress: 'ความคืบหน้า', complete: 'เรียนจบบทนี้', completed: 'เรียนจบแล้ว',
       next: 'บทถัดไป', previous: 'บทก่อนหน้า', copy: 'คัดลอก', copied: 'คัดลอกแล้ว',
+      shareLink: 'แชร์ลิงก์', linkCopied: 'คัดลอกลิงก์แล้ว',
       expected: 'ดูผลลัพธ์ที่คาดหวัง', hideExpected: 'ซ่อนผลลัพธ์',
       check: 'ตรวจคำตอบ', correct: 'ถูกต้อง — ไปต่อได้', incorrect: 'ยังไม่ใช่ ลองคิดจากหลักการในบทนี้อีกครั้ง',
       learned: 'เมื่อจบบทนี้ คุณจะ...', wrap: 'Wrap-up · สิ่งที่ควรจำ',
@@ -56,6 +57,7 @@
       audienceValue: 'PM · BA · Product Design', formatValue: '3 days · Hands-on · AI-assisted', durationValue: '≈ 18.5 hours',
       progress: 'Progress', complete: 'Mark lesson complete', completed: 'Completed',
       next: 'Next lesson', previous: 'Previous lesson', copy: 'Copy', copied: 'Copied',
+      shareLink: 'Share link', linkCopied: 'Link copied',
       expected: 'Reveal expected result', hideExpected: 'Hide expected result',
       check: 'Check answer', correct: 'Correct — keep going', incorrect: 'Not quite. Revisit the principle in this lesson and try again.',
       learned: 'By the end of this lesson, you will...', wrap: 'Wrap-up · What to remember',
@@ -183,7 +185,8 @@
       zoomIn:'<circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/>',
       zoomOut:'<circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3M8 11h6"/>',
       close:'<path d="M18 6 6 18M6 6l12 12"/>',
-      reset:'<path d="M3 12a9 9 0 1 0 2.64-6.36M3 12V5m0 7h7"/>'
+      reset:'<path d="M3 12a9 9 0 1 0 2.64-6.36M3 12V5m0 7h7"/>',
+      share:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>'
     };
     return `<svg ${common}>${p[name] || p.spark}</svg>`;
   }
@@ -441,7 +444,10 @@
     const q = lesson.quiz;
     const content = `<div class="content">
       <header class="lesson-header">
-        <div class="lesson-kicker"><span class="pill">${esc(lesson.no)}</span><span class="pill">${esc(lesson.duration)}</span><span>${esc(t(course.groups.find(g=>g.id===lesson.group)))}</span></div>
+        <div class="lesson-top">
+          <div class="lesson-kicker"><span class="pill">${esc(lesson.no)}</span><span class="pill">${esc(lesson.duration)}</span><span>${esc(t(course.groups.find(g=>g.id===lesson.group)))}</span></div>
+          <button class="btn btn-secondary btn-small share-btn" type="button" data-share-lesson="${esc(lesson.id)}">${icon('share',15)} ${U('shareLink')}</button>
+        </div>
         <h1 class="lesson-title">${esc(t(lesson.title))}</h1>
         <p class="lesson-intro">${esc(t(lesson.intro))}</p>
         <h3>${U('learned')}</h3>
@@ -707,20 +713,33 @@
     });
   }
 
-  async function copyText(value) {
+  async function copyText(value, message) {
     try { await navigator.clipboard.writeText(value); }
     catch {
       const ta = document.createElement('textarea');
       ta.value = value; document.body.appendChild(ta); ta.select();
       document.execCommand('copy'); ta.remove();
     }
-    showToast(U('copied'));
+    showToast(message || U('copied'));
+  }
+
+  async function shareLesson(lessonId) {
+    const lesson = course.lessons.find(l => l.id === lessonId);
+    const url = `${location.origin}${location.pathname}#/share/${lessonId}`;
+    const title = lesson ? t(lesson.title) : document.title;
+    if (navigator.share) {
+      try { await navigator.share({ title, url }); return; }
+      catch (err) { if (err?.name === 'AbortError') return; }
+    }
+    copyText(url, U('linkCopied'));
   }
 
   function initDelegation() {
     document.addEventListener('click', e => {
       const copyBtn = e.target.closest('.copy-btn');
       if (copyBtn) { copyText(decodeURIComponent(copyBtn.dataset.copy || '')); return; }
+      const shareBtn = e.target.closest('[data-share-lesson]');
+      if (shareBtn) { shareLesson(shareBtn.dataset.shareLesson); return; }
       const exBtn = e.target.closest('[data-prompt-example]');
       if (exBtn) {
         const bl = exBtn.closest('.prompt-block');

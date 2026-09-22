@@ -173,6 +173,7 @@ a { color: inherit; }
 .share-actions { display:flex; align-items:center; gap:8px; }
 
 .lesson-header { padding:28px 0 12px; }
+.lesson-top { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; }
 .lesson-kicker { display:flex; flex-wrap:wrap; gap:8px; align-items:center; color:var(--muted); font-size:13px; }
 .pill { padding:5px 9px; border:1px solid var(--line); border-radius:999px; background:var(--surface); }
 .lesson-title { margin:12px 0 10px; font-size:clamp(34px,5vw,58px); line-height:1.04; letter-spacing:-.045em; }
