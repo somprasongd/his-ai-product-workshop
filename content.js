@@ -799,45 +799,67 @@ save. Used scarcely, so it never competes with clinical data.
 - Print layout for the visit slip is not covered.`,
           note:{th:'ตัวอย่างนี้ย่อมาก ของจริง Agent จะสรุปให้ครบตามโครง 9 ส่วนที่ [getdesign.md](https://getdesign.md/what-is-design-md) นิยามไว้ — คุณไม่ต้องท่องจำโครงนี้ แค่รู้ว่ามันมีอยู่และตรวจว่า Agent ทำครบ',en:'This excerpt is deliberately short. The real file will follow the 9-part shape [getdesign.md](https://getdesign.md/what-is-design-md) defines. You do not need to memorize that shape — just know it exists and check the agent covered it.'}},
         {type:'prompt',title:{th:'Prompt: ให้ Agent สรุป Design เป็น DESIGN.md',en:'Prompt: have the agent summarize the design into DESIGN.md'},
-          when:{th:'ใช้ภาพ mockup ที่ทีม Design ส่งมอบให้ที่ `docs/design/opd-check-in-reference.png` ในโปรเจกต์ starter (หน้า `/opd/check-in` จริงตอนนี้ยังเป็นแค่กล่องว่าง ยังไม่มีอะไรให้ capture) หรือใช้ Figma/ภาพอ้างอิงอื่นแทนก็ได้ถ้ามี แนบภาพเข้าไปในแชทของ Agent ก่อนส่ง prompt นี้',en:'Use the design team’s hand-off mockup at `docs/design/opd-check-in-reference.png` in the starter project (the real `/opd/check-in` page is still an empty placeholder, so there is nothing to capture yet) — or your own Figma/reference image if you have one. Attach the image to the agent’s chat before sending this prompt.'},
-          prompt:{th:`ดูภาพที่แนบมา นี่คือ reference design ของโปรเจกต์นี้
+          when:{th:'ใช้ภาพ mockup ที่ทีม Design ส่งมอบให้ที่ `docs/design/opd-check-in-reference.png` ในโปรเจกต์ starter (หน้า `/opd/check-in` จริงตอนนี้ยังเป็นแค่กล่องว่าง ยังไม่มีอะไรให้ capture) หรือใช้ Figma/ภาพอ้างอิงอื่นแทนก็ได้ถ้ามี แนบภาพเข้าไปในแชทของ Agent ก่อนส่ง prompt นี้ — prompt นี้รันเป็น 3 ขั้นต่อกัน คือ แกะภาพเป็น standalone HTML แบบ Tailwind ก่อน (เพื่อให้ได้ค่า hex/px ที่นิ่งในโค้ด แทนการเดาจากภาพตรง ๆ) แล้วค่อยอ่านค่าจาก HTML นั้นมาเขียน DESIGN.md และปิดท้ายด้วยการรัน linter จนสะอาด ขั้นสุดท้ายจึงต้องเป็น Agent ที่รันคำสั่งในโปรเจกต์ได้',en:'Use the design team’s hand-off mockup at `docs/design/opd-check-in-reference.png` in the starter project (the real `/opd/check-in` page is still an empty placeholder, so there is nothing to capture yet) — or your own Figma/reference image if you have one. Attach the image to the agent’s chat before sending this prompt. The prompt chains three steps: rebuild the image as a standalone Tailwind HTML file first (so token values come from concrete hex/px in code instead of eyeballing the image), then write DESIGN.md from that HTML, and finish by running the linter until it is clean — so the last step needs an agent that can run commands in the project.'},
+          prompt:{th:`ดูภาพที่แนบมา (docs/design/opd-check-in-reference.png) นี่คือ reference design ของโปรเจกต์นี้
 
-ห้ามแก้ไฟล์ component หรือหน้าเว็บใด ๆ งานรอบนี้มีอย่างเดียวคือเขียนไฟล์ DESIGN.md
+ห้ามแก้ไฟล์ component หรือหน้าเว็บใด ๆ ทำงานตาม 3 ขั้นตอนนี้ตามลำดับเท่านั้น
 
-ทำตาม pattern ของ https://getdesign.md/what-is-design-md คือ
+ขั้นที่ 1 — แกะ screenshot เป็น HTML
+สร้างหน้าจากภาพที่แนบมาเป็น standalone HTML ไฟล์เดียว ที่ docs/design/opd-check-in-reference.html
+- ไฟล์เดียวจบ ไม่แยก CSS/JS ออกเป็นไฟล์อื่น
+- ใช้ Tailwind (โหลดผ่าน CDN script) แล้วจัด layout สี ฟอนต์ ระยะห่าง ให้ใกล้ภาพที่สุด
+- ใช้เฉพาะสิ่งที่เห็นในภาพจริง ห้ามเดาเติมสีหรือ font ที่ไม่มีในภาพ
+
+ขั้นที่ 2 — เขียน DESIGN.md จาก HTML ที่ได้
+อ่านค่าจริงจากไฟล์ HTML ในขั้นที่ 1 (ไม่ใช่กลับไปเดาจากภาพใหม่อีกรอบ) แล้วเขียน docs/design/DESIGN.md ตาม pattern ของ https://getdesign.md/what-is-design-md คือ
 1. YAML front matter: version, name, description (บรรยายบรรยากาศของแบรนด์ ไม่ใช่ tagline)
 2. Token: colors (ตั้งชื่อตามหน้าที่ ไม่ใช่ blue1/gray2), typography, spacing, component
 3. ร้อยแก้วอธิบายเหตุผลของแต่ละหมวด ต้องอ้าง token ด้วย {colors.xxx} ทุกครั้ง
 4. ปิดท้ายด้วย Known Gaps บอกตรง ๆ ว่าอะไรในภาพที่ยังไม่ครอบคลุม
 
+ขั้นที่ 3 — lint แล้วแก้ให้สะอาด
+รัน npx @google/design.md lint docs/design/DESIGN.md
+- แก้ทุก error และ warning ที่รายงานออกมา แล้วรันซ้ำจนผ่านหมด
+- ถ้าผล lint ขัดกับสิ่งที่เห็นในภาพจริง ให้แจ้งกลับมาก่อน อย่าแก้เงียบ
+
 ข้อกำหนด
-- ใช้เฉพาะสิ่งที่เห็นในภาพจริง ห้ามเดาเติมสีหรือ font ที่ไม่มีในภาพ
+- แตะเฉพาะ 2 ไฟล์นี้: docs/design/opd-check-in-reference.html และ docs/design/DESIGN.md
 - ถ้าอ่านค่าจากภาพไม่ชัด (เช่น เดา hex ไม่ได้แม่นยำ) ให้บันทึกไว้ใน Known Gaps แทนการเดา
-- เขียนไฟล์ที่ DESIGN.md ที่ root ของโปรเจกต์เท่านั้น
 - ห้าม commit
 
-จบแล้วสรุปให้ฟังว่า token กลุ่มไหนมั่นใจมาก และกลุ่มไหนต้องให้ทีม Design ยืนยันซ้ำ`,en:`Look at the attached image — it is the reference design for this project.
+จบแล้วสรุปให้ฟังว่า token กลุ่มไหนมั่นใจมาก กลุ่มไหนต้องให้ทีม Design ยืนยันซ้ำ พร้อมแนบผล lint รอบสุดท้ายมาด้วย`,en:`Look at the attached image (docs/design/opd-check-in-reference.png) — it is the reference design for this project.
 
-Do not modify any component or page file. The only output this round is a DESIGN.md file.
+Do not modify any component or page file. Do exactly these three steps, in this order.
 
-Follow the pattern at https://getdesign.md/what-is-design-md:
+Step 1 — Rebuild the screenshot as HTML
+Turn the attached image into a standalone single-file HTML page at docs/design/opd-check-in-reference.html:
+- One self-contained file; no separate CSS or JS files
+- Use Tailwind (loaded via its CDN script) and match the layout, colors, fonts, and spacing as closely as the image allows
+- Use only what is actually visible in the image; never invent a color or font that is not there
+
+Step 2 — Write DESIGN.md from that HTML
+Read the real values from the HTML file you just built (do not go back and re-guess from the image) and write docs/design/DESIGN.md following the pattern at https://getdesign.md/what-is-design-md:
 1. YAML front matter: version, name, description (the brand's atmosphere, not a tagline)
 2. Tokens: colors (named by job, never blue1/gray2), typography, spacing, components
 3. Prose explaining the reasoning behind each section, citing tokens as {colors.xxx} every time
 4. Close with Known Gaps, naming honestly what the image does not cover
 
+Step 3 — Lint and clean up
+Run npx @google/design.md lint docs/design/DESIGN.md
+- Fix every error and warning it reports, then re-run until it passes clean
+- If a lint suggestion contradicts what the image actually shows, tell me first instead of fixing it silently
+
 Constraints:
-- Use only what is actually visible in the image; never invent a color or font that is not there
+- Touch only these two files: docs/design/opd-check-in-reference.html and docs/design/DESIGN.md
 - If a value is unclear (e.g. you cannot read an exact hex), record it under Known Gaps instead of guessing
-- Write only a DESIGN.md file at the project root
 - Do not commit
 
-When done, tell me which token groups you are confident about and which need the design team to confirm.`},
-          after:{th:['เทียบสีและระยะห่างในไฟล์กับภาพต้นฉบับด้วยตาตัวเอง อย่าเชื่อแค่คำสรุป','ถ้ามันเติมสีหรือ component ที่ไม่มีในภาพ ให้ตีกลับและถามว่าเอามาจากไหน','ตรวจว่า Known Gaps ตรงกับความจริง ไม่ใช่แค่เขียนไว้ให้ดูครบ'],en:['Compare the colors and spacing in the file against the original image with your own eyes — do not trust the summary alone','If it invents a color or component not present in the image, send it back and ask where it came from','Check that Known Gaps reflects reality rather than being written just to look thorough']}},
-        {type:'list',title:{th:'Human ต้องตรวจอะไรก่อนอนุมัติ DESIGN.md',en:'What a human checks before approving DESIGN.md'},items:{th:['ค่าสี/ฟอนต์ตรงกับภาพต้นฉบับจริง ไม่ใช่ค่าที่ “ดูใกล้เคียง”','ชื่อ token สื่อหน้าที่ (เช่น primary, danger) ไม่ใช่ชื่อดิบ (blue1)','ทุก token มีคำอธิบายเหตุผลอย่างน้อยหนึ่งประโยค','Known Gaps เขียนตรงไปตรงมา ไม่ปิดบังว่ามีอะไรยังไม่ครอบคลุม','ไม่มีการเดาสีหรือแบรนด์ใหม่ที่ไม่มีในภาพต้นฉบับ'],en:['Colors and fonts match the source image exactly, not “close enough”','Token names describe a job (primary, danger), not a raw label (blue1)','Every token has at least one sentence of reasoning attached','Known Gaps is written honestly, not hiding what is uncovered','Nothing invents a color or brand element absent from the source image']}},
+When done, tell me which token groups you are confident about, which need the design team to confirm, and attach the final lint output.`},
+          after:{th:['เปิด `docs/design/opd-check-in-reference.html` ในเบราว์เซอร์แล้วเทียบกับภาพต้นฉบับทีละส่วน — ถ้า HTML คลาดเคลื่อน DESIGN.md จะผิดตามทันที','เทียบสีและระยะห่างใน DESIGN.md กับภาพต้นฉบับด้วยตาตัวเอง อย่าเชื่อแค่คำสรุป','ถ้ามันเติมสีหรือ component ที่ไม่มีในภาพ ให้ตีกลับและถามว่าเอามาจากไหน','ตรวจว่า Known Gaps ตรงกับความจริง ไม่ใช่แค่เขียนไว้ให้ดูครบ','ดูผล lint รอบสุดท้ายว่าผ่านจริง ไม่มี error หรือ warning ค้างอยู่'],en:['Open `docs/design/opd-check-in-reference.html` in a browser and compare it section by section with the source image — if the HTML drifts, DESIGN.md inherits the error','Compare the colors and spacing in DESIGN.md against the source image with your own eyes — do not trust the summary alone','If it invents a color or component not present in the image, send it back and ask where it came from','Check that Known Gaps reflects reality rather than being written just to look thorough','Look at the final lint output and confirm it passes with no errors or warnings left']}},
+        {type:'list',title:{th:'Human ต้องตรวจอะไรก่อนอนุมัติ DESIGN.md',en:'What a human checks before approving DESIGN.md'},items:{th:['ค่าสี/ฟอนต์ตรงกับภาพต้นฉบับจริง ไม่ใช่ค่าที่ “ดูใกล้เคียง”','ชื่อ token สื่อหน้าที่ (เช่น primary, danger) ไม่ใช่ชื่อดิบ (blue1)','ทุก token มีคำอธิบายเหตุผลอย่างน้อยหนึ่งประโยค','Known Gaps เขียนตรงไปตรงมา ไม่ปิดบังว่ามีอะไรยังไม่ครอบคลุม','ไม่มีการเดาสีหรือแบรนด์ใหม่ที่ไม่มีในภาพต้นฉบับ','ผล lint รอบสุดท้าย (`npx @google/design.md lint docs/design/DESIGN.md`) ผ่าน ไม่มี error หรือ warning ค้างอยู่'],en:['Colors and fonts match the source image exactly, not “close enough”','Token names describe a job (primary, danger), not a raw label (blue1)','Every token has at least one sentence of reasoning attached','Known Gaps is written honestly, not hiding what is uncovered','Nothing invents a color or brand element absent from the source image','The final lint run (`npx @google/design.md lint docs/design/DESIGN.md`) passes with no errors or warnings left']}},
         {type:'prompt',title:{th:'Prompt: สร้างหน้า Style Guide ที่ /design จาก DESIGN.md',en:'Prompt: build the /design style guide page from DESIGN.md'},
           when:{th:'ใช้หลังจาก DESIGN.md ผ่านการตรวจข้างบนแล้วเท่านั้น ถ้า DESIGN.md ยังไม่นิ่ง หน้า Style Guide ที่สร้างจะต้องมาแก้ซ้ำตามไปด้วย',en:'Use it only after DESIGN.md has passed the checklist above. If DESIGN.md is still shifting, the style guide page will just have to be redone along with it.'},
-          prompt:{th:`อ่าน DESIGN.md ที่ root ของโปรเจกต์ แล้วสร้างหน้า Style Guide ใหม่ที่ route /design
+          prompt:{th:`อ่าน docs/design/DESIGN.md แล้วสร้างหน้า Style Guide ใหม่ที่ route /design
 
 ข้อกำหนด
 - ดึงค่าสี ตัวอักษร ระยะห่าง และ component ทุกอย่างจาก DESIGN.md เท่านั้น ห้าม hardcode ค่าใหม่ที่ไม่มีในไฟล์
@@ -846,7 +868,7 @@ When done, tell me which token groups you are confident about and which need the
 - ห้ามแก้ไฟล์อื่นนอกจากหน้านี้ (และไฟล์ token/style ที่จำเป็นเพื่อให้ token ใช้ซ้ำได้จริงในโค้ด)
 - ห้าม commit
 
-บอกด้วยว่าเปิดดูผลลัพธ์ที่ URL ไหน`,en:`Read DESIGN.md at the project root and build a new style guide page at the route /design.
+บอกด้วยว่าเปิดดูผลลัพธ์ที่ URL ไหน`,en:`Read docs/design/DESIGN.md and build a new style guide page at the route /design.
 
 Constraints:
 - Pull every color, type style, spacing value, and component shown from DESIGN.md only; never hardcode a value that is not in the file
@@ -856,8 +878,8 @@ Constraints:
 - Do not commit
 
 Tell me which URL to open to see the result.`},
-          after:{th:['เปิด `http://localhost:3000/design` แล้วเทียบกับ DESIGN.md ทีละหมวด','ลองเปลี่ยนค่าใน DESIGN.md หนึ่งค่า (เช่นสี primary) แล้วขอให้ Agent อัปเดตหน้านี้ตาม ถ้ามันต้องแก้หลายที่ แปลว่ายังอ้างอิง token ไม่ครบ','ยังไม่ต้อง commit — DESIGN.md และหน้า /design จะถูก commit พร้อมกับ Commit Checkpoint 1 ตอนที่ component แรกผ่าน review ในบทถัดไป'],en:['Open `http://localhost:3000/design` and compare it against DESIGN.md section by section','Change one value in DESIGN.md (e.g. the primary color) and ask the agent to update this page accordingly — if it has to touch many places, the tokens are not fully referenced yet','Do not commit yet — DESIGN.md and the /design page will be committed together with Commit Checkpoint 1, once the first component passes review in the next lesson']}},
-        {type:'practice',title:{th:'ลงมือทำ: จากภาพสู่ Style Guide',en:'Practice: from image to style guide'},steps:{th:['เปิดภาพอ้างอิง `docs/design/opd-check-in-reference.png` ในโปรเจกต์ starter (หรือภาพ mockup อื่นที่ได้รับมา)','แนบภาพแล้วส่ง Prompt สรุป DESIGN.md ให้ Agent','ตรวจ DESIGN.md ด้วย checklist ด้านบนจนพอใจ','ส่ง Prompt สร้างหน้า /design แล้วเปิดเทียบกับ DESIGN.md','ลองแก้ token หนึ่งค่าดูว่าหน้า Style Guide เปลี่ยนตามหรือไม่'],en:['Open the reference image at `docs/design/opd-check-in-reference.png` in the starter project (or another mockup you received)','Attach it and send the DESIGN.md summarization prompt to the agent','Review DESIGN.md against the checklist above until satisfied','Send the /design page prompt and compare the result against DESIGN.md','Change one token value and check whether the style guide page follows it']},expected:{th:'มีไฟล์ DESIGN.md ที่ตรวจแล้วผ่าน และหน้า /design ที่แสดง token ทุกกลุ่มตรงกับไฟล์ ยังไม่ commit',en:'A reviewed, passing DESIGN.md file and a /design page that displays every token group matching it. Not committed yet.'}}
+          after:{th:['เปิด `http://localhost:3000/design` แล้วเทียบกับ DESIGN.md ทีละหมวด','ลองเปลี่ยนค่าใน DESIGN.md หนึ่งค่า (เช่นสี primary) แล้วขอให้ Agent อัปเดตหน้านี้ตาม ถ้ามันต้องแก้หลายที่ แปลว่ายังอ้างอิง token ไม่ครบ','ยังไม่ต้อง commit — HTML reference, DESIGN.md และหน้า /design จะถูก commit พร้อมกับ Commit Checkpoint 1 ตอนที่ component แรกผ่าน review ในบทถัดไป'],en:['Open `http://localhost:3000/design` and compare it against DESIGN.md section by section','Change one value in DESIGN.md (e.g. the primary color) and ask the agent to update this page accordingly — if it has to touch many places, the tokens are not fully referenced yet','Do not commit yet — the reference HTML, DESIGN.md, and the /design page will be committed together with Commit Checkpoint 1, once the first component passes review in the next lesson']}},
+        {type:'practice',title:{th:'ลงมือทำ: จากภาพสู่ Style Guide',en:'Practice: from image to style guide'},steps:{th:['เปิดภาพอ้างอิง `docs/design/opd-check-in-reference.png` ในโปรเจกต์ starter (หรือภาพ mockup อื่นที่ได้รับมา)','แนบภาพแล้วส่ง Prompt ให้ Agent แกะภาพเป็น HTML แล้วสรุปเป็น DESIGN.md ที่ผ่าน lint','ตรวจ HTML กับ DESIGN.md ด้วย checklist ด้านบนจนพอใจ','ส่ง Prompt สร้างหน้า /design แล้วเปิดเทียบกับ DESIGN.md','ลองแก้ token หนึ่งค่าดูว่าหน้า Style Guide เปลี่ยนตามหรือไม่'],en:['Open the reference image at `docs/design/opd-check-in-reference.png` in the starter project (or another mockup you received)','Attach it and send the prompt that rebuilds it as HTML, then summarizes it into a lint-passing DESIGN.md','Review the HTML and DESIGN.md against the checklist above until satisfied','Send the /design page prompt and compare the result against DESIGN.md','Change one token value and check whether the style guide page follows it']},expected:{th:'มีไฟล์ HTML reference, DESIGN.md ที่ผ่านทั้ง checklist และ lint (ไม่มี error/warning ค้างอยู่) และหน้า /design ที่แสดง token ทุกกลุ่มตรงกับไฟล์ ยังไม่ commit',en:'A reference HTML file, a DESIGN.md that passes both the checklist and the linter (no errors or warnings left), and a /design page that displays every token group matching it. Not committed yet.'}}
       ],
       quiz:{q:{th:'DESIGN.md กับ Storybook ต่างกันตรงไหน?',en:'What is the core difference between DESIGN.md and Storybook?'},options:{th:['DESIGN.md ตอบว่าระบบภาพลักษณ์เป็นอย่างไร (สี/font/spacing) ส่วน Storybook ตอบว่า component หนึ่งตัวใน state หนึ่งทำงาน/แสดงผลถูกไหม','ทั้งสองอย่างทำหน้าที่เดียวกัน เลือกใช้อย่างใดอย่างหนึ่งก็พอ','DESIGN.md แทนที่ Storybook ได้เพราะมีข้อมูลครบกว่า'],en:['DESIGN.md answers what the visual system looks like (color/type/spacing); Storybook answers whether one component in one state behaves and renders correctly','They do the same job, so picking either one is enough','DESIGN.md replaces Storybook because it holds more information'],},answer:0,why:{th:'DESIGN.md เป็น static reference ของระบบภาพลักษณ์ ส่วน Storybook เป็นพื้นที่ review แบบ dynamic ผูกกับ state และ AC ของแต่ละ component สองอย่างนี้เสริมกัน ไม่ใช่แทนกัน',en:'DESIGN.md is a static reference for the visual system; Storybook is a dynamic review surface tied to each component’s states and ACs. They complement each other rather than replace one another.'}},
       wrap:{th:['DESIGN.md ผูก token + กติกา + เหตุผลไว้ในไฟล์เดียวที่ Agent อ้างอิงซ้ำได้','หน้า /design คือ Style Guide ที่ human ตรวจ token ก่อนมันไหลต่อไปเป็น component','DESIGN.md เสริม Storybook ไม่ได้แทนที่ — คนละคำถามคนละหน้าที่','ยังไม่ commit ที่บทนี้ ของจะถูกรวมกับ commit แรกในบทถัดไป'],en:['DESIGN.md ties token, rule, and reason into one file the agent can reuse every time','The /design page is the style guide where a human checks tokens before they flow into components','DESIGN.md complements Storybook, not replaces it — they answer different questions','No commit in this lesson; it bundles into the first commit in the next lesson']}
