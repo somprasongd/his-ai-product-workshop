@@ -1,4 +1,4 @@
-# HIS AI Product Workshop
+# AI Product Workshop
 
 A bilingual (Thai/English), static learning website for PM, BA, and Product Design teams preparing to use AI coding agents such as Codex or Claude Code in a Next.js + Storybook workflow.
 

@@ -1,4 +1,4 @@
-# AGENTS.md — HIS AI Product Workshop
+# AGENTS.md — AI Product Workshop
 
 This repository is a static learning website for PM, BA, and Product Design learners who are preparing to work with AI coding agents.
 

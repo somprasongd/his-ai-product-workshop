@@ -1,6 +1,6 @@
 window.COURSE = {
   meta: {
-    title: { th: 'HIS AI Product Workshop', en: 'HIS AI Product Workshop' },
+    title: { th: 'AI Product Workshop', en: 'AI Product Workshop' },
     subtitle: {
       th: 'เรียนรู้การทำ Product ด้วย AI Agent สำหรับ PM, BA และ Product Design โดยไม่ต้องเริ่มจากการเขียนโค้ด',
       en: 'AI-assisted product development for PM, BA, and Product Design — without starting from coding.'

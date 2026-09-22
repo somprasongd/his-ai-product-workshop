@@ -8,7 +8,7 @@ The ChatGPT GitHub connection used to prepare this project can update existing r
 cd his-ai-product-workshop
 git init -b main
 git add .
-git commit -m "feat: initial HIS AI Product Workshop"
+git commit -m "feat: initial AI Product Workshop"
 gh repo create somprasongd/his-ai-product-workshop --public --source=. --remote=origin --push
 ```
 
