@@ -330,6 +330,7 @@ html[data-theme="dark"] .tool-tab.active { color:#05201c; }
 .option { display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:11px; cursor:pointer; background:var(--surface); }
 .option:hover { border-color:var(--primary); }
 .option input { margin-top:5px; }
+.quiz-btn { margin-top:14px; }
 .check-result { display:none; margin-top:12px; padding:10px 12px; border-radius:10px; font-weight:700; }
 .check-result.show { display:block; }
 .check-result.good { background:color-mix(in srgb,var(--success) 14%,var(--surface)); color:var(--success); }
