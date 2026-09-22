@@ -811,19 +811,19 @@ save. Used scarcely, so it never competes with clinical data.
 - ใช้เฉพาะสิ่งที่เห็นในภาพจริง ห้ามเดาเติมสีหรือ font ที่ไม่มีในภาพ
 
 ขั้นที่ 2 — เขียน DESIGN.md จาก HTML ที่ได้
-อ่านค่าจริงจากไฟล์ HTML ในขั้นที่ 1 (ไม่ใช่กลับไปเดาจากภาพใหม่อีกรอบ) แล้วเขียน docs/design/DESIGN.md ตาม pattern ของ https://getdesign.md/what-is-design-md คือ
+อ่านค่าจริงจากไฟล์ HTML ในขั้นที่ 1 (ไม่ใช่กลับไปเดาจากภาพใหม่อีกรอบ) แล้วเขียน DESIGN.md ที่ root ของโปรเจกต์ ตาม pattern ของ https://getdesign.md/what-is-design-md คือ
 1. YAML front matter: version, name, description (บรรยายบรรยากาศของแบรนด์ ไม่ใช่ tagline)
 2. Token: colors (ตั้งชื่อตามหน้าที่ ไม่ใช่ blue1/gray2), typography, spacing, component
 3. ร้อยแก้วอธิบายเหตุผลของแต่ละหมวด ต้องอ้าง token ด้วย {colors.xxx} ทุกครั้ง
 4. ปิดท้ายด้วย Known Gaps บอกตรง ๆ ว่าอะไรในภาพที่ยังไม่ครอบคลุม
 
 ขั้นที่ 3 — lint แล้วแก้ให้สะอาด
-รัน npx @google/design.md lint docs/design/DESIGN.md
+รัน npx @google/design.md lint DESIGN.md
 - แก้ทุก error และ warning ที่รายงานออกมา แล้วรันซ้ำจนผ่านหมด
 - ถ้าผล lint ขัดกับสิ่งที่เห็นในภาพจริง ให้แจ้งกลับมาก่อน อย่าแก้เงียบ
 
 ข้อกำหนด
-- แตะเฉพาะ 2 ไฟล์นี้: docs/design/opd-check-in-reference.html และ docs/design/DESIGN.md
+- แตะเฉพาะ 2 ไฟล์นี้: docs/design/opd-check-in-reference.html และ DESIGN.md ที่ root
 - ถ้าอ่านค่าจากภาพไม่ชัด (เช่น เดา hex ไม่ได้แม่นยำ) ให้บันทึกไว้ใน Known Gaps แทนการเดา
 - ห้าม commit
 
@@ -838,25 +838,25 @@ Turn the attached image into a standalone single-file HTML page at docs/design/o
 - Use only what is actually visible in the image; never invent a color or font that is not there
 
 Step 2 — Write DESIGN.md from that HTML
-Read the real values from the HTML file you just built (do not go back and re-guess from the image) and write docs/design/DESIGN.md following the pattern at https://getdesign.md/what-is-design-md:
+Read the real values from the HTML file you just built (do not go back and re-guess from the image) and write DESIGN.md at the project root following the pattern at https://getdesign.md/what-is-design-md:
 1. YAML front matter: version, name, description (the brand's atmosphere, not a tagline)
 2. Tokens: colors (named by job, never blue1/gray2), typography, spacing, components
 3. Prose explaining the reasoning behind each section, citing tokens as {colors.xxx} every time
 4. Close with Known Gaps, naming honestly what the image does not cover
 
 Step 3 — Lint and clean up
-Run npx @google/design.md lint docs/design/DESIGN.md
+Run npx @google/design.md lint DESIGN.md
 - Fix every error and warning it reports, then re-run until it passes clean
 - If a lint suggestion contradicts what the image actually shows, tell me first instead of fixing it silently
 
 Constraints:
-- Touch only these two files: docs/design/opd-check-in-reference.html and docs/design/DESIGN.md
+- Touch only these two files: docs/design/opd-check-in-reference.html and DESIGN.md at the project root
 - If a value is unclear (e.g. you cannot read an exact hex), record it under Known Gaps instead of guessing
 - Do not commit
 
 When done, tell me which token groups you are confident about, which need the design team to confirm, and attach the final lint output.`},
           after:{th:['เปิด `docs/design/opd-check-in-reference.html` ในเบราว์เซอร์แล้วเทียบกับภาพต้นฉบับทีละส่วน — ถ้า HTML คลาดเคลื่อน DESIGN.md จะผิดตามทันที','เทียบสีและระยะห่างใน DESIGN.md กับภาพต้นฉบับด้วยตาตัวเอง อย่าเชื่อแค่คำสรุป','ถ้ามันเติมสีหรือ component ที่ไม่มีในภาพ ให้ตีกลับและถามว่าเอามาจากไหน','ตรวจว่า Known Gaps ตรงกับความจริง ไม่ใช่แค่เขียนไว้ให้ดูครบ','ดูผล lint รอบสุดท้ายว่าผ่านจริง ไม่มี error หรือ warning ค้างอยู่'],en:['Open `docs/design/opd-check-in-reference.html` in a browser and compare it section by section with the source image — if the HTML drifts, DESIGN.md inherits the error','Compare the colors and spacing in DESIGN.md against the source image with your own eyes — do not trust the summary alone','If it invents a color or component not present in the image, send it back and ask where it came from','Check that Known Gaps reflects reality rather than being written just to look thorough','Look at the final lint output and confirm it passes with no errors or warnings left']}},
-        {type:'list',title:{th:'Human ต้องตรวจอะไรก่อนอนุมัติ DESIGN.md',en:'What a human checks before approving DESIGN.md'},items:{th:['ค่าสี/ฟอนต์ตรงกับภาพต้นฉบับจริง ไม่ใช่ค่าที่ “ดูใกล้เคียง”','ชื่อ token สื่อหน้าที่ (เช่น primary, danger) ไม่ใช่ชื่อดิบ (blue1)','ทุก token มีคำอธิบายเหตุผลอย่างน้อยหนึ่งประโยค','Known Gaps เขียนตรงไปตรงมา ไม่ปิดบังว่ามีอะไรยังไม่ครอบคลุม','ไม่มีการเดาสีหรือแบรนด์ใหม่ที่ไม่มีในภาพต้นฉบับ','ผล lint รอบสุดท้าย (`npx @google/design.md lint docs/design/DESIGN.md`) ผ่าน ไม่มี error หรือ warning ค้างอยู่'],en:['Colors and fonts match the source image exactly, not “close enough”','Token names describe a job (primary, danger), not a raw label (blue1)','Every token has at least one sentence of reasoning attached','Known Gaps is written honestly, not hiding what is uncovered','Nothing invents a color or brand element absent from the source image','The final lint run (`npx @google/design.md lint docs/design/DESIGN.md`) passes with no errors or warnings left']}},
+        {type:'list',title:{th:'Human ต้องตรวจอะไรก่อนอนุมัติ DESIGN.md',en:'What a human checks before approving DESIGN.md'},items:{th:['ค่าสี/ฟอนต์ตรงกับภาพต้นฉบับจริง ไม่ใช่ค่าที่ “ดูใกล้เคียง”','ชื่อ token สื่อหน้าที่ (เช่น primary, danger) ไม่ใช่ชื่อดิบ (blue1)','ทุก token มีคำอธิบายเหตุผลอย่างน้อยหนึ่งประโยค','Known Gaps เขียนตรงไปตรงมา ไม่ปิดบังว่ามีอะไรยังไม่ครอบคลุม','ไม่มีการเดาสีหรือแบรนด์ใหม่ที่ไม่มีในภาพต้นฉบับ','ผล lint รอบสุดท้าย (`npx @google/design.md lint DESIGN.md`) ผ่าน ไม่มี error หรือ warning ค้างอยู่'],en:['Colors and fonts match the source image exactly, not “close enough”','Token names describe a job (primary, danger), not a raw label (blue1)','Every token has at least one sentence of reasoning attached','Known Gaps is written honestly, not hiding what is uncovered','Nothing invents a color or brand element absent from the source image','The final lint run (`npx @google/design.md lint DESIGN.md`) passes with no errors or warnings left']}},
         {type:'prompt',title:{th:'Prompt: สร้างหน้า Style Guide ที่ /design จาก DESIGN.md',en:'Prompt: build the /design style guide page from DESIGN.md'},
           when:{th:'ใช้หลังจาก DESIGN.md ผ่านการตรวจข้างบนแล้วเท่านั้น ถ้า DESIGN.md ยังไม่นิ่ง หน้า Style Guide ที่สร้างจะต้องมาแก้ซ้ำตามไปด้วย',en:'Use it only after DESIGN.md has passed the checklist above. If DESIGN.md is still shifting, the style guide page will just have to be redone along with it.'},
           prompt:{th:`อ่าน docs/design/DESIGN.md แล้วสร้างหน้า Style Guide ใหม่ที่ route /design
@@ -1092,6 +1092,29 @@ When finished, list every file you created or changed.`},
 1. Empty story: the message does not tell users what to do next; suggest re-checking the HN or searching by name
 2. WithResults story: very long patient names overflow their container
 3. Error story: at a glance it is not distinguishable from Empty
+
+Constraints:
+- Change only PatientSearch and its stories; do not touch other files
+- Do not rename existing stories
+- Do not commit
+
+Summarize how you addressed each point.`},
+          example:{th:`ฉัน review story ของ PatientSearch ใน Storybook แล้ว มีสิ่งที่ต้องแก้ดังนี้
+
+1. Story Empty: ค้นด้วย HN ที่ไม่มีในระบบแล้วเห็นแค่ข้อความ “ไม่พบข้อมูล” ยังไม่บอกผู้ใช้ว่าควรทำอะไรต่อ ควรแนะนำให้ตรวจ HN อีกครั้งหรือลองค้นด้วยชื่อ
+2. Story WithResults: ชื่อผู้ป่วยยาวมากอย่าง “สมศรี วีระชาติธำรงค์วัฒนากุล” ล้นออกนอกกรอบของรายการ
+3. Story Error: ดูเร็ว ๆ แยกไม่ออกจาก Empty ผู้ใช้ควรรู้ทันทีว่าเป็นระบบขัดข้อง ไม่ใช่ค้นแล้วไม่พบ
+
+ข้อกำหนด
+- แก้เฉพาะ PatientSearch และ story ของมัน ห้ามแตะไฟล์อื่น
+- ห้ามเปลี่ยนชื่อ story ที่มีอยู่
+- ห้าม commit
+
+สรุปให้ด้วยว่าแต่ละข้อแก้อย่างไร`,en:`I reviewed the PatientSearch stories in Storybook. These need to change:
+
+1. Empty story: searching an HN that does not exist shows only “No data found,” which does not tell users what to do next; suggest re-checking the HN or trying a name search
+2. WithResults story: very long patient names such as “Somsi Wangchaithamrongwattanakul” overflow their row
+3. Error story: at a glance it is indistinguishable from Empty; users should immediately see the service failed rather than nothing was found
 
 Constraints:
 - Change only PatientSearch and its stories; do not touch other files
