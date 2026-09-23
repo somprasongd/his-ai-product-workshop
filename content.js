@@ -1238,32 +1238,46 @@ Also tell me how to view this test running inside Storybook.`},
         {type:'prompt',title:{th:'Prompt: เพิ่ม scenario ให้ครบทุก state',en:'Prompt: add scenarios covering every state'},
           when:{th:'ใช้เมื่อพบว่า mock ที่มีอยู่ยังบังคับให้เกิดบาง state ไม่ได้ เช่น เห็น Loading ไม่ทันเพราะเร็วเกินไป',en:'Use it when the existing mocks cannot force a state — for example when Loading flashes by too fast to review.'},
           prompt:{th:`ตรวจ mock service ของโปรเจกต์นี้ แล้วบอกฉันก่อนว่าปัจจุบันรองรับ scenario อะไรบ้าง ห้ามแก้ไฟล์ในขั้นนี้
-
 จากนั้นเสนอวิธีที่จะทำให้ฉันบังคับให้เกิด 4 สถานะนี้ได้ทุกครั้งที่ต้องการ
+
 - normal: มีข้อมูลผู้ป่วย
 - slow: หน่วงประมาณ 2 วินาที เพื่อให้เห็นสถานะกำลังโหลดชัด ๆ
 - empty: ค้นแล้วไม่พบใคร
 - error: ระบบค้นหาล้มเหลว
 
 ข้อกำหนด
+
 - ใช้ข้อมูลสมมติเท่านั้น ห้ามใช้ข้อมูลผู้ป่วยจริง
 - ผลลัพธ์ต้องเหมือนเดิมทุกครั้ง ห้ามสุ่ม
 - เปลี่ยน scenario ได้โดยไม่ต้องแก้โค้ดของ component
 
-เสนอแผนก่อน รอฉันอนุมัติแล้วค่อยลงมือ`,en:`Inspect this project’s mock service and first tell me which scenarios it currently supports. Do not modify files at this stage.
+ข้อกำหนดเพิ่ม (กรุณาปฏิบัติตาม)
 
-Then propose how I can reliably force each of these four states whenever I want:
-- normal: patient data is returned
-- slow: about a two-second delay so the loading state is clearly visible
-- empty: the search finds nobody
-- error: the search service fails
+- ทุก state ที่เสนอต้องสาธิตได้ใน Storybook (story ใหม่หรือ story ที่มีอยู่)
+- ห้ามเพิ่ม debug UI, ปุ่มสลับ scenario, หรือ URL param (?scenario=...) บนหน้า production
+- ผู้ใช้ทั่วไปต้องไม่เห็นเครื่องมือ demo ใด ๆ — เครื่องมือ demo ต้องอยู่ที่ Storybook เท่านั้น
 
-Constraints:
-- Synthetic data only; never real patient data
-- Results must be identical every time; no randomness
-- Switching scenarios must not require editing component code
+เสนอแผนก่อน รอฉันอนุมัติแล้วค่อยลงมือ`,en:`Inspect the mock service of this project, and tell me first what scenarios are currently supported. Do not modify any files at this stage.
+Then propose a way for me to force these 4 states on demand:
 
-Propose the plan first and wait for my approval before implementing.`},
+- normal: patient data found
+- slow: delay around 2 seconds so the loading state is clearly visible
+- empty: search returns no results
+- error: search system fails
+
+Requirements
+
+- Use only synthetic data; never use real patient information
+- Results must be identical every time; do not use randomness
+- Scenarios must be switchable without modifying component code
+
+Additional requirements (please follow)
+
+- Every proposed state must be demonstrable in Storybook (via new stories or existing ones)
+- Do not add debug UI, scenario switcher buttons, or URL params (?scenario=...) on production pages
+- End users must never see any demo controls — demo controls must live in Storybook only
+
+Propose a plan first. Wait for my approval before implementing.`},
           after:{th:['ถามให้ชัดว่า “ฉันต้องทำอะไรบ้างเพื่อสลับ scenario” แล้วลองทำตามด้วยตัวเอง','ทดสอบว่าเปิดซ้ำสองครั้งได้ผลเหมือนเดิม','ยืนยันว่าไม่มีการเพิ่ม dependency ใหม่โดยไม่จำเป็น'],en:['Ask explicitly “what do I do to switch scenarios?” then do it yourself','Run it twice and confirm identical results','Confirm no unnecessary new dependency was added']}},
         {type:'prose',title:{th:'ทำไม mock ต้อง “เดาได้”',en:'Why mocks must be predictable'},body:{th:[
           'มีความอยากทำให้ mock ดูสมจริงด้วยการสุ่มข้อมูลหรือสุ่มความเร็ว ซึ่งฟังดูดีแต่เป็นกับดัก เพราะเมื่อผลเปลี่ยนทุกครั้งที่เปิด คุณจะแยกไม่ออกว่าสิ่งที่เห็นเป็น bug หรือเป็นเพราะข้อมูลบังเอิญเปลี่ยน',
