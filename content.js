@@ -219,9 +219,32 @@ Cite real file names for every point.`},
         ]}},
         {type:'diagram',title:{th:'Requirement หนึ่งฉบับ แตกเป็น Issue ได้หลายใบ',en:'One requirement, several issues'},
           lead:{th:'Requirement คือเอกสารเล่าเรื่อง ส่วน Issue คือหน่วยของงาน หนึ่ง Issue ควรจบได้ใน 1 branch และ review ได้ในครั้งเดียว',en:'A requirement is a narrative document; an issue is a unit of work. One issue should finish in one branch and be reviewable in one sitting.'},
-          diagram:`flowchart TD\nR[Requirement doc: OPD Check-in Lite] --> P{Split by user outcome}\nP --> I1[Issue US-001 Patient Check-in]\nP --> I2[Issue US-002 Queue Board]\nP --> I3[Issue US-003 Daily Report]\nI1 --> C[Context + In / Out of scope]\nI1 --> A[Acceptance Criteria]\nI1 --> D[Definition of Done]\nC --> B[Branch + Worktree]\nA --> B\nD --> B\nB --> AG[AI Agent]`,
+          diagram:`flowchart TD\nR["Requirement (1 epic): OPD Check-in Lite"] --> P{Split by user outcome}\nP --> I1[Issue US-001 Patient Check-in]\nP --> I2[Issue US-002 Queue Board]\nP --> I3[Issue US-003 Daily Report]\nI1 --> C[Context + In / Out of scope]\nI1 --> A[Acceptance Criteria]\nI1 --> D[Definition of Done]\nC --> B[Branch + Worktree]\nA --> B\nD --> B\nB --> AG[AI Agent]`,
           notes:{th:['เอกสาร requirement หนึ่งฉบับมักมีงานหลายก้อนซ่อนอยู่ อย่าเปิด Issue ใบเดียวแล้วโยนทั้งเอกสารให้ Agent','US-001 ที่เราใช้ตลอดคอร์สคือหนึ่ง Issue ที่ถูกตัดมาแล้วให้พอดีกับหนึ่ง branch','ถ้าคุ้น Epic/Story จาก Jira — เอกสาร requirement ในภาพนี้เทียบได้กับ epic ส่วน US-001 เทียบได้กับ story ที่ตัดมาแล้ว คอร์สนี้จึงใช้คำว่า Issue ชั้นเดียว เพราะเป็นหน่วยงานเดียวที่ทั้ง GitHub และ GitLab มีให้ใช้จริง','สามกล่องใต้ Issue คือส่วนที่คุณต้องเขียนเอง ไม่ใช่ copy จาก requirement มาทั้งดุ้น','ลูกศรสุดท้ายคือประเด็นสำคัญ — Agent เห็นเฉพาะสิ่งที่อยู่ใน Issue สิ่งที่คุณคิดไว้ในหัวแต่ไม่ได้เขียน มันไม่เห็น'],en:['One requirement document usually hides several chunks of work; do not open a single issue and hand the agent the whole document','The US-001 we use all course is one issue already cut to fit one branch','If you know Epic/Story from Jira — the requirement document here plays the epic, and US-001 plays a story already cut to size; this course keeps one word, issue, because it is the only work unit both GitHub and GitLab give you natively','The three boxes under the issue are yours to write — not copied wholesale from the requirement','The last arrow is the point: the agent sees only what is in the issue, never what stayed in your head']}},
-        {type:'two',title:{th:'Requirement กับ Issue ต่างกันตรงไหน',en:'Requirement vs. issue'},left:{title:{th:'Requirement',en:'Requirement'},items:{th:['เล่าว่าทำไมธุรกิจถึงต้องการสิ่งนี้','ครอบคลุมหลายหน้าจอและหลายรอบการส่งงาน','เปลี่ยนช้า มีเจ้าของเป็นฝ่ายธุรกิจ','อ่านแล้วเข้าใจ แต่ยังลงมือทำทันทีไม่ได้'],en:['Explains why the business needs this','Spans several screens and several deliveries','Changes slowly, owned by the business side','Understandable, but not yet actionable']},example:{th:'**ตัวอย่างจาก US-001:** “OPD ต้องการลดเวลารอคอย ให้ผู้ป่วยเช็คอินเองได้ตั้งแต่ค้นหาตัวเอง เลือกคลินิก ยืนยัน จนถึงรับบัตรคิว และหัวหน้างานเห็นสรุปคิวรายวัน” · เทียบ Jira: ระดับนี้คือ epic',en:'**US-001 example:** “OPD wants shorter waits — patients check themselves in, from searching for themselves to picking a clinic, confirming, and getting a queue number, and supervisors see a daily queue summary.” · Jira equivalent: an epic'}},right:{title:{th:'Issue',en:'Issue'},items:{th:['บอกว่าจะทำอะไรในรอบนี้','จบได้ใน 1 branch และ review ได้ครั้งเดียว','มี AC ที่ตอบได้ว่า ผ่าน หรือ ไม่ผ่าน','มีเจ้าของ มีสถานะ และอ้างอิงกลับไปที่ requirement ได้'],en:['States what gets built this round','Finishes in one branch, reviewable in one sitting','Has ACs that answer pass or fail','Has an owner, a status, and a link back to the requirement']},example:{th:'**ตัวอย่างจาก US-001:** “หน้าเช็คอินเท่านั้น — ค้นหาผู้ป่วย เลือกคลินิก ยืนยันแล้วได้เลขคิว · AC 7 ข้อ · จบใน 1 branch · ส่วนบอร์ดคิวและรายงานรายวันถูกตัดไปเป็น US-002 กับ US-003” · เทียบ Jira: ระดับนี้คือ story',en:'**US-001 example:** “The check-in screen only — search patient, pick clinic, confirm, get a queue number · 7 ACs · one branch · the queue board and daily report become US-002 and US-003.” · Jira equivalent: a story'}}},
+        {type:'two',title:{th:'Requirement กับ Issue ต่างกันตรงไหน',en:'Requirement vs. issue'},left:{title:{th:'Requirement',en:'Requirement'},items:{th:['เล่าว่าทำไมธุรกิจถึงต้องการสิ่งนี้','ครอบคลุมหลายหน้าจอและหลายรอบการส่งงาน','เปลี่ยนช้า มีเจ้าของเป็นฝ่ายธุรกิจ','อ่านแล้วเข้าใจ แต่ยังลงมือทำทันทีไม่ได้'],en:['Explains why the business needs this','Spans several screens and several deliveries','Changes slowly, owned by the business side','Understandable, but not yet actionable']},example:{th:'**ตัวอย่างจาก OPD Check-in Lite:** “OPD ต้องการลดเวลารอคอย ให้ผู้ป่วยเช็คอินเองได้ตั้งแต่ค้นหาตัวเอง เลือกคลินิก ยืนยัน จนถึงรับบัตรคิว และหัวหน้างานเห็นสรุปคิวรายวัน” · เทียบ Jira: ระดับนี้คือ epic',en:'**OPD Check-in Lite example:** “OPD wants shorter waits — patients check themselves in, from searching for themselves to picking a clinic, confirming, and getting a queue number, and supervisors see a daily queue summary.” · Jira equivalent: an epic'}},right:{title:{th:'Issue',en:'Issue'},items:{th:['บอกว่าจะทำอะไรในรอบนี้','จบได้ใน 1 branch และ review ได้ครั้งเดียว','มี AC ที่ตอบได้ว่า ผ่าน หรือ ไม่ผ่าน','มีเจ้าของ มีสถานะ และอ้างอิงกลับไปที่ requirement ได้'],en:['States what gets built this round','Finishes in one branch, reviewable in one sitting','Has ACs that answer pass or fail','Has an owner, a status, and a link back to the requirement']},example:{th:'**ตัวอย่างจาก US-001:** “หน้าเช็คอินเท่านั้น — ค้นหาผู้ป่วย เลือกคลินิก ยืนยันแล้วได้เลขคิว · AC 7 ข้อ · จบใน 1 branch · ส่วนบอร์ดคิวและรายงานรายวันถูกตัดไปเป็น US-002 กับ US-003” · เทียบ Jira: ระดับนี้คือ story',en:'**US-001 example:** “The check-in screen only — search patient, pick clinic, confirm, get a queue number · 7 ACs · one branch · the queue board and daily report become US-002 and US-003.” · Jira equivalent: a story'}}},
+        {type:'code',title:{th:'Requirement จริงของคอร์สหน้าตาแบบนี้',en:'What the real requirement looks like'},
+          lead:{th:'ไดอะแกรมและตารางข้างบนเป็นภาพแนวคิด — ของจริงที่คอร์สให้มาคือ story ที่ตัดมาแล้ว 1 ชิ้น เขียนไว้เป็นเอกสาร: `docs/requirements/US-001-opd-checkin.md` ใน starter repo ของคุณ (เปิดอ่านได้เลยตอนนี้) ส่วนโจทย์เต็ม “OPD Check-in Lite” ระดับ epic เป็นที่มาของการตัด ไม่มีไฟล์ในคอร์สนี้',en:'The diagram and the table above are the concept — what the course actually hands you is one already-cut story, written as a document: `docs/requirements/US-001-opd-checkin.md` in your starter repo (open it now). The full “OPD Check-in Lite” topic at epic level is the backstory of the cut; it has no file in this course.'},
+          label:'docs/requirements/US-001-opd-checkin.md (excerpt)',
+          code:`# US-001 — OPD Patient Check-in Lite
+
+## User Story
+As an OPD staff member, I want to find an existing patient
+and check the patient in so that the patient can enter the clinic queue.
+
+## Acceptance Criteria
+1. Search an existing patient by HN or patient name.
+2. Show a Loading state while searching.
+3. Show an Empty state when no patient is found.
+4. Show an Error state when the search fails.
+… (12 criteria in the real file)
+
+## Suggested Product Components
+PatientSearch · PatientCard · CheckInForm · CheckInConfirmation …
+“Do not treat this list as an implementation order.”
+
+## Out of Scope
+Real HIS integration · backend · database · authentication · deployment`,
+          note:{th:'ไฟล์นี้มี AC ดิบอยู่แล้ว — งานของคุณไม่ใช่คิด AC จากศูนย์ แต่คือหั่นใหม่เป็นสองกอง states กับ behaviour ตรึงค่าจาก mock data แล้วเติม In/Out of scope กับ Definition of Done ให้ตัดสินผ่าน/ไม่ผ่านได้ ก่อนส่งต่อให้กลายเป็น Issue ในบล็อกถัดไป',en:'This file already contains raw ACs — your job is not to invent them from scratch, but to re-cut them into states and behaviours, pin mock-data values, and add explicit scope plus a definition of done, before it becomes the issue in the next block.'}},
         {type:'code',title:{th:'Issue Template ที่ใช้ได้ทันที',en:'A ready-to-use issue template'},
           lead:{th:'คัดลอกไปวางใน GitLab หรือ GitHub ได้เลย เลือกภาษาของ template ได้จากปุ่มบนการ์ด — หัวข้อ (header) และ Title คงภาษาอังกฤษไว้เพราะเป็นรูปแบบมาตรฐานของ Issue ส่วนคำบรรยายปรับตามภาษา โดยศัพท์เทคนิคทับศัพท์อังกฤษไว้ ตัวอย่างนี้กรอกด้วย US-001 ซึ่งเป็นโจทย์ที่เราจะใช้ต่อกันทั้งคอร์ส',en:'Copy it straight into GitLab or GitHub. Pick the template language on the card — headers and the title stay in English because that is the issue convention, descriptions follow your language, and technical terms stay as English loanwords. This one is filled in with US-001, the scenario we carry through the whole course.'},
           label:'Issue · US-001',code:{
@@ -230,7 +253,7 @@ th:`Title: US-001 OPD Patient Check-in (Lite)
 ## Context
 ปัจจุบันเจ้าหน้าที่ OPD จด check-in ของผู้ป่วย walk-in ลงกระดาษ
 ทำให้ต้องรื้อคิวใหม่ด้วยมือทุกเช้า Issue นี้ครอบคลุมเฉพาะหน้าจอ check-in
-Requirement ฉบับเต็ม: docs/requirements/US-001-opd-checkin.md
+Requirement ต้นทาง: docs/requirements/US-001-opd-checkin.md
 
 ## In scope
 - ค้นหาผู้ป่วยด้วย HN หรือชื่อ
@@ -313,7 +336,7 @@ th:`Title: <รหัสงาน> <ผลลัพธ์ต่อผู้ใ�
 
 ## Context
 <ปัญหาปัจจุบัน 2-3 บรรทัด และ Issue นี้ครอบคลุมถึงไหน>
-Requirement ฉบับเต็ม: docs/requirements/<ชื่อไฟล์>
+Requirement ต้นทาง: docs/requirements/<ชื่อไฟล์>
 
 ## In scope
 - <สิ่งที่รอบนี้ต้องทำ>
@@ -394,7 +417,7 @@ Synthetic/mock data only. No production data, no real patient records.`},
           'This is not documentation tidiness; it is what lets you verify the agent’s work yourself',
           'The trick that makes ACs truly checkable is **using fixed values from the mock data**, such as HN `65000123` instead of “a patient”, because a fixed value reproduces the same result every time'
         ]}},
-        {type:'list',title:{th:'เช็กลิสต์ก่อนกด Create Issue',en:'Checklist before you click Create Issue'},items:{th:['หัวข้อบอกผลลัพธ์ต่อผู้ใช้ ไม่ใช่แค่ชื่อหน้าจอ','มีลิงก์กลับไปยัง requirement ฉบับเต็ม','ระบุ Out of scope อย่างน้อย 2 ข้อ','AC ทุกข้อตอบได้ว่า ผ่าน หรือ ไม่ผ่าน โดยไม่ต้องตีความ','AC ที่เป็นพฤติกรรมใช้ค่าตายตัวจาก mock data','ไม่มีคำว่า “ใช้งานง่าย” หรือ “สวยงาม” ลอย ๆ โดยไม่มีเกณฑ์','งานจบได้ใน 1 branch ถ้าไม่จบ ให้ตัดเป็นสองใบ','ระบุชัดว่าใช้ข้อมูลสมมติเท่านั้น'],en:['The title states a user outcome, not just a screen name','It links back to the full requirement','It names at least two out-of-scope items','Every AC answers pass or fail with no interpretation','Behaviour ACs use fixed values from the mock data','No floating “easy to use” or “looks nice” without a criterion','The work fits in one branch — if not, split it into two issues','It states explicitly that only synthetic data is used']}},
+        {type:'list',title:{th:'เช็กลิสต์ก่อนกด Create Issue',en:'Checklist before you click Create Issue'},items:{th:['หัวข้อบอกผลลัพธ์ต่อผู้ใช้ ไม่ใช่แค่ชื่อหน้าจอ','มีลิงก์กลับไปยัง requirement ต้นทาง','ระบุ Out of scope อย่างน้อย 2 ข้อ','AC ทุกข้อตอบได้ว่า ผ่าน หรือ ไม่ผ่าน โดยไม่ต้องตีความ','AC ที่เป็นพฤติกรรมใช้ค่าตายตัวจาก mock data','ไม่มีคำว่า “ใช้งานง่าย” หรือ “สวยงาม” ลอย ๆ โดยไม่มีเกณฑ์','งานจบได้ใน 1 branch ถ้าไม่จบ ให้ตัดเป็นสองใบ','ระบุชัดว่าใช้ข้อมูลสมมติเท่านั้น'],en:['The title states a user outcome, not just a screen name','It links back to the source requirement','It names at least two out-of-scope items','Every AC answers pass or fail with no interpretation','Behaviour ACs use fixed values from the mock data','No floating “easy to use” or “looks nice” without a criterion','The work fits in one branch — if not, split it into two issues','It states explicitly that only synthetic data is used']}},
         {type:'callout',tone:'danger',title:{th:'Red flag',en:'Red flag'},text:{th:'AC ที่เขียนว่า “ระบบต้องค้นหาผู้ป่วยได้อย่างรวดเร็วและใช้งานง่าย” ตรวจไม่ได้ว่าผ่านหรือไม่ผ่าน Agent จะตีความเอง และตอน review คุณจะเถียงไม่ได้ เพราะไม่เคยมีเกณฑ์ตั้งแต่แรก',en:'An AC that reads “patient search must be fast and easy to use” cannot be judged pass or fail. The agent will interpret it for you, and at review time you have no ground to disagree because no criterion ever existed.'}},
         {type:'agent-setup',store:'repoHost',title:{th:'เปิด Issue จริงบน GitHub หรือ GitLab',en:'File the real issue on GitHub or GitLab'},
           lead:{th:'เลือกแท็บให้ตรงกับ repository ที่คุณสร้างไว้ในบทที่ 00 — ระบบจำแท็บที่เคยเลือกไว้ทั้งเว็บ ถ้าเคยเลือกแล้วแท็บจะถูกเลือกให้เอง',en:'Pick the tab that matches the repository you created in lesson 00 — the site remembers your tab choice across pages, so it is usually already selected.'},
@@ -654,7 +677,7 @@ git status`,expect:{th:'`On branch feature/us001-patient-checkin` — ถ้า�
 จากนั้นรันคำสั่งอ่าน Issue ของงานนี้ (อ่านอย่างเดียว)
 GitHub:  gh issue view <เลข Issue ของคุณ>
 GitLab:  glab issue view <เลข Issue ของคุณ>
-ถ้า Issue อ้างไฟล์ requirement ฉบับเต็มไว้ ให้เปิดอ่านประกอบด้วย
+ถ้า Issue อ้างไฟล์ requirement ต้นทางไว้ ให้เปิดอ่านประกอบด้วย
 
 เนื้อ Issue คือสัญญาของงานนี้ จุดไหนที่ Issue ไม่ได้ตอบ ห้ามเดาในขั้นตอนนี้ ให้จดไว้ถามฉัน
 
