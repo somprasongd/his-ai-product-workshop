@@ -1286,7 +1286,7 @@ Also tell me how to view this test running inside Storybook.`},
         {type:'callout',title:{th:'ในระบบจริงมี Backend แต่คอร์สนี้ไม่จำเป็นต้องรู้ implementation',en:'A real system has a backend, but this course does not need its implementation'},text:{th:'สิ่งที่ Product role ต้องคิดคือ UI ทำอะไรเมื่อ response ช้า, ว่าง, ผิดพลาด หรือสำเร็จ ไม่ใช่ว่า database query เขียนอย่างไร',en:'The product role needs to decide what UI does when responses are slow, empty, erroneous, or successful — not how database queries are written.'}},
         {type:'code',title:{th:'ข้อมูลสมมติที่ใช้ตลอดคอร์ส',en:'The synthetic data we use all course'},
           lead:{th:'ค่าเหล่านี้เป็นค่าตายตัว จำไว้ได้เลย เพราะเราจะใช้มันซ้ำในทุกแบบฝึกหัด การมีค่าที่แน่นอนทำให้ทุกคนในห้องเห็นผลเหมือนกันและเทียบกันได้',en:'These values are fixed and worth memorizing — we reuse them in every exercise. Fixed values mean everyone in the room sees the same result and can compare.'},
-          label:'Synthetic examples',code:`65000123 -> Somchai Jaidee      # พบข้อมูล / found\n65000124 -> Somying Sukjai      # พบข้อมูล / found\n99999999 -> []                  # empty state\nERROR     -> throw Error         # error state\nSLOW      -> 2000ms delay        # loading state`,
+          label:'Synthetic examples',code:`65000123 -> Somchai Jaidee      # พบข้อมูล / found\n65000456 -> Somying Jaidee      # พบข้อมูล / found\n99999999 -> []                  # empty state\nERROR     -> throw Error         # error state\nSLOW      -> 1800ms delay        # loading state`,
           note:{th:'ทั้งหมดนี้เป็นข้อมูลที่แต่งขึ้นเพื่อการเรียนเท่านั้น ห้ามแทนที่ด้วย HN หรือชื่อผู้ป่วยจริงเด็ดขาด แม้จะทดสอบในเครื่องตัวเองก็ตาม',en:'All of this is invented for training only. Never replace it with a real HN or patient name, not even on your own machine.'}},
         {type:'prompt',title:{th:'Prompt: เพิ่ม scenario ให้ครบทุก state',en:'Prompt: add scenarios covering every state'},
           when:{th:'ใช้เมื่อพบว่า mock ที่มีอยู่ยังบังคับให้เกิดบาง state ไม่ได้ เช่น เห็น Loading ไม่ทันเพราะเร็วเกินไป',en:'Use it when the existing mocks cannot force a state — for example when Loading flashes by too fast to review.'},
@@ -1912,6 +1912,11 @@ Evidence: Storybook states, interaction test, running app, keyboard/mobile,
           lint/test/build, and regression of original ACs`},
           note:{th:'brief ฉบับเต็มอยู่ที่ docs/capstone/clinic-availability.md ใน starter ข้อความนี้ให้ปัญหาและค่าคงที่ แต่ผู้เรียนต้องเขียน AC และแผนตรวจเอง',en:'The full brief is docs/capstone/clinic-availability.md in the starter. This states the problem and fixed values; learners write the ACs and verification plan.'}},
         {type:'diagram',title:{th:'งานใหม่ต่อจากฐานที่ตรวจแล้ว',en:'A new task on a verified base'},diagram:`flowchart LR
+B["Merged US-001 prototype"] --> I["New issue + AC"]
+I --> P["Agent plan + human review"]
+P --> N["Clinic availability change"]
+N --> R["New evidence + US-001 regression"]
+R --> M["New MR + handoff"]`,diagramMobile:`flowchart TD
 B["Merged US-001 prototype"] --> I["New issue + AC"]
 I --> P["Agent plan + human review"]
 P --> N["Clinic availability change"]

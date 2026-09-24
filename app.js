@@ -304,7 +304,7 @@
       case 'code': return block.title || block.lead || block.note
         ? `<section class="block">${block.title?`<h2>${esc(t(block.title))}</h2>`:''}${lead(block)}${codeSectionBody(block)}${block.note?`<p class="block-outro">${rich(t(block.note))}</p>`:''}</section>`
         : codeSectionBody(block);
-      case 'diagram': return `<section class="block"><h2>${esc(t(block.title))}</h2>${lead(block)}<div class="diagram"><button class="diagram-expand" type="button" data-diagram-title="${esc(t(block.title))}" aria-label="${state.lang==='th'?'ดูภาพขยาย':'View full size'}">${icon('expand',15)}<span>${state.lang==='th'?'ขยาย':'Expand'}</span></button><div class="mermaid">${esc(block.diagram)}</div></div>${block.notes?`<div class="diagram-notes"><strong>${U('readDiagram')}</strong><ul class="clean">${t(block.notes).map(n=>`<li>${rich(n)}</li>`).join('')}</ul></div>`:''}${block.outro?`<p class="block-outro">${rich(t(block.outro))}</p>`:''}</section>`;
+      case 'diagram': return `<section class="block"><h2>${esc(t(block.title))}</h2>${lead(block)}<div class="diagram"><button class="diagram-expand" type="button" data-diagram-title="${esc(t(block.title))}" aria-label="${state.lang==='th'?'ดูภาพขยาย':'View full size'}">${icon('expand',15)}<span>${state.lang==='th'?'ขยาย':'Expand'}</span></button><div class="mermaid">${esc(block.diagram)}</div>${block.diagramMobile?`<div class="mermaid mermaid-mobile">${esc(block.diagramMobile)}</div>`:''}</div>${block.notes?`<div class="diagram-notes"><strong>${U('readDiagram')}</strong><ul class="clean">${t(block.notes).map(n=>`<li>${rich(n)}</li>`).join('')}</ul></div>`:''}${block.outro?`<p class="block-outro">${rich(t(block.outro))}</p>`:''}</section>`;
       case 'prose': return `<section class="block prose">${block.title?`<h2>${esc(t(block.title))}</h2>`:''}${t(block.body).map(pg=>`<p>${rich(pg)}</p>`).join('')}${block.points?`<ul class="clean">${t(block.points).map(x=>`<li>${rich(x)}</li>`).join('')}</ul>`:''}</section>`;
       case 'commands': return commandsBlock(block);
       case 'agent-setup': return agentSetupBlock(block);
@@ -800,7 +800,10 @@
     document.addEventListener('click', e => {
       const btn = e.target.closest('.diagram-expand');
       if (!btn) return;
-      const svg = btn.parentElement.querySelector('.mermaid svg');
+      // เลือก SVG ของตัวแปรที่กำลังแสดงจริง (desktop/mobile) เพื่อขยายเป็นภาพที่ผู้ใช้เห็น
+      const wrap = btn.parentElement;
+      const source = [...wrap.querySelectorAll('.mermaid')].find(m => m.offsetParent !== null) || wrap.querySelector('.mermaid');
+      const svg = source?.querySelector('svg');
       if (!svg) return;
       openDiagramModal(svg, btn.dataset.diagramTitle || '');
     });
