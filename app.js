@@ -895,13 +895,23 @@
     return chunks;
   }
 
+  // บน Apple เครื่องเดียวมีเสียงไทย/อังกฤษหลายคุณภาพ — เลือกตัวคุณภาพสูง (Enhanced/Premium ที่ดาวน์โหลดแยก) ก่อนเสียงมาตรฐาน
+  // ไทย: Kanya (Enhanced) → Narisa (Enhanced) → ไทย Enhanced/Premium ตัวอื่น → ไทยตัวแรกที่เจอ
+  // Android ไม่กระทบ: Google ภาษาไทย ตรง exact match อยู่แล้วและไม่มีชื่อ Enhanced จึงตกเป็นตัวแรกเหมือนเดิม
+  function pickSpeakVoice(pool) {
+    return pool.find(v => (v.name || '').includes('Kanya (Enhanced)'))
+      ?? pool.find(v => (v.name || '').includes('Narisa (Enhanced)'))
+      ?? pool.find(v => /enhanced|premium/i.test(v.name || ''))
+      ?? pool[0]
+      ?? null;
+  }
   function resolveSpeakVoice(lang) {
     const voices = window.speechSynthesis.getVoices();
-    const target = (lang === 'th' ? 'th-th' : 'en-us');
+    const norm = v => (v.lang || '').toLowerCase().replace('_', '-');
+    const target = lang === 'th' ? 'th-th' : 'en-us';
     const prefix = lang === 'th' ? 'th' : 'en';
-    return voices.find(v => (v.lang || '').toLowerCase().replace('_', '-') === target)
-      || voices.find(v => (v.lang || '').toLowerCase().startsWith(prefix))
-      || null;
+    return pickSpeakVoice(voices.filter(v => norm(v) === target))
+      ?? pickSpeakVoice(voices.filter(v => norm(v).startsWith(prefix)));
   }
 
   function waitForVoices() {
