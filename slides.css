@@ -145,6 +145,7 @@
 .slide.active .slide-outcomes li:nth-child(4) { animation-delay: .47s; }
 .slide.active .slide-outcomes li:nth-child(5) { animation-delay: .54s; }
 .slide.active .slide-outcomes li:nth-child(6) { animation-delay: .61s; }
+.slide-output { margin:22px 0 0; padding:10px 14px; max-width:42ch; border-left:3px solid var(--primary); background:var(--surface-2); border-radius:0 8px 8px 0; color:var(--text); line-height:1.45; }
 
 .slide-link {
   display: inline-flex; align-items: center; gap: 6px; margin-top: 28px;

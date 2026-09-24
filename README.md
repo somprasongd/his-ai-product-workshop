@@ -4,7 +4,9 @@ A bilingual (Thai/English), static learning website for PM, BA, and Product Desi
 
 ## Learning design
 
-The course uses one continuous scenario — **US-001 OPD Patient Check-in Lite** — from requirement to Draft Merge Request. It intentionally excludes backend/database implementation and uses deterministic mock/synthetic data.
+The course uses one continuous scenario — **US-001 OPD Patient Check-in Lite** — from requirement and issue through a working prototype, review, merge, and developer handoff. The capstone then adds a small clinic-availability follow-up in the same flow, with a new issue/MR and regression evidence. Learners guide an AI coding agent and verify results without writing code themselves. The course excludes backend/database implementation and uses deterministic mock/synthetic data.
+
+Schedule: three core workshop days plus a separate three-hour capstone after the original US-001 MR is merged (about 20 hours of learning time in total).
 
 The experience combines:
 - a structured beginner path and prerequisites,
@@ -13,7 +15,7 @@ The experience combines:
 - expected-result reveals,
 - end-of-lesson checkpoints and wrap-ups,
 - browser-persisted progress,
-- a progressive-hint Capstone.
+- a progressive-hint Capstone that applies the full loop to new behavior on the merged prototype.
 
 ## Local preview
 
@@ -41,7 +43,9 @@ Expected repository:
 
 `https://github.com/somprasongd/his-ai-opd-checkin-starter`
 
-Learners can fork/clone it from GitHub, or change the Git remote and push it to the company self-hosted GitLab.
+Learners can fork/clone it from GitHub, or change the Git remote and push it to the company self-hosted GitLab. The starter is intentionally incomplete: the `/opd/check-in` route is a placeholder and the US-001 flow is built during the lessons. Its lockfile supports `npm ci`.
+
+The capstone brief is `docs/capstone/clinic-availability.md` in the starter. Begin it only after the original US-001 MR has been merged into the learner's repository.
 
 ## Agent instructions
 

@@ -18,24 +18,25 @@
     th: {
       start: 'เริ่มเรียน', continue: 'เรียนต่อจากที่ค้าง', curriculum: 'ดูหลักสูตร',
       duration: 'ระยะเวลา', audience: 'กลุ่มผู้เรียน', format: 'รูปแบบ',
-      audienceValue: 'PM · BA · Product Design', formatValue: '3 วัน · Hands-on · AI-assisted', durationValue: '≈ 18.5 ชั่วโมง',
+      audienceValue: 'PM · BA · Product Design', formatValue: '3 วัน + Capstone · Hands-on', durationValue: '≈ 20 ชั่วโมง',
       progress: 'ความคืบหน้า', complete: 'เรียนจบบทนี้', completed: 'เรียนจบแล้ว',
       next: 'บทถัดไป', previous: 'บทก่อนหน้า', copy: 'คัดลอก', copied: 'คัดลอกแล้ว',
       shareLink: 'แชร์บทเรียนนี้', linkCopied: 'คัดลอกลิงก์แล้ว',
       expected: 'ดูผลลัพธ์ที่คาดหวัง', hideExpected: 'ซ่อนผลลัพธ์',
       check: 'ตรวจคำตอบ', correct: 'ถูกต้อง — ไปต่อได้', incorrect: 'ยังไม่ใช่ ลองคิดจากหลักการในบทนี้อีกครั้ง',
       learned: 'เมื่อจบบทนี้ คุณจะ...', wrap: 'Wrap-up · สิ่งที่ควรจำ',
+      output: 'สิ่งที่จะส่งต่อจากบทนี้',
       practice: 'Practice', home: 'หน้าหลัก', allLessons: 'Learning Journey',
       heroTag: 'AI-assisted product development for non-developers',
-      heroLead: 'ฝึกใช้ Git, Worktree, AI Agent, Next.js literacy, Storybook, Mock Data, Debugging และ Merge Request ผ่านโจทย์ HIS เรื่องเดียวต่อเนื่อง',
+      heroLead: 'สร้างและส่งต่อ US-001 prototype ด้วย AI จากนั้นทำ Capstone เป็น Issue ใหม่เรื่องคลินิกไม่พร้อมรับ โดยพิสูจน์ว่า flow เดิมยังผ่าน',
       whyTitle: 'ออกแบบมาเพื่อ “กำกับ AI ให้ทำงานได้” ไม่ใช่เปลี่ยนทุกคนให้เป็น Developer',
-      whyText: 'เนื้อหาค่อย ๆ เพิ่มความซับซ้อน ใช้โจทย์ OPD Patient Check-in Lite เรื่องเดียว และทุก workshop บอกผลลัพธ์ที่คาดหวังอย่างชัดเจน',
+      whyText: 'บท 00–16 ใช้ US-001 ต่อเนื่อง แล้ว Capstone ประยุกต์ทักษะกับ Issue ใหม่ใน flow เดิม ทุก exercise ซ่อนผลลัพธ์ที่คาดหวังจนกว่าจะกดดู',
       cards: [
         ['หนึ่งโจทย์ต่อเนื่อง','ไม่เสียพลังกับการสลับบริบท ทุกบทต่อยอด US-001 เดิม'],
         ['Review ได้โดยไม่ต้องเขียนโค้ด','ใช้ Storybook, Browser, Error evidence และ git diff เป็นจุดตรวจ'],
         ['กลับมาเรียนต่อได้','บันทึก progress, ภาษา, theme และบทล่าสุดใน browser ของคุณ']
       ],
-      roadmapTitle: '3 วัน จาก Requirement ไปถึง Draft MR', roadmapText: 'แต่ละช่วงมี Concept → Demo → Guided Practice → Challenge → Review',
+      roadmapTitle: '3 วันหลัก + Capstone หลัง US-001 merge', roadmapText: 'US-001: Issue → Design → Flow → MR → Handoff · Capstone: Issue ใหม่ → ต่อเติม → ตรวจ regression → MR',
       prerequisites: 'Prerequisites', finalSummary: 'สรุปหลังเรียนครบ',
       guided: 'Guided Mode', hint: 'ดู Hint', guide: 'เปิด Step-by-step', closeMenu: 'ปิดเมนู',
       reset: 'รีเซ็ต Progress', resetConfirm: 'ต้องการลบสถานะการเรียนใน browser นี้หรือไม่?',
@@ -55,24 +56,25 @@
     en: {
       start: 'Start learning', continue: 'Continue where you left off', curriculum: 'View curriculum',
       duration: 'Duration', audience: 'Audience', format: 'Format',
-      audienceValue: 'PM · BA · Product Design', formatValue: '3 days · Hands-on · AI-assisted', durationValue: '≈ 18.5 hours',
+      audienceValue: 'PM · BA · Product Design', formatValue: '3 days + Capstone · Hands-on', durationValue: '≈ 20 hours',
       progress: 'Progress', complete: 'Mark lesson complete', completed: 'Completed',
       next: 'Next lesson', previous: 'Previous lesson', copy: 'Copy', copied: 'Copied',
       shareLink: 'Share this lesson', linkCopied: 'Link copied',
       expected: 'Reveal expected result', hideExpected: 'Hide expected result',
       check: 'Check answer', correct: 'Correct — keep going', incorrect: 'Not quite. Revisit the principle in this lesson and try again.',
       learned: 'By the end of this lesson, you will...', wrap: 'Wrap-up · What to remember',
+      output: 'Output to carry forward',
       practice: 'Practice', home: 'Home', allLessons: 'Learning Journey',
       heroTag: 'AI-assisted product development for non-developers',
-      heroLead: 'Learn Git, worktrees, AI agents, Next.js literacy, Storybook, mock data, debugging, and Merge Requests through one continuous HIS scenario.',
+      heroLead: 'Build and hand off the US-001 prototype with AI, then take on a new clinic-unavailability issue and prove the original flow still works.',
       whyTitle: 'Designed to help you supervise AI work — not turn everyone into a developer',
-      whyText: 'Complexity grows gradually, every lesson continues the same OPD Patient Check-in Lite scenario, and every exercise shows the expected outcome.',
+      whyText: 'Lessons 00–16 build US-001; the capstone applies the same skills to a new issue in that flow. Exercise results stay hidden until you reveal them.',
       cards: [
         ['One continuous scenario','No context switching. Every lesson extends the same US-001.'],
         ['Review without deep coding','Use Storybook, browser evidence, errors, and git diff as review surfaces.'],
         ['Resume anytime','Progress, language, theme, and last lesson are stored in your browser.']
       ],
-      roadmapTitle: '3 days from Requirement to Draft MR', roadmapText: 'Each section follows Concept → Demo → Guided Practice → Challenge → Review',
+      roadmapTitle: '3 core days + Capstone after US-001 merges', roadmapText: 'US-001: Issue → Design → Flow → MR → Handoff · Capstone: new issue → change → regression → MR',
       prerequisites: 'Prerequisites', finalSummary: 'Final learning summary',
       guided: 'Guided Mode', hint: 'Reveal hint', guide: 'Show step-by-step', closeMenu: 'Close menu',
       reset: 'Reset progress', resetConfirm: 'Clear learning progress stored in this browser?',
@@ -91,16 +93,31 @@
     }
   };
 
+  function storedJson(key, fallback) {
+    try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
+    catch { return fallback; }
+  }
+  const storedArray = key => {
+    const value = storedJson(key, []);
+    return Array.isArray(value) ? value : [];
+  };
+  const storedObject = key => {
+    const value = storedJson(key, {});
+    return value && typeof value === 'object' && !Array.isArray(value) ? value : {};
+  };
+  const savedLang = localStorage.getItem(STORAGE.lang);
+  const savedTheme = localStorage.getItem(STORAGE.theme);
+
   const state = {
-    lang: localStorage.getItem(STORAGE.lang) || ((navigator.language || 'en').toLowerCase().startsWith('th') ? 'th' : 'en'),
-    theme: localStorage.getItem(STORAGE.theme) || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
-    completed: new Set(JSON.parse(localStorage.getItem(STORAGE.completed) || '[]')),
-    quiz: JSON.parse(localStorage.getItem(STORAGE.quiz) || '{}'),
+    lang: savedLang === 'th' || savedLang === 'en' ? savedLang : ((navigator.language || 'en').toLowerCase().startsWith('th') ? 'th' : 'en'),
+    theme: savedTheme === 'dark' || savedTheme === 'light' ? savedTheme : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
+    completed: new Set(storedArray(STORAGE.completed)),
+    quiz: storedObject(STORAGE.quiz),
     last: localStorage.getItem(STORAGE.last) || 'prerequisites',
     promptLang: localStorage.getItem(STORAGE.promptLang) || '',
     agentTool: localStorage.getItem(STORAGE.agentTool) || '',
     repoHost: localStorage.getItem(STORAGE.repoHost) || '',
-    practice: JSON.parse(localStorage.getItem(STORAGE.practice) || '{}')
+    practice: storedObject(STORAGE.practice)
   };
 
   const esc = (s='') => String(s).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
@@ -122,17 +139,6 @@
     .replace(/`([^`]+)`/g, (_, c) => `<code class="inline-code">${c}</code>`)
     .replace(/\*\*([^*]+)\*\*/g, (_, c) => `<strong>${c}</strong>`)
     .replace(/(?<!\/)\blocalhost:(\d{2,5})\b/g, (m, port) => `<a href="http://localhost:${port}" target="_blank" rel="noreferrer noopener">localhost:${port}</a>`);
-  const CMD_RE = /^(git|npm|npx|node|cd|ls|mkdir|curl|code|codex|claude|pnpm|yarn|touch|cat)\b/;
-  const extractCommands = raw => {
-    const cmds = [];
-    const codeRe = /`([^`]+)`/g;
-    let m;
-    while ((m = codeRe.exec(raw))) {
-      const c = m[1];
-      if (CMD_RE.test(c) || /\s--?\w/.test(c)) cmds.push(c);
-    }
-    return cmds;
-  };
   const t = obj => typeof obj === 'string' ? obj : (obj?.[state.lang] ?? obj?.en ?? '');
   const U = key => ui[state.lang][key];
 
@@ -238,7 +244,7 @@
             <button class="lesson-link" id="resetBtn" style="width:100%;border:0;cursor:pointer;text-align:left;background:transparent"><span class="lesson-num">↺</span><span>${U('reset')}</span></button>
           </nav>
         </aside>
-        <main class="main" id="main">${content}</main>
+        <main class="main" id="main" tabindex="-1">${content}</main>
       </div>
     </div>`;
   }
@@ -246,17 +252,28 @@
   function home() {
     const hasProgress = state.completed.size > 0;
     const cards = U('cards').map((c,i) => `<article class="card"><div class="card-icon">${['01','02','03'][i]}</div><h3>${esc(c[0])}</h3><p>${esc(c[1])}</p></article>`).join('');
-    const dayCards = [
-      ['Day 1','Mental Model → Requirement → Git → Worktree → Agent Plan','5 h'],
-      ['Day 2','Next.js Literacy → Design System → Components → Storybook','5.5 h'],
-      ['Day 3','Mocks → Integration → Debug → Delivery → Agent Skills','5.5 h']
-    ].map(d => `<article class="card track-card"><span class="day">${d[0]}</span><h3>${d[1]}</h3><p>${d[2]}</p></article>`).join('');
+    const dayCards = (state.lang==='th' ? [
+      ['วันที่ 1','Requirement → Issue → Git → Worktree → Agent Plan','5 ชม.'],
+      ['วันที่ 2','Next.js → Design → Component/State → Storybook','5.5 ชม.'],
+      ['วันที่ 3','Mock → Flow → Debug → MR → Handoff','5.5 ชม.']
+    ] : [
+      ['Day 1','Requirement → Issue → Git → Worktree → Agent Plan','5 h'],
+      ['Day 2','Next.js → Design → Component/State → Storybook','5.5 h'],
+      ['Day 3','Mocks → Flow → Debug → MR → Handoff','5.5 h']
+    ]).map(d => `<article class="card track-card"><span class="day">${d[0]}</span><h3>${d[1]}</h3><p>${d[2]}</p></article>`).join('');
+    const journey = state.lang==='th' ? [
+      ['Requirement & Git','ระบุผลลัพธ์ก่อนสร้าง'],['Component & Storybook','ตรวจ state ที่มีความหมาย'],
+      ['Debug & Diff','ใช้หลักฐานก่อนรับงาน'],['MR & Handoff','ส่งต่อให้ Developer ทำต่อ']
+    ] : [
+      ['Requirement & Git','Think before building'],['Components & Storybook','Review meaningful states'],
+      ['Debug & Diff','Evidence before acceptance'],['MR & Handoff','Evidence developers can use']
+    ];
     const html = `<section class="hero">
       <div class="hero-orb orb-a"></div><div class="hero-orb orb-b"></div>
       <div class="hero-inner">
         <div>
           <span class="eyebrow">${icon('spark',15)} ${U('heroTag')}</span>
-          <h1>Build products with <span class="accent">AI Agents</span> — with control.</h1>
+          <h1>${state.lang==='th'?'สร้าง prototype ที่ส่งต่อได้ด้วย <span class="accent">AI Agent</span>':'Build a handoff-ready prototype with <span class="accent">AI agents</span>'}</h1>
           <p class="lead">${U('heroLead')}</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#/lesson/${hasProgress?state.last:'prerequisites'}">${hasProgress?U('continue'):U('start')} ${icon('arrow',17)}</a>
@@ -266,10 +283,7 @@
         </div>
         <div class="hero-panel" aria-label="Learning journey preview">
           <div class="journey-mini">
-            <div class="journey-step"><span class="dot">1</span><div><strong>Requirement & Git</strong><small>Think before code</small></div><span>→</span></div>
-            <div class="journey-step"><span class="dot">2</span><div><strong>Components & Storybook</strong><small>Review meaningful states</small></div><span>→</span></div>
-            <div class="journey-step"><span class="dot">3</span><div><strong>Debug & Diff</strong><small>Evidence before trust</small></div><span>→</span></div>
-            <div class="journey-step"><span class="dot">4</span><div><strong>Draft MR</strong><small>Developer-ready handoff</small></div><span>✓</span></div>
+            ${journey.map((step,i)=>`<div class="journey-step"><span class="dot">${i+1}</span><div><strong>${step[0]}</strong><small>${step[1]}</small></div><span>${i===3?'✓':'→'}</span></div>`).join('')}
           </div>
         </div>
       </div>
@@ -277,7 +291,7 @@
     <div class="content">
       <section class="section"><div class="section-head"><span class="eyebrow">Learning design</span><h2>${U('whyTitle')}</h2><p>${U('whyText')}</p></div><div class="grid-3">${cards}</div></section>
       <section class="section" id="curriculum"><div class="section-head"><span class="eyebrow">Course map</span><h2>${U('roadmapTitle')}</h2><p>${U('roadmapText')}</p></div><div class="grid-3">${dayCards}</div></section>
-      <section class="section"><div class="final-summary"><span class="eyebrow">Capstone</span><h2>OPD Patient Check-in Lite</h2><p>${state.lang==='th'?'โจทย์ HIS ง่ายพอสำหรับผู้เริ่มต้น แต่ครอบคลุม Search, UI states, validation, confirmation, mock, Storybook, debugging, diff และ MR ครบวงจร':'A beginner-friendly HIS scenario that still covers search, UI states, validation, confirmation, mocks, Storybook, debugging, diff, and MR end to end.'}</p><div class="hero-actions"><a class="btn btn-primary" href="#/lesson/capstone">${state.lang==='th'?'ดู Capstone':'View Capstone'} ${icon('arrow',17)}</a></div></div></section>
+      <section class="section"><div class="final-summary"><span class="eyebrow">Capstone · 3 h</span><h2>${state.lang==='th'?'งานต่อยอด: คลินิกไม่พร้อมรับ Check-in':'Follow-up: unavailable clinic'}</h2><p>${state.lang==='th'?'เปิด Issue ใหม่บน US-001 ที่ merge แล้ว เพิ่ม mock state และ UX สำหรับคลินิกไม่พร้อมรับ พร้อมหลักฐานว่า flow เดิมไม่เสีย':'File a new issue on merged US-001, add mock states and UX for an unavailable clinic, and prove the original flow still works.'}</p><div class="hero-actions"><a class="btn btn-primary" href="#/lesson/capstone">${state.lang==='th'?'ดู Capstone':'View Capstone'} ${icon('arrow',17)}</a></div></div></section>
     </div>`;
     return shell(html, '');
   }
@@ -330,16 +344,14 @@
   }
 
   function practiceBlock(block, lessonId) {
-    const checked = (lessonId && state.practice[lessonId]) || [];
+    const checked = lessonId && Array.isArray(state.practice[lessonId]) ? state.practice[lessonId] : [];
     const items = t(block.steps).map((raw, i) => {
-      const cmdHtml = extractCommands(raw).map(c => codeBlock(c, state.lang==='th'?'คำสั่ง':'command')).join('');
       const done = checked.includes(i);
       return `<li class="check-item${done?' done':''}">
         <label class="check-row">
           <input type="checkbox" data-practice="${esc(lessonId||'')}" data-step="${i}"${done?' checked':''}>
           <span class="check-text">${rich(raw)}</span>
         </label>
-        ${cmdHtml}
       </li>`;
     }).join('');
     const count = checked.length;
@@ -349,7 +361,7 @@
       ${block.code ? codeBlock(block.code, 'commands') : ''}
       <ul class="checklist" data-practice-list>${items}</ul>
       <span class="check-count" role="status">${count}/${block.steps.th.length}</span>
-      <div class="cmd-expect"><strong>${state.lang==='th'?'ผลลัพธ์ที่คาดหวัง':'Expected result'}</strong> ${rich(t(block.expected))}</div>
+      <div class="reveal"><button class="btn btn-secondary btn-small reveal-btn" type="button" aria-expanded="false">${U('expected')}</button><div class="reveal-panel"><strong>${state.lang==='th'?'ผลลัพธ์ที่คาดหวัง':'Expected result'}</strong><p>${rich(t(block.expected))}</p></div></div>
     </section>`;
   }
 
@@ -507,6 +519,7 @@
         </div>
         <h1 class="lesson-title">${esc(t(lesson.title))}</h1>
         <p class="lesson-intro">${esc(t(lesson.intro))}</p>
+        <p class="lesson-output"><strong>${U('output')}:</strong> ${esc(t(course.journey[lesson.id]))}</p>
         <h3>${U('learned')}</h3>
         <div class="lesson-goals">${t(lesson.outcomes).map(x=>`<div class="goal"><span class="goal-mark">${icon('check',16)}</span><span>${rich(x)}</span></div>`).join('')}</div>
       </header>
@@ -612,6 +625,8 @@
   }
 
   function route() {
+    const skip = document.querySelector('.skip-link');
+    if (skip) skip.textContent = state.lang === 'th' ? 'ข้ามไปเนื้อหาหลัก' : 'Skip to main content';
     const hash = location.hash || '#/';
     if (hash.startsWith('#/share/')) {
       const id = hash.split('/')[2];
@@ -631,6 +646,10 @@
   }
 
   function bind() {
+    document.querySelector('.skip-link')?.addEventListener('click', e=>{
+      e.preventDefault();
+      document.getElementById('main')?.focus();
+    });
     document.getElementById('themeBtn')?.addEventListener('click',()=>setTheme(state.theme==='dark'?'light':'dark'));
     document.getElementById('langBtn')?.addEventListener('click',()=>{
       state.lang = state.lang==='th'?'en':'th';
@@ -647,8 +666,12 @@
       applyGlossaryFilter('');
     }
     document.querySelectorAll('.reveal-btn').forEach(btn=>btn.addEventListener('click',()=>{
-      const r=btn.closest('.reveal'); r.classList.toggle('open');
-      if (r.querySelector('.reveal-panel') && btn.textContent.trim()===U('expected')) btn.textContent=r.classList.contains('open')?U('hideExpected'):U('expected');
+      const r=btn.closest('.reveal');
+      r.classList.toggle('open');
+      const open=r.classList.contains('open');
+      btn.setAttribute('aria-expanded',String(open));
+      if (btn.closest('.practice')) btn.textContent=open?U('hideExpected'):U('expected');
+      else btn.textContent=open?(state.lang==='th'?'ซ่อนขั้นตอน':'Hide step-by-step'):U('guide');
     }));
     document.querySelectorAll('.quiz-btn').forEach(btn=>btn.addEventListener('click',()=>{
       const lessonId=btn.dataset.lesson; const selected=document.querySelector(`input[name="quiz-${lessonId}"]:checked`);
@@ -661,7 +684,7 @@
     document.querySelectorAll('.practice input[type="checkbox"]').forEach(cb=>cb.addEventListener('change',()=>{
       const lessonId=cb.dataset.practice; const step=Number(cb.dataset.step);
       if(!lessonId) return;
-      const list=state.practice[lessonId]||(state.practice[lessonId]=[]);
+      const list=Array.isArray(state.practice[lessonId]) ? state.practice[lessonId] : (state.practice[lessonId]=[]);
       const pos=list.indexOf(step);
       if(cb.checked && pos<0) list.push(step);
       else if(!cb.checked && pos>=0) list.splice(pos,1);
