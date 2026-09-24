@@ -9,13 +9,14 @@
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="stylesheet" href="./styles.css?v=20260924d" />
-  <link rel="stylesheet" href="./slides.css?v=20260924i" />
+  <link rel="stylesheet" href="./slides.css?v=20260924n" />
 </head>
 <body class="slides-body">
   <div class="deck">
     <header class="deck-bar">
       <a class="deck-home" href="index.html" title="Back to course">◂ AI Product Workshop</a>
       <div class="deck-actions">
+        <div class="deck-speech" id="slideSpeech"></div>
         <span class="deck-counter" id="counter">01 / 01</span>
         <button class="deck-btn" id="langBtn" aria-label="Language">TH</button>
         <button class="deck-btn" id="themeBtn" aria-label="Theme">☾</button>
@@ -26,6 +27,7 @@
     <button class="nav-arrow nav-prev" id="prevBtn" aria-label="Previous slide">‹</button>
     <button class="nav-arrow nav-next" id="nextBtn" aria-label="Next slide">›</button>
     <nav class="dots" id="dots" aria-label="Slides"></nav>
+    <div class="deck-toast" id="slideToast" role="status" aria-live="polite"></div>
   </div>
   <script src="./content.js?v=20260924d"></script>
   <script type="module">
@@ -34,6 +36,7 @@
     window.mermaid = mermaid;
     window.dispatchEvent(new Event('mermaid-ready'));
   </script>
-  <script src="./slides.js?v=20260924i" defer></script>
+  <script src="./speech-player.js?v=20260924n" defer></script>
+  <script src="./slides.js?v=20260924n" defer></script>
 </body>
 </html>

@@ -8,6 +8,8 @@ The course uses one continuous scenario — **US-001 OPD Patient Check-in Lite**
 
 Schedule: three core workshop days plus a separate three-hour capstone after the original US-001 MR is merged (about 20 hours of learning time in total).
 
+Facilitator scripts for every slide are available in [Thai](SPEAKER_NOTES.th.md) and [English](SPEAKER_NOTES.en.md). They follow the 21-slide order in `slides.html` and draw on the lesson content in `content.js`. The slide deck reads these files aloud in the selected language using the browser's installed voices. Narration stops when the slide or language changes.
+
 The experience combines:
 - a structured beginner path and prerequisites,
 - visual process diagrams,

@@ -1,14 +1,16 @@
 (() => {
   const course = window.COURSE;
-  const STORAGE = { lang: 'his-ai-course.lang', theme: 'his-ai-course.theme' };
+  const STORAGE = { lang: 'his-ai-course.lang', theme: 'his-ai-course.theme', speakRate: 'his-ai-course.speakRate' };
   const savedLang = localStorage.getItem(STORAGE.lang);
   const savedTheme = localStorage.getItem(STORAGE.theme);
   const state = {
     lang: savedLang === 'th' || savedLang === 'en' ? savedLang : ((navigator.language || 'en').toLowerCase().startsWith('th') ? 'th' : 'en'),
     theme: savedTheme === 'dark' || savedTheme === 'light' ? savedTheme : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
-    i: 0
+    i: 0,
+    speakRate: window.CourseSpeech.rates.includes(parseFloat(localStorage.getItem(STORAGE.speakRate))) ? parseFloat(localStorage.getItem(STORAGE.speakRate)) : 1
   };
   document.documentElement.dataset.theme = state.theme;
+  document.documentElement.lang = state.lang;
 
   // ---- icon library for non-lesson slides (cover, roadmap, closing) ----
   const ICONS = {
@@ -99,6 +101,110 @@
   const counterEl = document.getElementById('counter');
   const langBtn = document.getElementById('langBtn');
   const themeBtn = document.getElementById('themeBtn');
+  const speechEl = document.getElementById('slideSpeech');
+  const speechToast = document.getElementById('slideToast');
+  const notes = { th: null, en: null };
+  let speakingSlide = null;
+  const notesError = { th: false, en: false };
+  const speech = window.CourseSpeech.createPlayer({
+    onState: renderSlideSpeech,
+    onProgress: updateSlideSpeechProgress,
+    onError: code => showSlideToast(code === 'noVoice'
+      ? (state.lang === 'th' ? 'ไม่พบเสียงภาษาไทยบนอุปกรณ์นี้' : 'No English voice is installed on this device')
+      : (state.lang === 'th' ? 'เล่นเสียงไม่สำเร็จ ลองอีกครั้ง' : 'Playback failed. Please try again.'))
+  });
+
+  function showSlideToast(message) {
+    speechToast.textContent = message;
+    speechToast.classList.add('show');
+    clearTimeout(showSlideToast.timer);
+    showSlideToast.timer = setTimeout(() => speechToast.classList.remove('show'), 4000);
+  }
+
+  function parseSpeakerNotes(markdown) {
+    const result = [];
+    const sections = markdown.split(/^## (?:สไลด์|Slide) (\d{2})[^\n]*$/gm);
+    for (let i = 1; i < sections.length; i += 2) {
+      const number = Number(sections[i]);
+      const paragraphs = sections[i + 1].trim().split(/\n\s*\n/)
+        .map(p => p.trim().replace(/^“|”$/g, '').replace(/\*\*|`/g, '').replace(/\s+/g, ' ').trim())
+        .filter(Boolean);
+      result[number - 1] = paragraphs;
+    }
+    if (result.length !== SLIDES.length || Array.from({ length: SLIDES.length }, (_, i) => result[i]).some(p => !p?.length)) throw new Error('Speaker notes do not match the slide deck');
+    return result;
+  }
+
+  async function loadSpeakerNotes(lang) {
+    try {
+      const response = await fetch(`./SPEAKER_NOTES.${lang}.md`);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      notes[lang] = parseSpeakerNotes(await response.text());
+    } catch (error) {
+      console.warn('Unable to load speaker notes', lang, error);
+      notesError[lang] = true;
+    }
+    renderSlideSpeech();
+  }
+
+  function renderSlideSpeech() {
+    if (!speechEl) return;
+    const focused = speechEl.contains(document.activeElement) ? document.activeElement : null;
+    const focusSelector = focused?.matches('[data-speech-rate]') ? '[data-speech-rate]'
+      : focused?.matches('[data-speech-stop]') ? (speech.active ? '[data-speech-stop]' : '[data-speech-start]')
+      : focused?.matches('[data-speech-pause], [data-speech-start]') ? (speech.active ? '[data-speech-pause]' : '[data-speech-start]')
+      : null;
+    const th = state.lang === 'th';
+    if (!speech.supported) { speechEl.hidden = true; return; }
+    speechEl.hidden = false;
+    const pct = speech.chunks.length ? Math.min(100, Math.round(speech.done / speech.chunks.length * 100)) : 0;
+    if (speech.active && speakingSlide === state.i) {
+      speechEl.innerHTML = `<div class="speak-panel" role="group" aria-label="${th ? 'ควบคุมเสียงบทพูด' : 'Slide narration controls'}">
+        <button class="deck-speech-btn" type="button" data-speech-pause ${speech.loading ? 'disabled' : ''} aria-label="${speech.paused ? (th ? 'เล่นต่อ' : 'Resume') : (th ? 'พัก' : 'Pause')}">${speech.loading ? '…' : speech.paused ? '▶' : 'Ⅱ'} <span>${speech.loading ? (th ? 'เตรียมเสียง' : 'Preparing') : speech.paused ? (th ? 'เล่นต่อ' : 'Resume') : (th ? 'พัก' : 'Pause')}</span></button>
+        <button class="deck-speech-btn" type="button" data-speech-stop aria-label="${th ? 'หยุดเสียง' : 'Stop narration'}">■ <span>${th ? 'หยุด' : 'Stop'}</span></button>
+        <select class="deck-speech-rate" data-speech-rate aria-label="${th ? 'ความเร็วเสียง' : 'Narration speed'}">${window.CourseSpeech.rates.map(r => `<option value="${r}" ${speech.rate === r ? 'selected' : ''}>${r}×</option>`).join('')}</select>
+        <span class="speak-progress" role="progressbar" aria-label="${th ? 'ความคืบหน้าบทพูด' : 'Narration progress'}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><i style="width:${pct}%"></i></span>
+      </div>`;
+      if (focusSelector) {
+        const target = speechEl.querySelector(focusSelector);
+        (target?.disabled ? speechEl.querySelector('[data-speech-stop]') : target)?.focus({ preventScroll: true });
+      }
+      return;
+    }
+    const unavailable = notesError[state.lang];
+    const loading = !notes[state.lang] && !unavailable;
+    speechEl.innerHTML = `<button class="deck-speech-btn deck-speech-start" type="button" data-speech-start ${loading || unavailable ? 'disabled' : ''} aria-label="${th ? 'เล่นบทพูดสไลด์นี้' : 'Play this slide narration'}">▶ <span>${unavailable ? (th ? 'ไม่มีบทพูด' : 'Notes unavailable') : loading ? (th ? 'โหลดบทพูด…' : 'Loading notes…') : (th ? 'ฟังบทพูด' : 'Play narration')}</span></button>`;
+    if (focusSelector) speechEl.querySelector(focusSelector)?.focus({ preventScroll: true });
+  }
+
+  function updateSlideSpeechProgress() {
+    const pct = speech.chunks.length ? Math.min(100, Math.round(speech.done / speech.chunks.length * 100)) : 0;
+    const bar = speechEl.querySelector('.speak-progress');
+    if (!bar) return;
+    bar.setAttribute('aria-valuenow', String(pct));
+    bar.querySelector('i').style.width = `${pct}%`;
+  }
+
+  speechEl.addEventListener('click', event => {
+    if (event.target.closest('[data-speech-start]')) {
+      if (!notes[state.lang]?.[state.i]) return;
+      speakingSlide = state.i;
+      speech.play(notes[state.lang][state.i], state.lang, state.speakRate);
+    } else if (event.target.closest('[data-speech-pause]')) {
+      if (speech.paused) speech.resume(); else speech.pause();
+    } else if (event.target.closest('[data-speech-stop]')) {
+      speech.stop();
+      speakingSlide = null;
+    }
+  });
+  speechEl.addEventListener('change', event => {
+    if (!event.target.matches('[data-speech-rate]')) return;
+    const rate = Number(event.target.value);
+    if (!window.CourseSpeech.rates.includes(rate)) return;
+    state.speakRate = rate;
+    localStorage.setItem(STORAGE.speakRate, String(rate));
+    speech.setRate(rate);
+  });
 
   function esc(str) { return String(str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
@@ -378,12 +484,15 @@
     langBtn.textContent = state.lang === 'th' ? 'TH' : 'EN';
     themeBtn.textContent = state.theme === 'dark' ? '☀' : '☾';
     goTo(state.i, true);
+    renderSlideSpeech();
     renderMermaid();
   }
 
   function goTo(i) {
     const n = SLIDES.length;
-    state.i = (i + n) % n;
+    const next = (i + n) % n;
+    if (next !== state.i) { speech.stop(); speakingSlide = null; }
+    state.i = next;
     [...stage.children].forEach((el, idx) => {
       el.classList.remove('active', 'is-prev', 'is-next');
       if (el.classList.contains('content-open')) {
@@ -397,6 +506,7 @@
     });
     [...dotsEl.children].forEach((d, idx) => d.classList.toggle('active', idx === state.i));
     counterEl.textContent = `${String(state.i + 1).padStart(2, '0')} / ${String(SLIDES.length).padStart(2, '0')}`;
+    renderSlideSpeech();
   }
 
   document.getElementById('prevBtn').addEventListener('click', () => goTo(state.i - 1));
@@ -407,6 +517,7 @@
   });
 
   window.addEventListener('keydown', e => {
+    if (e.target.closest('button, a, input, select, textarea, [contenteditable="true"]')) return;
     if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); goTo(state.i + 1); }
     else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); goTo(state.i - 1); }
     else if (e.key === 'Home') goTo(0);
@@ -427,8 +538,11 @@
   }, { passive: true });
 
   langBtn.addEventListener('click', () => {
+    speech.stop();
+    speakingSlide = null;
     state.lang = state.lang === 'th' ? 'en' : 'th';
     localStorage.setItem(STORAGE.lang, state.lang);
+    document.documentElement.lang = state.lang;
     render();
   });
   themeBtn.addEventListener('click', () => {
@@ -445,5 +559,8 @@
   document.getElementById('fsBtn').addEventListener('click', toggleFullscreen);
 
   window.addEventListener('mermaid-ready', renderMermaid);
+  window.addEventListener('pagehide', () => speech.stop());
   render();
+  loadSpeakerNotes('th');
+  loadSpeakerNotes('en');
 })();

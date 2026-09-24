@@ -23,8 +23,9 @@
       progress: 'ความคืบหน้า', complete: 'เรียนจบบทนี้', completed: 'เรียนจบแล้ว',
       next: 'บทถัดไป', previous: 'บทก่อนหน้า', copy: 'คัดลอก', copied: 'คัดลอกแล้ว',
       shareLink: 'แชร์บทเรียนนี้', linkCopied: 'คัดลอกลิงก์แล้ว',
-      listen: 'ฟังเนื้อหา', speakPause: 'พัก', speakResume: 'เล่นต่อ', speakStop: 'หยุด', speakSpeed: 'ความเร็วอ่าน', speakControls: 'ตัวควบคุมการฟังเนื้อหา', speakProgress: 'ความคืบหน้าการอ่าน',
+      listen: 'ฟังเนื้อหา', speakLoading: 'กำลังเตรียมเสียง', speakPause: 'พัก', speakResume: 'เล่นต่อ', speakStop: 'หยุด', speakSpeed: 'ความเร็วอ่าน', speakControls: 'ตัวควบคุมการฟังเนื้อหา', speakProgress: 'ความคืบหน้าการอ่าน',
       noVoice: 'ไม่พบเสียงอ่านภาษาไทยบนอุปกรณ์นี้ ลองติดตั้งเสียงภาษาไทยในตั้งค่าระบบของอุปกรณ์ แล้วกดฟังอีกครั้ง',
+      speechFailed: 'เล่นเสียงไม่สำเร็จ ลองกดเล่นอีกครั้งหรือเปลี่ยนเสียงในตั้งค่าระบบ',
       expected: 'ดูผลลัพธ์ที่คาดหวัง', hideExpected: 'ซ่อนผลลัพธ์',
       check: 'ตรวจคำตอบ', correct: 'ถูกต้อง — ไปต่อได้', incorrect: 'ยังไม่ใช่ ลองคิดจากหลักการในบทนี้อีกครั้ง',
       learned: 'เมื่อจบบทนี้ คุณจะ...', wrap: 'Wrap-up · สิ่งที่ควรจำ',
@@ -63,8 +64,9 @@
       progress: 'Progress', complete: 'Mark lesson complete', completed: 'Completed',
       next: 'Next lesson', previous: 'Previous lesson', copy: 'Copy', copied: 'Copied',
       shareLink: 'Share this lesson', linkCopied: 'Link copied',
-      listen: 'Listen', speakPause: 'Pause', speakResume: 'Resume', speakStop: 'Stop', speakSpeed: 'Reading speed', speakControls: 'Listen playback controls', speakProgress: 'Reading progress',
+      listen: 'Listen', speakLoading: 'Preparing voice', speakPause: 'Pause', speakResume: 'Resume', speakStop: 'Stop', speakSpeed: 'Reading speed', speakControls: 'Listen playback controls', speakProgress: 'Reading progress',
       noVoice: 'No text-to-speech voice for this language was found on your device. Install one in your device settings, then try again.',
+      speechFailed: 'Playback failed. Try again or choose another voice in your device settings.',
       expected: 'Reveal expected result', hideExpected: 'Hide expected result',
       check: 'Check answer', correct: 'Correct — keep going', incorrect: 'Not quite. Revisit the principle in this lesson and try again.',
       learned: 'By the end of this lesson, you will...', wrap: 'Wrap-up · What to remember',
@@ -167,11 +169,11 @@
 
   const promptLang = () => state.promptLang || state.lang;
 
-  function showToast(message) {
+  function showToast(message, duration = 1500) {
     toast.textContent = message;
     toast.classList.add('show');
     clearTimeout(showToast.timer);
-    showToast.timer = setTimeout(() => toast.classList.remove('show'), 1500);
+    showToast.timer = setTimeout(() => toast.classList.remove('show'), duration);
   }
 
   function setTheme(theme) {
@@ -848,98 +850,33 @@
     copyText(url, U('linkCopied'));
   }
 
-  // ---- ฟังเนื้อหาบทเรียนด้วย Web Speech API (speechSynthesis) ----
-  const speech = { supported: 'speechSynthesis' in window, active: false, paused: false, done: 0, gen: 0, chunks: [], voice: null, rate: 1, watch: null };
-  const SPEAK_RATES = [0.75, 1, 1.25, 1.5];
+  // Shared speech player keeps the lesson and slide controls in sync with browser voices.
+  const speech = window.CourseSpeech.createPlayer({
+    onState: () => renderSpeakArea(),
+    onProgress: () => updateSpeakProgress(),
+    onError: code => showToast(U(code === 'noVoice' ? 'noVoice' : 'speechFailed'), 5000)
+  });
+  const SPEAK_RATES = window.CourseSpeech.rates;
   const SPEAK_SELECTOR = 'h1, h2, h3, p, li, summary, .callout-title, .goal, .cmd-expect, .option, .compare > strong, .prompt-after > strong, .practice-label';
-  // ข้ามทุกอย่างที่ "มองไม่เห็นบนจอ" (เฉลยที่ยังซ่อน, details ที่ปิด, panel ที่ไม่ได้เลือก) และโค้ด/ไดอะแกรมที่อ่านเป็นเสียงแล้วไม่มีความหมาย
+  // Read visible prose only, leaving hidden answers, code, and diagrams to visual review.
   const SPEAK_SKIP = '.reveal:not(.open), details:not([open]), [hidden], .code-wrap, .mermaid, .diagram, .prompt-hint';
-  // Chrome หยุดพูดกลาง utterance ที่ยาว จึงตัดเป็นท่อนสั้นแล้วเข้าคิวต่อกัน
-  const SPEAK_CHUNK_MAX = 200;
 
   function collectSpeakables(root) {
     return [...root.querySelectorAll(SPEAK_SELECTOR)]
       .filter(el => !el.closest(SPEAK_SKIP))
-      // อ่านเฉพาะโหนดใบ (ไม่มีลูกที่ match) เพื่อไม่ให้อ่านข้อความเดิมซ้ำจากทั้งแม่ทั้งลูก
       .filter(el => !el.querySelector(SPEAK_SELECTOR))
       .map(el => el.textContent.replace(/\s+/g, ' ').trim())
       .filter(Boolean);
   }
 
-  function segmentSpeakText(text) {
-    const out = [];
-    for (const sentence of text.split(/(?<=[.!?])\s+/)) {
-      let seg = sentence.trim();
-      // ภาษาไทยมักไม่มีจุด/ช่องว่าง ผ่าตามช่องว่างที่หาได้ ไม่งั้นตัดที่ความยาวกำหนด
-      while (seg.length > SPEAK_CHUNK_MAX) {
-        let cut = seg.lastIndexOf(' ', SPEAK_CHUNK_MAX);
-        if (cut < SPEAK_CHUNK_MAX * 0.5) cut = SPEAK_CHUNK_MAX;
-        out.push(seg.slice(0, cut).trim());
-        seg = seg.slice(cut).trim();
-      }
-      if (seg) out.push(seg);
-    }
-    return out;
-  }
-
-  function buildSpeakChunks(texts) {
-    const chunks = [];
-    let cur = '';
-    for (const text of texts) {
-      for (const seg of segmentSpeakText(text)) {
-        if (cur && cur.length + seg.length + 1 > SPEAK_CHUNK_MAX) { chunks.push(cur); cur = ''; }
-        cur = cur ? `${cur} ${seg}` : seg;
-      }
-    }
-    if (cur) chunks.push(cur);
-    return chunks;
-  }
-
-  // บน Apple เครื่องเดียวมีเสียงไทย/อังกฤษหลายคุณภาพ — เลือกตัวคุณภาพสูง (Enhanced/Premium ที่ดาวน์โหลดแยก) ก่อนเสียงมาตรฐาน
-  // ไทย: Kanya (Enhanced) → Narisa (Enhanced) → ไทย Enhanced/Premium ตัวอื่น → ไทยตัวแรกที่เจอ
-  // Android ไม่กระทบ: Google ภาษาไทย ตรง exact match อยู่แล้วและไม่มีชื่อ Enhanced จึงตกเป็นตัวแรกเหมือนเดิม
-  function pickSpeakVoice(pool) {
-    return pool.find(v => (v.name || '').includes('Kanya (Enhanced)'))
-      ?? pool.find(v => (v.name || '').includes('Narisa (Enhanced)'))
-      ?? pool.find(v => /enhanced|premium/i.test(v.name || ''))
-      ?? pool[0]
-      ?? null;
-  }
-  function resolveSpeakVoice(lang) {
-    const voices = window.speechSynthesis.getVoices();
-    const norm = v => (v.lang || '').toLowerCase().replace('_', '-');
-    const target = lang === 'th' ? 'th-th' : 'en-us';
-    const prefix = lang === 'th' ? 'th' : 'en';
-    return pickSpeakVoice(voices.filter(v => norm(v) === target))
-      ?? pickSpeakVoice(voices.filter(v => norm(v).startsWith(prefix)));
-  }
-
-  function waitForVoices() {
-    return new Promise(resolve => {
-      const synth = window.speechSynthesis;
-      if (synth.getVoices().length) return resolve(synth.getVoices());
-      let settled = false;
-      const finish = () => {
-        if (settled) return;
-        settled = true;
-        synth.removeEventListener('voiceschanged', finish);
-        resolve(synth.getVoices());
-      };
-      synth.addEventListener('voiceschanged', finish);
-      // iOS โหลดรายชื่อเสียงหลัง utterance แรกเท่านั้น — ยิงเสียงเปล่า (เบาสุด) ภายใน gesture นี้เพื่อปลุกระบบ
-      try { const kick = new SpeechSynthesisUtterance(' '); kick.volume = 0; synth.speak(kick); } catch {}
-      setTimeout(finish, 800);
-    });
-  }
-
   function speakStartHTML() {
-    return `<button class="btn btn-secondary btn-small speak-btn" type="button" data-speak-start aria-pressed="false">${icon('speaker', 15)} <span>${esc(U('listen'))}</span></button>`;
+    return `<button class="btn btn-secondary btn-small speak-btn" type="button" data-speak-start>${icon('speaker', 15)} <span>${esc(U('listen'))}</span></button>`;
   }
 
   function speakPanelHTML() {
     const pct = speech.chunks.length ? Math.min(100, Math.round(speech.done / speech.chunks.length * 100)) : 0;
     return `<div class="speak-panel" role="group" aria-label="${esc(U('speakControls'))}">
-      <button class="btn btn-secondary btn-small" type="button" data-speak-pause aria-pressed="${speech.paused}">${icon(speech.paused ? 'play' : 'pause', 15)} <span>${esc(speech.paused ? U('speakResume') : U('speakPause'))}</span></button>
+      <button class="btn btn-secondary btn-small" type="button" data-speak-pause aria-pressed="${speech.paused}" ${speech.loading ? 'disabled' : ''}>${icon(speech.paused ? 'play' : 'pause', 15)} <span>${esc(speech.loading ? U('speakLoading') : speech.paused ? U('speakResume') : U('speakPause'))}</span></button>
       <button class="btn btn-secondary btn-small" type="button" data-speak-stop>${icon('stop', 15)} <span>${esc(U('speakStop'))}</span></button>
       <span class="lang-switch lang-switch-compact rate-switch" role="group" aria-label="${esc(U('speakSpeed'))}">${SPEAK_RATES.map(r => `<button type="button" class="lang-opt${speech.rate === r ? ' active' : ''}" data-speak-rate="${r}" aria-pressed="${speech.rate === r}">${r}×</button>`).join('')}</span>
       <span class="speak-progress" role="progressbar" aria-label="${esc(U('speakProgress'))}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><i style="width:${pct}%"></i></span>
@@ -947,7 +884,16 @@
   }
 
   function renderSpeakArea() {
+    const focused = document.activeElement;
+    const focusSelector = focused?.matches('[data-speak-rate]') ? `[data-speak-rate="${focused.dataset.speakRate}"]`
+      : focused?.matches('[data-speak-stop]') ? (speech.active ? '[data-speak-stop]' : '[data-speak-start]')
+      : focused?.matches('[data-speak-pause], [data-speak-start]') ? (speech.active ? '[data-speak-pause]' : '[data-speak-start]')
+      : null;
     document.querySelectorAll('.speak-area').forEach(area => { area.innerHTML = speech.active ? speakPanelHTML() : speakStartHTML(); });
+    if (focusSelector) {
+      const target = document.querySelector(`.speak-area ${focusSelector}`);
+      (target?.disabled ? document.querySelector('.speak-area [data-speak-stop]') : target)?.focus({ preventScroll: true });
+    }
   }
 
   function updateSpeakProgress() {
@@ -959,102 +905,25 @@
     });
   }
 
-  function stopSpeakWatch() {
-    if (speech.watch) { clearInterval(speech.watch); speech.watch = null; }
-  }
+  function stopSpeaking() { speech.stop(); }
 
-  function finishSpeaking() {
-    if (!speech.active) return;
-    speech.active = false; speech.paused = false;
-    stopSpeakWatch();
-    renderSpeakArea();
-  }
-
-  function stopSpeaking() {
-    speech.gen++;
-    speech.active = false; speech.paused = false;
-    stopSpeakWatch();
-    if (speech.supported) {
-      const synth = window.speechSynthesis;
-      synth.cancel();
-      // Chrome บางรุ่นค้างธง paused ไว้หลัง cancel ทำให้รอบถัดไปไม่ออกเสียง
-      if (synth.paused) synth.resume();
-    }
-    renderSpeakArea();
-  }
-
-  // จัดคิวท่อนเสียงตั้งแต่ท่อนที่ from — ใช้ทั้งตอนเริ่มเล่นและตอนเปลี่ยนความเร็วกลางคัน
-  // gen คือหมายเลขรอบของคิว: cancel/re-queue ทำให้ onend/onerror ของ utterance เก่าถูกยิงตามมาช้า ๆ ทุก callback ต้องตรวจ gen ก่อนเชื่อผล
-  function speakChunksFrom(from) {
-    const synth = window.speechSynthesis;
-    const gen = ++speech.gen;
-    speech.done = from;
-    const queue = () => {
-      if (!speech.active || gen !== speech.gen) return;
-      for (let i = from; i < speech.chunks.length; i++) {
-        const u = new SpeechSynthesisUtterance(speech.chunks[i]);
-        u.lang = state.lang === 'th' ? 'th-TH' : 'en-US';
-        u.voice = speech.voice;
-        u.rate = speech.rate;
-        // onend/onerror นับความคืบหน้า ครบทุกท่อนจึงปลดสถานะกลับเป็นปุ่มเดิม
-        const step = () => {
-          if (gen !== speech.gen) return;
-          speech.done++;
-          updateSpeakProgress();
-          if (speech.done >= speech.chunks.length) finishSpeaking();
-        };
-        u.onend = step; u.onerror = step;
-        synth.speak(u);
-      }
-      // re-queue ระหว่างพักอยู่: คิวใหม่ต้องพักต่อทันที
-      if (speech.paused) synth.pause();
-    };
-    // cancel() แล้ว speak() ในทิกเดียวกัน Chrome บางเวอร์ชันกลืนคำสั่ง จึงหน่วงออกเล็กน้อยเมื่อต้องทิ้งคิวเก่าก่อน
-    if (synth.speaking || synth.pending) { synth.cancel(); setTimeout(queue, 60); }
-    else queue();
-    // บาง engine ตายเงียบไม่ยิง onend/onerror เลย — เฝ้าคิวไว้ ถ้าไม่มีอะไรกำลังพูด/รอคิว/พักอยู่ติดต่อกัน ~1.2 วิ ให้ปลดสถานะเอง
-    stopSpeakWatch();
-    let idle = 0;
-    speech.watch = setInterval(() => {
-      if (!speech.active) { stopSpeakWatch(); return; }
-      if (speech.paused || synth.speaking || synth.pending) { idle = 0; return; }
-      if (++idle >= 3) finishSpeaking();
-    }, 400);
-  }
-
-  async function toggleSpeaking() {
+  function toggleSpeaking() {
     const header = document.querySelector('.content .lesson-header');
     const body = document.querySelector('.content .lesson-body');
     if (!header || !body) return;
-    const chunks = buildSpeakChunks([...collectSpeakables(header), ...collectSpeakables(body)]);
-    if (!chunks.length) return;
-    await waitForVoices();
-    const voice = resolveSpeakVoice(state.lang);
-    if (!voice) { showToast(U('noVoice')); return; }
-    speech.chunks = chunks; speech.voice = voice; speech.rate = state.speakRate || 1;
-    speech.active = true; speech.paused = false;
-    renderSpeakArea();
-    updateSpeakProgress();
-    speakChunksFrom(0);
+    speech.play([...collectSpeakables(header), ...collectSpeakables(body)], state.lang, state.speakRate);
   }
 
   function toggleSpeakPause() {
-    if (!speech.active) return;
-    speech.paused = !speech.paused;
-    if (speech.paused) window.speechSynthesis.pause();
-    else window.speechSynthesis.resume();
-    renderSpeakArea();
+    if (speech.paused) speech.resume();
+    else speech.pause();
   }
 
   function setSpeakRate(rate) {
-    if (rate === speech.rate) return;
-    speech.rate = rate;
+    if (!SPEAK_RATES.includes(rate)) return;
     state.speakRate = rate;
     persist();
-    if (!speech.active) return;
-    renderSpeakArea();
-    // rate ตั้งได้เฉพาะตอนสร้าง utterance จึงต้องทิ้งคิวเดิมแล้วเริ่มท่อนปัจจุบันใหม่ด้วยความเร็วที่เลือก
-    speakChunksFrom(speech.done);
+    speech.setRate(rate);
   }
 
   function initDelegation() {
