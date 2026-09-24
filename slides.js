@@ -176,7 +176,7 @@
     }
     const unavailable = notesError[state.lang];
     const loading = !notes[state.lang] && !unavailable;
-    speechEl.innerHTML = `<div class="speak-panel" role="group" aria-label="${th ? 'ควบคุมเสียงบทพูด' : 'Slide narration controls'}"><button class="deck-speech-btn deck-speech-start" type="button" data-speech-start ${loading || unavailable ? 'disabled' : ''} aria-label="${th ? 'เล่นบทพูดสไลด์นี้' : 'Play this slide narration'}">▶ <span>${unavailable ? (th ? 'ไม่มีบทพูด' : 'Notes unavailable') : loading ? (th ? 'โหลดบทพูด…' : 'Loading notes…') : (th ? 'ฟังบทพูด' : 'Play narration')}</span></button>${rateControl}${progress}</div>`;
+    speechEl.innerHTML = `<button class="deck-speech-btn deck-speech-start" type="button" data-speech-start ${loading || unavailable ? 'disabled' : ''} aria-label="${th ? 'เล่นบทพูดสไลด์นี้' : 'Play this slide narration'}">▶ <span>${unavailable ? (th ? 'ไม่มีบทพูด' : 'Notes unavailable') : loading ? (th ? 'โหลดบทพูด…' : 'Loading notes…') : (th ? 'ฟังบทพูด' : 'Play narration')}</span></button>`;
     if (focusSelector) speechEl.querySelector(focusSelector)?.focus({ preventScroll: true });
   }
 
