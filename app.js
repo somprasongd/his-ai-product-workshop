@@ -568,7 +568,10 @@
         </div>
       </div>
       <header class="lesson-header">
-        <div class="lesson-kicker"><span class="pill">${esc(lesson.no)}</span><span class="pill">${esc(lesson.duration)}</span></div>
+        <div class="lesson-top">
+          <div class="lesson-kicker"><span class="pill">${esc(lesson.no)}</span><span class="pill">${esc(lesson.duration)}</span></div>
+          ${speech.supported ? `<div class="lesson-tools"><div class="speak-area">${speakStartHTML()}</div></div>` : ''}
+        </div>
         <h1 class="lesson-title">${esc(t(lesson.title))}</h1>
         <p class="lesson-intro">${esc(t(lesson.intro))}</p>
       </header>
