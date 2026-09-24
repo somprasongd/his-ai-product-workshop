@@ -10,7 +10,8 @@
     quiz: 'his-ai-course.quiz',
     promptLang: 'his-ai-course.promptLang',
     agentTool: 'his-ai-course.agentTool',
-    repoHost: 'his-ai-course.repoHost'
+    repoHost: 'his-ai-course.repoHost',
+    practice: 'his-ai-course.practice'
   };
 
   const ui = {
@@ -98,7 +99,8 @@
     last: localStorage.getItem(STORAGE.last) || 'prerequisites',
     promptLang: localStorage.getItem(STORAGE.promptLang) || '',
     agentTool: localStorage.getItem(STORAGE.agentTool) || '',
-    repoHost: localStorage.getItem(STORAGE.repoHost) || ''
+    repoHost: localStorage.getItem(STORAGE.repoHost) || '',
+    practice: JSON.parse(localStorage.getItem(STORAGE.practice) || '{}')
   };
 
   const esc = (s='') => String(s).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
@@ -146,6 +148,8 @@
     else localStorage.removeItem(STORAGE.agentTool);
     if (state.repoHost) localStorage.setItem(STORAGE.repoHost, state.repoHost);
     else localStorage.removeItem(STORAGE.repoHost);
+    if (Object.keys(state.practice).length) localStorage.setItem(STORAGE.practice, JSON.stringify(state.practice));
+    else localStorage.removeItem(STORAGE.practice);
   }
 
   const promptLang = () => state.promptLang || state.lang;
@@ -278,7 +282,7 @@
     return shell(html, '');
   }
 
-  function renderBlock(block, index) {
+  function renderBlock(block, index, lessonId) {
     switch(block.type) {
       case 'callout': return `<section class="block callout ${block.tone||''}"><div class="callout-title">${esc(t(block.title))}</div><p>${rich(t(block.text))}</p></section>`;
       case 'list': return `<section class="block"><h2>${esc(t(block.title))}</h2><ul class="clean">${t(block.items).map(x=>`<li>${rich(x)}</li>`).join('')}</ul></section>`;
@@ -291,7 +295,7 @@
       case 'commands': return commandsBlock(block);
       case 'agent-setup': return agentSetupBlock(block);
       case 'prompt': return promptBlock(block);
-      case 'practice': return practiceBlock(block);
+      case 'practice': return practiceBlock(block, lessonId);
       case 'capstone': return `<section class="block"><div class="practice-label">${U('guided')}</div><div class="capstone-steps">${block.steps.map((s,i)=>`<details class="capstone-step"><summary>${esc(t(s.title))}<span>${String(i+1).padStart(2,'0')}</span></summary><div class="inside"><p><strong>${U('hint')}:</strong> ${linkify(t(s.hint))}</p><div class="reveal"><button class="btn btn-secondary btn-small reveal-btn" type="button">${U('guide')}</button><div class="reveal-panel"><ol class="cmd-list capstone-guide">${t(s.guide).map((g,j)=>`<li class="cmd-step"><div class="cmd-index">${String(j+1).padStart(2,'0')}</div><div class="cmd-body"><p>${rich(g)}</p></div></li>`).join('')}</ol></div></div></div></details>`).join('')}</div></section>`;
       default: return '';
     }
@@ -325,16 +329,26 @@
     </section>`;
   }
 
-  function practiceBlock(block) {
-    const steps = t(block.steps).map(raw => {
+  function practiceBlock(block, lessonId) {
+    const checked = (lessonId && state.practice[lessonId]) || [];
+    const items = t(block.steps).map((raw, i) => {
       const cmdHtml = extractCommands(raw).map(c => codeBlock(c, state.lang==='th'?'คำสั่ง':'command')).join('');
-      return `<li><div class="step-body"><span>${rich(raw)}</span>${cmdHtml}</div></li>`;
+      const done = checked.includes(i);
+      return `<li class="check-item${done?' done':''}">
+        <label class="check-row">
+          <input type="checkbox" data-practice="${esc(lessonId||'')}" data-step="${i}"${done?' checked':''}>
+          <span class="check-text">${rich(raw)}</span>
+        </label>
+        ${cmdHtml}
+      </li>`;
     }).join('');
+    const count = checked.length;
     return `<section class="block practice">
       <div class="practice-label">${U('practice')}</div>
       <h2>${esc(t(block.title))}</h2>
       ${block.code ? codeBlock(block.code, 'commands') : ''}
-      <ol class="steps">${steps}</ol>
+      <ul class="checklist" data-practice-list>${items}</ul>
+      <span class="check-count" role="status">${count}/${block.steps.th.length}</span>
       <div class="cmd-expect"><strong>${state.lang==='th'?'ผลลัพธ์ที่คาดหวัง':'Expected result'}</strong> ${rich(t(block.expected))}</div>
     </section>`;
   }
@@ -497,7 +511,7 @@
         <div class="lesson-goals">${t(lesson.outcomes).map(x=>`<div class="goal"><span class="goal-mark">${icon('check',16)}</span><span>${rich(x)}</span></div>`).join('')}</div>
       </header>
       <div class="lesson-body">
-        ${lesson.blocks.map(renderBlock).join('')}
+        ${lesson.blocks.map((b,i)=>renderBlock(b,i,lesson.id)).join('')}
         <section class="block checkpoint" data-lesson="${lesson.id}">
           <div class="practice-label">Checkpoint</div><h2>${esc(t(q.q))}</h2>
           <div class="options">${t(q.options).map((op,i)=>`<label class="option"><input type="radio" name="quiz-${lesson.id}" value="${i}" ${quizSaved?.selected===i?'checked':''}/><span>${esc(op)}</span></label>`).join('')}</div>
@@ -532,7 +546,7 @@
         <p class="lesson-intro">${esc(t(lesson.intro))}</p>
       </header>
       <div class="lesson-body">
-        ${blocks.map(renderBlock).join('')}
+        ${blocks.map((b,i)=>renderBlock(b,i,lesson.id)).join('')}
       </div>
     </div>`;
   }
@@ -625,7 +639,7 @@
     document.getElementById('menuBtn')?.addEventListener('click',()=>document.body.classList.toggle('menu-open'));
     document.querySelectorAll('.lesson-link').forEach(a=>a.addEventListener('click',()=>document.body.classList.remove('menu-open')));
     document.getElementById('resetBtn')?.addEventListener('click',()=>{
-      if(confirm(U('resetConfirm'))){ state.completed.clear(); state.quiz={}; state.last='prerequisites'; persist(); route(); }
+      if(confirm(U('resetConfirm'))){ state.completed.clear(); state.quiz={}; state.practice={}; state.last='prerequisites'; persist(); route(); }
     });
     const gSearch = document.getElementById('glossarySearch');
     if (gSearch) {
@@ -643,6 +657,19 @@
       state.quiz[lessonId]={selected:Number(selected.value),correct}; persist();
       const box=btn.parentElement.querySelector('.check-result'); box.textContent=correct?U('correct'):U('incorrect'); box.className=`check-result show ${correct?'good':'bad'}`;
       const reveal=btn.parentElement.querySelector('.reveal'); if(correct) reveal.classList.add('open');
+    }));
+    document.querySelectorAll('.practice input[type="checkbox"]').forEach(cb=>cb.addEventListener('change',()=>{
+      const lessonId=cb.dataset.practice; const step=Number(cb.dataset.step);
+      if(!lessonId) return;
+      const list=state.practice[lessonId]||(state.practice[lessonId]=[]);
+      const pos=list.indexOf(step);
+      if(cb.checked && pos<0) list.push(step);
+      else if(!cb.checked && pos>=0) list.splice(pos,1);
+      cb.closest('.check-item').classList.toggle('done',cb.checked);
+      const section=cb.closest('.practice');
+      const count=section.querySelector('.check-count');
+      if(count) count.textContent=`${list.length}/${section.querySelectorAll('.check-item').length}`;
+      persist();
     }));
     document.querySelectorAll('[data-complete]').forEach(btn=>btn.addEventListener('click',()=>{
       const id=btn.dataset.complete;
