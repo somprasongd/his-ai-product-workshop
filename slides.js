@@ -80,10 +80,17 @@
   const closeLabel = () => state.lang === 'th' ? 'ปิดเนื้อหา ✕' : 'Close content ✕';
 
   const SLIDES = [
-    { kicker: S('เปิดคอร์ส', 'Workshop'), title: S('AI Product Workshop', 'AI Product Workshop'), sub: S('PM · BA · Product Design สร้าง prototype ที่กดได้ ตรวจได้ และส่งต่อให้ Developer ทำต่อ', 'PM · BA · Product Design build a working, verifiable prototype for developer handoff'), icon: 'cover' },
-    { kicker: S('แผนที่การเรียน', 'Course map'), title: S('3 วัน + Capstone', '3 days + Capstone'), sub: S('US-001 → Merge → Issue ใหม่ + Regression', 'US-001 → Merge → new issue + regression'), icon: 'roadmap' },
+    { kicker: S('เปิดคอร์ส', 'Workshop'), title: S('AI Product Workshop', 'AI Product Workshop'), sub: S('PM · BA · Product Design ใช้ AI Agent สร้าง prototype ที่กดได้ ตรวจได้ และส่งต่อให้ Developer ทำต่อ', 'PM · BA · Product Design use AI agents to build a working, verifiable prototype for developer handoff'), shot: 'landing-hero' },
+    { kicker: S('แผนที่การเรียน', 'Course map'), title: S('3 วัน + Capstone', '3 days + Capstone'), sub: S('US-001 → Merge → Issue ใหม่ + Regression', 'US-001 → Merge → new issue + regression'), map: {
+      days: [
+        { label: S('วันที่ 1', 'Day 1'), chain: S('Requirement → Issue → Git → Worktree → Agent Plan', 'Requirement → Issue → Git → Worktree → Agent Plan'), meta: S('5 ชม.', '5 h') },
+        { label: S('วันที่ 2', 'Day 2'), chain: S('Next.js → Design → Component/State → Storybook', 'Next.js → Design → Component/State → Storybook'), meta: S('5.5 ชม.', '5.5 h') },
+        { label: S('วันที่ 3', 'Day 3'), chain: S('Mock → Flow → Debug → MR → Handoff', 'Mocks → Flow → Debug → MR → Handoff'), meta: S('5.5 ชม.', '5.5 h') }
+      ],
+      capstone: { label: S('Capstone', 'Capstone'), chain: S('งานต่อยอด: คลินิกไม่พร้อมรับ Check-in', 'Follow-up: unavailable clinic'), meta: S('3 ชม.', '3 h') }
+    } },
     ...LESSON_IDS.map(lessonSlide),
-    { title: S('พร้อมลงมือแล้ว', 'Ready to build'), sub: S('เริ่มจากบทที่ 00 · Prerequisites', 'Start at lesson 00 · Prerequisites'), icon: 'finish', cta: 'prerequisites' }
+    { title: S('พร้อมลงมือแล้ว', 'Ready to build'), sub: S('เริ่มจากบทที่ 00 · Prerequisites', 'Start at lesson 00 · Prerequisites'), shot: 'lesson-prerequisites', scroll: '4/3', cta: 'prerequisites' }
   ];
 
   const t = pair => pair[state.lang] ?? pair.en;
@@ -174,6 +181,36 @@
   }
 
   function visualHtml(s, idx) {
+    if (s.shot) {
+      const landing = s.shot === 'landing-hero';
+      const alt = landing
+        ? (state.lang === 'th' ? 'ภาพหน้าแรกของเว็บไซต์คอร์ส AI Product Workshop' : 'AI Product Workshop landing page')
+        : (state.lang === 'th' ? 'หน้าบทเรียน 00 · Prerequisites ในเว็บคอร์ส' : 'Lesson 00 · Prerequisites page in the course site');
+      const url = landing
+        ? 'somprasongd.github.io/his-ai-product-workshop'
+        : 'somprasongd.github.io/his-ai-product-workshop/#/lesson/prerequisites';
+      const tall = s.scroll === '4/3';
+      const dims = tall ? 'width="1440" height="2160"' : 'width="1440" height="810"';
+      return `<div class="slide-icon-wrap no-float soft-float">
+        <figure class="slide-shot${tall ? ' scroller sc-43' : ''}">
+          <figcaption class="shot-bar"><span class="shot-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="shot-url">${esc(url)}</span></figcaption>
+          <div class="shot-view"><img src="./assets/${s.shot}.${state.lang}.png" alt="${esc(alt)}" ${dims} draggable="false"></div>
+        </figure>
+      </div>`;
+    }
+    if (s.map) {
+        const row = (badge, label, chain, meta, extra = '', i = 0) => `<div class="map-row ${extra}" style="--i:${i}">
+            <span class="map-day">${esc(badge)}</span>
+            <div class="map-chain"><small>${esc(label)}</small><strong>${esc(chain)}</strong></div>
+            <span class="map-meta">${esc(meta)}</span>
+          </div>`;
+        return `<div class="slide-icon-wrap no-float soft-float">
+          <div class="slide-map">
+            ${s.map.days.map((d, i) => row(String(i + 1).padStart(2, '0'), t(d.label), t(d.chain), t(d.meta), '', i)).join('')}
+            ${row('C', t(s.map.capstone.label), t(s.map.capstone.chain), t(s.map.capstone.meta), 'map-capstone', s.map.days.length)}
+          </div>
+        </div>`;
+    }
     if (s.diagram) {
       return `<div class="slide-icon-wrap has-diagram">
         <div class="diagram-stage" data-diagram-idx="${idx}">
