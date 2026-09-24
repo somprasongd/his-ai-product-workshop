@@ -310,7 +310,7 @@
       case 'agent-setup': return agentSetupBlock(block);
       case 'prompt': return promptBlock(block);
       case 'practice': return practiceBlock(block, lessonId);
-      case 'capstone': return `<section class="block"><div class="practice-label">${U('guided')}</div><div class="capstone-steps">${block.steps.map((s,i)=>`<details class="capstone-step"><summary>${esc(t(s.title))}<span>${String(i+1).padStart(2,'0')}</span></summary><div class="inside"><p><strong>${U('hint')}:</strong> ${linkify(t(s.hint))}</p><div class="reveal"><button class="btn btn-secondary btn-small reveal-btn" type="button">${U('guide')}</button><div class="reveal-panel"><ol class="cmd-list capstone-guide">${t(s.guide).map((g,j)=>`<li class="cmd-step"><div class="cmd-index">${String(j+1).padStart(2,'0')}</div><div class="cmd-body"><p>${rich(g)}</p></div></li>`).join('')}</ol></div></div></div></details>`).join('')}</div></section>`;
+      case 'capstone': return `<section class="block"><div class="practice-label">${U('guided')}</div><div class="capstone-steps">${block.steps.map((s,i)=>`<details class="capstone-step"><summary>${esc(t(s.title))}</summary><div class="inside"><p><strong>${U('hint')}:</strong> ${linkify(t(s.hint))}</p><div class="reveal"><button class="btn btn-secondary btn-small reveal-btn" type="button">${U('guide')}</button><div class="reveal-panel"><ol class="cmd-list capstone-guide">${t(s.guide).map((g,j)=>`<li class="cmd-step"><div class="cmd-index">${String(j+1).padStart(2,'0')}</div><div class="cmd-body"><p>${rich(g)}</p></div></li>`).join('')}</ol></div></div></div></details>`).join('')}</div></section>`;
       default: return '';
     }
   }
