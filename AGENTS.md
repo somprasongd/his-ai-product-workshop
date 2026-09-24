@@ -40,6 +40,7 @@ This repository is a static learning website for PM, BA, and Product Design lear
 - Keep the traceability chain intact across lessons: issue number → branch name → commit footer → MR `Closes`.
 - The agent drafts and proposes; a human approves anything that leaves the machine. Agent skills may fill templates and propose `gh`/`glab` commands, but must never merge, push to main, or mark an MR ready.
 - Capstone guidance uses progressive disclosure: independent attempt → hint → step-by-step.
+- The capstone extends the merged US-001 prototype with a bounded clinic-availability follow-up. It uses a new issue/branch/worktree/MR and must show regression evidence for the original US-001 behavior.
 - `AGENTS.md` is the single source of truth for agent instructions.
 
 ## Safety and scope

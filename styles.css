@@ -81,6 +81,8 @@ a { color: inherit; }
   background: var(--text); color: var(--bg); text-decoration: none;
 }
 .skip-link:focus { transform: translateY(0); }
+.lesson-output { margin:16px 0 22px; padding:11px 14px; border-left:3px solid var(--primary); border-radius:0 9px 9px 0; background:var(--surface-2); color:var(--muted); }
+.lesson-output strong { color:var(--text); }
 
 .shell { min-height: 100vh; }
 .topbar {

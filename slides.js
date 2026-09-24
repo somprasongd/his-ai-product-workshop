@@ -1,9 +1,11 @@
 (() => {
   const course = window.COURSE;
   const STORAGE = { lang: 'his-ai-course.lang', theme: 'his-ai-course.theme' };
+  const savedLang = localStorage.getItem(STORAGE.lang);
+  const savedTheme = localStorage.getItem(STORAGE.theme);
   const state = {
-    lang: localStorage.getItem(STORAGE.lang) || ((navigator.language || 'en').toLowerCase().startsWith('th') ? 'th' : 'en'),
-    theme: localStorage.getItem(STORAGE.theme) || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
+    lang: savedLang === 'th' || savedLang === 'en' ? savedLang : ((navigator.language || 'en').toLowerCase().startsWith('th') ? 'th' : 'en'),
+    theme: savedTheme === 'dark' || savedTheme === 'light' ? savedTheme : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
     i: 0
   };
   document.documentElement.dataset.theme = state.theme;
@@ -56,8 +58,8 @@
     'debugging': S('Debug ด้วยหลักฐาน', 'Debug with Evidence'),
     'diff-quality': S('Git Diff & คุณภาพ', 'Diff & Quality'),
     'delivery': S('ส่งมอบ: Draft MR', 'Delivery: Draft MR'),
-    'agent-skills': S('Agent Skills', 'Agent Skills'),
-    'capstone': S('OPD Check-in Lite', 'OPD Check-in Lite')
+    'agent-skills': S('ส่งต่อ Developer', 'Developer Handoff'),
+    'capstone': S('ต่อยอด US-001', 'Extend US-001')
   };
 
   function lessonSlide(id) {
@@ -69,6 +71,7 @@
       group: groupLabel(lesson.group),
       title: LESSON_TITLES[id] || lesson.title,
       outcomes: lesson.outcomes,
+      output: course.journey[id],
       diagram: diagramBlock && diagramBlock.diagram
     };
   }
@@ -77,8 +80,8 @@
   const closeLabel = () => state.lang === 'th' ? 'ปิดเนื้อหา ✕' : 'Close content ✕';
 
   const SLIDES = [
-    { kicker: S('เปิดคอร์ส', 'Workshop'), title: S('AI Product Workshop', 'AI Product Workshop'), sub: S('กำกับ AI Agent อย่างมีการควบคุม', 'Supervise AI agents — with control'), icon: 'cover' },
-    { kicker: S('แผนที่การเรียน', 'Course map'), title: S('3 วัน · 1 โจทย์เดียว', '3 days · One scenario'), sub: S('Requirement → Git → Agent → Storybook → Delivery', 'Requirement → Git → Agent → Storybook → Delivery'), icon: 'roadmap' },
+    { kicker: S('เปิดคอร์ส', 'Workshop'), title: S('AI Product Workshop', 'AI Product Workshop'), sub: S('PM · BA · Product Design สร้าง prototype ที่กดได้ ตรวจได้ และส่งต่อให้ Developer ทำต่อ', 'PM · BA · Product Design build a working, verifiable prototype for developer handoff'), icon: 'cover' },
+    { kicker: S('แผนที่การเรียน', 'Course map'), title: S('3 วัน + Capstone', '3 days + Capstone'), sub: S('US-001 → Merge → Issue ใหม่ + Regression', 'US-001 → Merge → new issue + regression'), icon: 'roadmap' },
     ...LESSON_IDS.map(lessonSlide),
     { title: S('พร้อมลงมือแล้ว', 'Ready to build'), sub: S('เริ่มจากบทที่ 00 · Prerequisites', 'Start at lesson 00 · Prerequisites'), icon: 'finish', cta: 'prerequisites' }
   ];
@@ -161,7 +164,7 @@
         return `<section class="block prompt-block"><h2>${esc(t(block.title))}</h2>${block.when ? `<p class="block-lead"><strong>${state.lang === 'th' ? 'ใช้เมื่อไร' : 'When to use it'}:</strong> ${rich(t(block.when))}</p>` : ''}${contentCodeBlock(promptText, 'prompt')}${exampleText ? contentCodeBlock(exampleText, state.lang === 'th' ? 'prompt · ตัวอย่างที่กรอกแล้ว' : 'prompt · Worked example') : ''}${block.after ? `<div class="prompt-after"><strong>${state.lang === 'th' ? 'หลังส่ง prompt ให้ตรวจสิ่งนี้' : 'After sending, check this'}</strong><ul class="clean">${t(block.after).map(x => `<li>${rich(x)}</li>`).join('')}</ul></div>` : ''}</section>`;
       }
       case 'capstone':
-        return `<section class="block">${block.steps.map((s, i) => `<h3>${String(i + 1).padStart(2, '0')} · ${esc(t(s.title))}</h3><p><strong>${state.lang === 'th' ? 'คำใบ้' : 'Hint'}:</strong> ${rich(t(s.hint))}</p><ol class="cmd-list">${t(s.guide).map((g, j) => `<li class="cmd-step"><div class="cmd-index">${String(j + 1).padStart(2, '0')}</div><div class="cmd-body"><p>${rich(g)}</p></div></li>`).join('')}</ol>`).join('')}</section>`;
+        return `<section class="block">${block.steps.map((s, i) => `<details class="capstone-step"><summary>${String(i + 1).padStart(2, '0')} · ${esc(t(s.title))}</summary><p><strong>${state.lang === 'th' ? 'คำใบ้' : 'Hint'}:</strong> ${rich(t(s.hint))}</p><ol class="cmd-list">${t(s.guide).map((g, j) => `<li class="cmd-step"><div class="cmd-index">${String(j + 1).padStart(2, '0')}</div><div class="cmd-body"><p>${rich(g)}</p></div></li>`).join('')}</ol></details>`).join('')}</section>`;
       default: return '';
     }
   }
@@ -216,6 +219,7 @@
         ${kicker ? `<span class="slide-kicker">${esc(t(kicker))}</span>` : ''}
         <h1 class="slide-title">${esc(t(s.title))}</h1>
         ${outcomesHtml(s)}
+        ${s.output ? `<p class="slide-output"><strong>${state.lang==='th'?'ส่งต่อจากบทนี้':'Carry forward'}:</strong> ${esc(t(s.output))}</p>` : ''}
         ${link}
       </div>
       ${contentPanel}

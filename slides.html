@@ -8,8 +8,8 @@
   <title>Instructor Slides — AI Product Workshop</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-  <link rel="stylesheet" href="./styles.css" />
-  <link rel="stylesheet" href="./slides.css" />
+  <link rel="stylesheet" href="./styles.css?v=20260924d" />
+  <link rel="stylesheet" href="./slides.css?v=20260924d" />
 </head>
 <body class="slides-body">
   <div class="deck">
@@ -27,13 +27,13 @@
     <button class="nav-arrow nav-next" id="nextBtn" aria-label="Next slide">›</button>
     <nav class="dots" id="dots" aria-label="Slides"></nav>
   </div>
-  <script src="./content.js"></script>
+  <script src="./content.js?v=20260924d"></script>
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
     mermaid.startOnLoad = false;
     window.mermaid = mermaid;
     window.dispatchEvent(new Event('mermaid-ready'));
   </script>
-  <script src="./slides.js" defer></script>
+  <script src="./slides.js?v=20260924d" defer></script>
 </body>
 </html>
