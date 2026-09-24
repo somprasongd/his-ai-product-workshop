@@ -176,7 +176,11 @@ a { color: inherit; }
 
 .lesson-header { padding:28px 0 12px; }
 .lesson-top { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; }
+.lesson-tools { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
 .lesson-kicker { display:flex; flex-wrap:wrap; gap:8px; align-items:center; color:var(--muted); font-size:13px; }
+/* ปุ่มฟังเนื้อหา: สีเน้น + ชีพจุดบาง ๆ ตอนกำลังอ่าน (reduced-motion ถูกกันโดยกฎ global ด้านล่าง) */
+.speak-btn.speaking { border-color:color-mix(in srgb,var(--primary) 55%,var(--line)); color:color-mix(in srgb,var(--primary) 88%,var(--text)); animation:speak-pulse 1.8s ease-in-out infinite; }
+@keyframes speak-pulse { 0%,100%{ box-shadow:0 0 0 0 color-mix(in srgb,var(--primary) 35%,transparent); } 50%{ box-shadow:0 0 0 6px transparent; } }
 .pill { padding:5px 9px; border:1px solid var(--line); border-radius:999px; background:var(--surface); }
 .lesson-title { margin:12px 0 10px; font-size:clamp(34px,5vw,58px); line-height:1.04; letter-spacing:-.045em; }
 .lesson-intro { color:var(--muted); font-size:19px; max-width:820px; }

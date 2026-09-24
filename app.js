@@ -22,6 +22,8 @@
       progress: 'ความคืบหน้า', complete: 'เรียนจบบทนี้', completed: 'เรียนจบแล้ว',
       next: 'บทถัดไป', previous: 'บทก่อนหน้า', copy: 'คัดลอก', copied: 'คัดลอกแล้ว',
       shareLink: 'แชร์บทเรียนนี้', linkCopied: 'คัดลอกลิงก์แล้ว',
+      listen: 'ฟังเนื้อหา', stopListen: 'หยุดฟัง',
+      noVoice: 'ไม่พบเสียงอ่านภาษาไทยบนอุปกรณ์นี้ ลองติดตั้งเสียงภาษาไทยในตั้งค่าระบบของอุปกรณ์ แล้วกดฟังอีกครั้ง',
       expected: 'ดูผลลัพธ์ที่คาดหวัง', hideExpected: 'ซ่อนผลลัพธ์',
       check: 'ตรวจคำตอบ', correct: 'ถูกต้อง — ไปต่อได้', incorrect: 'ยังไม่ใช่ ลองคิดจากหลักการในบทนี้อีกครั้ง',
       learned: 'เมื่อจบบทนี้ คุณจะ...', wrap: 'Wrap-up · สิ่งที่ควรจำ',
@@ -60,6 +62,8 @@
       progress: 'Progress', complete: 'Mark lesson complete', completed: 'Completed',
       next: 'Next lesson', previous: 'Previous lesson', copy: 'Copy', copied: 'Copied',
       shareLink: 'Share this lesson', linkCopied: 'Link copied',
+      listen: 'Listen', stopListen: 'Stop listening',
+      noVoice: 'No text-to-speech voice for this language was found on your device. Install one in your device settings, then try again.',
       expected: 'Reveal expected result', hideExpected: 'Hide expected result',
       check: 'Check answer', correct: 'Correct — keep going', incorrect: 'Not quite. Revisit the principle in this lesson and try again.',
       learned: 'By the end of this lesson, you will...', wrap: 'Wrap-up · What to remember',
@@ -196,7 +200,9 @@
       zoomOut:'<circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3M8 11h6"/>',
       close:'<path d="M18 6 6 18M6 6l12 12"/>',
       reset:'<path d="M3 12a9 9 0 1 0 2.64-6.36M3 12V5m0 7h7"/>',
-      share:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>'
+      share:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>',
+      speaker:'<path d="M11 5 6 9H3a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9.5 9.5 0 0 1 0 13"/>',
+      stop:'<rect x="6.5" y="6.5" width="11" height="11" rx="2"/>'
     };
     return `<svg ${common}>${p[name] || p.spark}</svg>`;
   }
@@ -515,7 +521,10 @@
       <header class="lesson-header">
         <div class="lesson-top">
           <div class="lesson-kicker"><span class="pill">${esc(lesson.no)}</span><span class="pill">${esc(lesson.duration)}</span><span>${esc(t(course.groups.find(g=>g.id===lesson.group)))}</span></div>
-          <button class="btn btn-secondary btn-small share-btn" type="button" data-share-lesson="${esc(lesson.id)}">${icon('share',15)} ${U('shareLink')}</button>
+          <div class="lesson-tools">
+            ${speech.supported ? `<button class="btn btn-secondary btn-small speak-btn" type="button" data-speak-lesson="${esc(lesson.id)}" aria-pressed="false">${speakButtonText(false)}</button>` : ''}
+            <button class="btn btn-secondary btn-small share-btn" type="button" data-share-lesson="${esc(lesson.id)}">${icon('share',15)} ${U('shareLink')}</button>
+          </div>
         </div>
         <h1 class="lesson-title">${esc(t(lesson.title))}</h1>
         <p class="lesson-intro">${esc(t(lesson.intro))}</p>
@@ -646,6 +655,7 @@
   }
 
   function bind() {
+    stopSpeaking();
     document.querySelector('.skip-link')?.addEventListener('click', e=>{
       e.preventDefault();
       document.getElementById('main')?.focus();
@@ -665,6 +675,7 @@
       gSearch.addEventListener('input', () => applyGlossaryFilter(gSearch.value));
       applyGlossaryFilter('');
     }
+    document.querySelectorAll('[data-speak-lesson]').forEach(btn=>btn.addEventListener('click', toggleSpeaking));
     document.querySelectorAll('.reveal-btn').forEach(btn=>btn.addEventListener('click',()=>{
       const r=btn.closest('.reveal');
       r.classList.toggle('open');
@@ -830,6 +841,136 @@
     copyText(url, U('linkCopied'));
   }
 
+  // ---- ฟังเนื้อหาบทเรียนด้วย Web Speech API (speechSynthesis) ----
+  const speech = { supported: 'speechSynthesis' in window, active: false, done: 0, watch: null };
+  const SPEAK_SELECTOR = 'h1, h2, h3, p, li, summary, .callout-title, .goal, .cmd-expect, .option, .compare > strong, .prompt-after > strong, .practice-label';
+  // ข้ามทุกอย่างที่ "มองไม่เห็นบนจอ" (เฉลยที่ยังซ่อน, details ที่ปิด, panel ที่ไม่ได้เลือก) และโค้ด/ไดอะแกรมที่อ่านเป็นเสียงแล้วไม่มีความหมาย
+  const SPEAK_SKIP = '.reveal:not(.open), details:not([open]), [hidden], .code-wrap, .mermaid, .diagram, .prompt-hint';
+  // Chrome หยุดพูดกลาง utterance ที่ยาว จึงตัดเป็นท่อนสั้นแล้วเข้าคิวต่อกัน
+  const SPEAK_CHUNK_MAX = 200;
+
+  function collectSpeakables(root) {
+    return [...root.querySelectorAll(SPEAK_SELECTOR)]
+      .filter(el => !el.closest(SPEAK_SKIP))
+      // อ่านเฉพาะโหนดใบ (ไม่มีลูกที่ match) เพื่อไม่ให้อ่านข้อความเดิมซ้ำจากทั้งแม่ทั้งลูก
+      .filter(el => !el.querySelector(SPEAK_SELECTOR))
+      .map(el => el.textContent.replace(/\s+/g, ' ').trim())
+      .filter(Boolean);
+  }
+
+  function segmentSpeakText(text) {
+    const out = [];
+    for (const sentence of text.split(/(?<=[.!?])\s+/)) {
+      let seg = sentence.trim();
+      // ภาษาไทยมักไม่มีจุด/ช่องว่าง ผ่าตามช่องว่างที่หาได้ ไม่งั้นตัดที่ความยาวกำหนด
+      while (seg.length > SPEAK_CHUNK_MAX) {
+        let cut = seg.lastIndexOf(' ', SPEAK_CHUNK_MAX);
+        if (cut < SPEAK_CHUNK_MAX * 0.5) cut = SPEAK_CHUNK_MAX;
+        out.push(seg.slice(0, cut).trim());
+        seg = seg.slice(cut).trim();
+      }
+      if (seg) out.push(seg);
+    }
+    return out;
+  }
+
+  function buildSpeakChunks(texts) {
+    const chunks = [];
+    let cur = '';
+    for (const text of texts) {
+      for (const seg of segmentSpeakText(text)) {
+        if (cur && cur.length + seg.length + 1 > SPEAK_CHUNK_MAX) { chunks.push(cur); cur = ''; }
+        cur = cur ? `${cur} ${seg}` : seg;
+      }
+    }
+    if (cur) chunks.push(cur);
+    return chunks;
+  }
+
+  function resolveSpeakVoice(lang) {
+    const voices = window.speechSynthesis.getVoices();
+    const target = (lang === 'th' ? 'th-th' : 'en-us');
+    const prefix = lang === 'th' ? 'th' : 'en';
+    return voices.find(v => (v.lang || '').toLowerCase().replace('_', '-') === target)
+      || voices.find(v => (v.lang || '').toLowerCase().startsWith(prefix))
+      || null;
+  }
+
+  function waitForVoices() {
+    return new Promise(resolve => {
+      const synth = window.speechSynthesis;
+      if (synth.getVoices().length) return resolve(synth.getVoices());
+      let settled = false;
+      const finish = () => {
+        if (settled) return;
+        settled = true;
+        synth.removeEventListener('voiceschanged', finish);
+        resolve(synth.getVoices());
+      };
+      synth.addEventListener('voiceschanged', finish);
+      // iOS โหลดรายชื่อเสียงหลัง utterance แรกเท่านั้น — ยิงเสียงเปล่า (เบาสุด) ภายใน gesture นี้เพื่อปลุกระบบ
+      try { const kick = new SpeechSynthesisUtterance(' '); kick.volume = 0; synth.speak(kick); } catch {}
+      setTimeout(finish, 800);
+    });
+  }
+
+  function speakButtonText(active) {
+    return `${icon(active ? 'stop' : 'speaker', 15)} ${esc(active ? U('stopListen') : U('listen'))}`;
+  }
+
+  function updateSpeakButton() {
+    document.querySelectorAll('[data-speak-lesson]').forEach(btn => {
+      btn.classList.toggle('speaking', speech.active);
+      btn.setAttribute('aria-pressed', String(speech.active));
+      btn.innerHTML = speakButtonText(speech.active);
+    });
+  }
+
+  function stopSpeakWatch() {
+    if (speech.watch) { clearInterval(speech.watch); speech.watch = null; }
+  }
+
+  function stopSpeaking() {
+    speech.active = false;
+    stopSpeakWatch();
+    if (speech.supported) window.speechSynthesis.cancel();
+    updateSpeakButton();
+  }
+
+  async function toggleSpeaking() {
+    if (speech.active) { stopSpeaking(); return; }
+    const header = document.querySelector('.content .lesson-header');
+    const body = document.querySelector('.content .lesson-body');
+    if (!header || !body) return;
+    const chunks = buildSpeakChunks([...collectSpeakables(header), ...collectSpeakables(body)]);
+    if (!chunks.length) return;
+    const synth = window.speechSynthesis;
+    await waitForVoices();
+    const voice = resolveSpeakVoice(state.lang);
+    if (!voice) { showToast(U('noVoice')); return; }
+    // cancel() แล้ว speak() ในทิกเดียวกัน Chrome บางเวอร์ชันกลืนคำสั่ง จึง cancel เฉพาะเมื่อมีคิวค้างจริง
+    if (synth.speaking || synth.pending) synth.cancel();
+    speech.active = true; speech.done = 0;
+    updateSpeakButton();
+    const finish = () => { if (!speech.active) return; speech.active = false; stopSpeakWatch(); updateSpeakButton(); };
+    chunks.forEach(text => {
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = state.lang === 'th' ? 'th-TH' : 'en-US';
+      u.voice = voice;
+      // onend/onerror ใช้นับความคืบหน้ารวมกัน ครบทุกท่อนจึงปลดสถานะปุ่ม (cancel ก็มาทางนี้แต่ถูกกันด้วย speech.active)
+      const step = () => { speech.done++; if (speech.done >= chunks.length) finish(); };
+      u.onend = step; u.onerror = step;
+      synth.speak(u);
+    });
+    // บาง engine ตายเงียบไม่ยิง onend/onerror เลย — เฝ้าคิวไว้ ถ้าไม่มีอะไรกำลังพูด/รอคิวติดต่อกัน ~1.2 วิ ให้ปลดสถานะเอง
+    let idle = 0;
+    speech.watch = setInterval(() => {
+      if (!speech.active) { stopSpeakWatch(); return; }
+      if (synth.speaking || synth.pending) { idle = 0; return; }
+      if (++idle >= 3) finish();
+    }, 400);
+  }
+
   function initDelegation() {
     document.addEventListener('click', e => {
       const copyBtn = e.target.closest('.copy-btn');
@@ -863,6 +1004,7 @@
   }
 
   window.addEventListener('hashchange', route);
+  window.addEventListener('pagehide', stopSpeaking);
   window.addEventListener('mermaid-ready', renderMermaid);
   initDiagramModal();
   initDelegation();
