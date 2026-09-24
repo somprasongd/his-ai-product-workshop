@@ -500,6 +500,7 @@
     state.i = next;
     [...stage.children].forEach((el, idx) => {
       el.classList.remove('active', 'is-prev', 'is-next');
+      if (idx === state.i) el.scrollTop = 0;
       if (el.classList.contains('content-open')) {
         el.classList.remove('content-open');
         const toggleBtnEl = el.querySelector('[data-content-toggle]');

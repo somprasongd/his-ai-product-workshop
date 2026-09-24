@@ -291,7 +291,11 @@
   .deck-actions { gap: 4px; }
   .deck-speech-btn { padding: 5px 8px; }
   .deck-counter { margin-right: 2px; }
-  .slide { grid-template-columns: 1fr; text-align: center; padding: 2vh 6vw 8vh; gap: 2vh; }
+  .slide {
+    grid-template-columns: 1fr; align-content: start; text-align: center;
+    padding: 2vh 6vw 8vh; gap: 2vh;
+    overflow-x: hidden; overflow-y: auto; overscroll-behavior-y: contain;
+  }
   .slide-icon-wrap { order: -1; }
   .slide-icon { width: min(60vw, 260px); }
   .diagram-stage { width: min(84vw, 420px); }
