@@ -157,13 +157,16 @@
     const th = state.lang === 'th';
     if (!speech.supported) { speechEl.hidden = true; return; }
     speechEl.hidden = false;
-    const pct = speech.chunks.length ? Math.min(100, Math.round(speech.done / speech.chunks.length * 100)) : 0;
+    const pct = speech.active && speech.chunks.length ? Math.min(100, Math.round(speech.done / speech.chunks.length * 100)) : 0;
+    const rate = speech.active ? speech.rate : state.speakRate;
+    const rateControl = `<label class="deck-speech-rate-label">${th ? 'ความเร็ว' : 'Speed'} <select class="deck-speech-rate" data-speech-rate aria-label="${th ? 'ความเร็วเสียง' : 'Narration speed'}">${window.CourseSpeech.rates.map(r => `<option value="${r}" ${rate === r ? 'selected' : ''}>${r}×</option>`).join('')}</select></label>`;
+    const progress = `<span class="deck-speech-progress"><span class="speak-progress" role="progressbar" aria-label="${th ? 'ความคืบหน้าบทพูด' : 'Narration progress'}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><i style="width:${pct}%"></i></span><span class="deck-speech-percent" data-speech-percent>${pct}%</span></span>`;
     if (speech.active && speakingSlide === state.i) {
       speechEl.innerHTML = `<div class="speak-panel" role="group" aria-label="${th ? 'ควบคุมเสียงบทพูด' : 'Slide narration controls'}">
         <button class="deck-speech-btn" type="button" data-speech-pause ${speech.loading ? 'disabled' : ''} aria-label="${speech.paused ? (th ? 'เล่นต่อ' : 'Resume') : (th ? 'พัก' : 'Pause')}">${speech.loading ? '…' : speech.paused ? '▶' : 'Ⅱ'} <span>${speech.loading ? (th ? 'เตรียมเสียง' : 'Preparing') : speech.paused ? (th ? 'เล่นต่อ' : 'Resume') : (th ? 'พัก' : 'Pause')}</span></button>
         <button class="deck-speech-btn" type="button" data-speech-stop aria-label="${th ? 'หยุดเสียง' : 'Stop narration'}">■ <span>${th ? 'หยุด' : 'Stop'}</span></button>
-        <select class="deck-speech-rate" data-speech-rate aria-label="${th ? 'ความเร็วเสียง' : 'Narration speed'}">${window.CourseSpeech.rates.map(r => `<option value="${r}" ${speech.rate === r ? 'selected' : ''}>${r}×</option>`).join('')}</select>
-        <span class="speak-progress" role="progressbar" aria-label="${th ? 'ความคืบหน้าบทพูด' : 'Narration progress'}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><i style="width:${pct}%"></i></span>
+        ${rateControl}
+        ${progress}
       </div>`;
       if (focusSelector) {
         const target = speechEl.querySelector(focusSelector);
@@ -173,7 +176,7 @@
     }
     const unavailable = notesError[state.lang];
     const loading = !notes[state.lang] && !unavailable;
-    speechEl.innerHTML = `<button class="deck-speech-btn deck-speech-start" type="button" data-speech-start ${loading || unavailable ? 'disabled' : ''} aria-label="${th ? 'เล่นบทพูดสไลด์นี้' : 'Play this slide narration'}">▶ <span>${unavailable ? (th ? 'ไม่มีบทพูด' : 'Notes unavailable') : loading ? (th ? 'โหลดบทพูด…' : 'Loading notes…') : (th ? 'ฟังบทพูด' : 'Play narration')}</span></button>`;
+    speechEl.innerHTML = `<div class="speak-panel" role="group" aria-label="${th ? 'ควบคุมเสียงบทพูด' : 'Slide narration controls'}"><button class="deck-speech-btn deck-speech-start" type="button" data-speech-start ${loading || unavailable ? 'disabled' : ''} aria-label="${th ? 'เล่นบทพูดสไลด์นี้' : 'Play this slide narration'}">▶ <span>${unavailable ? (th ? 'ไม่มีบทพูด' : 'Notes unavailable') : loading ? (th ? 'โหลดบทพูด…' : 'Loading notes…') : (th ? 'ฟังบทพูด' : 'Play narration')}</span></button>${rateControl}${progress}</div>`;
     if (focusSelector) speechEl.querySelector(focusSelector)?.focus({ preventScroll: true });
   }
 
@@ -183,6 +186,8 @@
     if (!bar) return;
     bar.setAttribute('aria-valuenow', String(pct));
     bar.querySelector('i').style.width = `${pct}%`;
+    const percent = speechEl.querySelector('[data-speech-percent]');
+    if (percent) percent.textContent = `${pct}%`;
   }
 
   speechEl.addEventListener('click', event => {

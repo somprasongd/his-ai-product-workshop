@@ -29,8 +29,11 @@
 .deck-speech-btn:hover:not(:disabled) { border-color: var(--primary); }
 .deck-speech-btn:disabled { cursor: wait; opacity: .6; }
 .deck-speech-rate { cursor: pointer; }
-.deck-speech .speak-panel { flex-wrap: nowrap; padding: 3px; gap: 4px; }
-.deck-speech .speak-progress { width: 54px; }
+.deck-speech .speak-panel { flex-wrap: wrap; justify-content: flex-end; padding: 3px; gap: 5px; }
+.deck-speech-rate-label, .deck-speech-progress { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.deck-speech-rate-label { color: var(--muted); font-size: 12px; font-weight: 700; }
+.deck-speech .speak-progress { width: 72px; flex: 0 0 72px; }
+.deck-speech-percent { min-width: 3ch; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
 .deck-toast {
   position: fixed; left: 50%; bottom: 64px; z-index: 50; transform: translateX(-50%);
   max-width: min(90vw, 520px); padding: 10px 16px; border-radius: 10px;
@@ -309,11 +312,10 @@
 }
 
 @media (max-width: 600px) {
-  .deck-home { width: 16px; flex: 0 0 16px; font-size: 0; }
-  .deck-home::before { content: '◂'; font-size: 17px; }
+  .deck-home { width: 16px; flex: 0 0 16px; font-size: 17px; }
   .deck-actions { flex: 1; flex-wrap: wrap; justify-content: flex-end; }
   .deck-speech { order: 5; flex-basis: 100%; justify-content: flex-end; }
-  .deck-speech .speak-progress, .deck-speech-rate { display: none; }
+  .deck-speech .speak-panel { max-width: calc(100vw - 40px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
