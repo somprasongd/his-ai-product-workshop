@@ -11,7 +11,8 @@
     promptLang: 'his-ai-course.promptLang',
     agentTool: 'his-ai-course.agentTool',
     repoHost: 'his-ai-course.repoHost',
-    practice: 'his-ai-course.practice'
+    practice: 'his-ai-course.practice',
+    speakRate: 'his-ai-course.speakRate'
   };
 
   const ui = {
@@ -22,7 +23,7 @@
       progress: 'ความคืบหน้า', complete: 'เรียนจบบทนี้', completed: 'เรียนจบแล้ว',
       next: 'บทถัดไป', previous: 'บทก่อนหน้า', copy: 'คัดลอก', copied: 'คัดลอกแล้ว',
       shareLink: 'แชร์บทเรียนนี้', linkCopied: 'คัดลอกลิงก์แล้ว',
-      listen: 'ฟังเนื้อหา', stopListen: 'หยุดฟัง',
+      listen: 'ฟังเนื้อหา', speakPause: 'พัก', speakResume: 'เล่นต่อ', speakStop: 'หยุด', speakSpeed: 'ความเร็วอ่าน', speakControls: 'ตัวควบคุมการฟังเนื้อหา', speakProgress: 'ความคืบหน้าการอ่าน',
       noVoice: 'ไม่พบเสียงอ่านภาษาไทยบนอุปกรณ์นี้ ลองติดตั้งเสียงภาษาไทยในตั้งค่าระบบของอุปกรณ์ แล้วกดฟังอีกครั้ง',
       expected: 'ดูผลลัพธ์ที่คาดหวัง', hideExpected: 'ซ่อนผลลัพธ์',
       check: 'ตรวจคำตอบ', correct: 'ถูกต้อง — ไปต่อได้', incorrect: 'ยังไม่ใช่ ลองคิดจากหลักการในบทนี้อีกครั้ง',
@@ -62,7 +63,7 @@
       progress: 'Progress', complete: 'Mark lesson complete', completed: 'Completed',
       next: 'Next lesson', previous: 'Previous lesson', copy: 'Copy', copied: 'Copied',
       shareLink: 'Share this lesson', linkCopied: 'Link copied',
-      listen: 'Listen', stopListen: 'Stop listening',
+      listen: 'Listen', speakPause: 'Pause', speakResume: 'Resume', speakStop: 'Stop', speakSpeed: 'Reading speed', speakControls: 'Listen playback controls', speakProgress: 'Reading progress',
       noVoice: 'No text-to-speech voice for this language was found on your device. Install one in your device settings, then try again.',
       expected: 'Reveal expected result', hideExpected: 'Hide expected result',
       check: 'Check answer', correct: 'Correct — keep going', incorrect: 'Not quite. Revisit the principle in this lesson and try again.',
@@ -121,7 +122,8 @@
     promptLang: localStorage.getItem(STORAGE.promptLang) || '',
     agentTool: localStorage.getItem(STORAGE.agentTool) || '',
     repoHost: localStorage.getItem(STORAGE.repoHost) || '',
-    practice: storedObject(STORAGE.practice)
+    practice: storedObject(STORAGE.practice),
+    speakRate: [0.75, 1, 1.25, 1.5].includes(parseFloat(localStorage.getItem(STORAGE.speakRate))) ? parseFloat(localStorage.getItem(STORAGE.speakRate)) : 1
   };
 
   const esc = (s='') => String(s).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
@@ -160,6 +162,7 @@
     else localStorage.removeItem(STORAGE.repoHost);
     if (Object.keys(state.practice).length) localStorage.setItem(STORAGE.practice, JSON.stringify(state.practice));
     else localStorage.removeItem(STORAGE.practice);
+    localStorage.setItem(STORAGE.speakRate, String(state.speakRate));
   }
 
   const promptLang = () => state.promptLang || state.lang;
@@ -202,7 +205,9 @@
       reset:'<path d="M3 12a9 9 0 1 0 2.64-6.36M3 12V5m0 7h7"/>',
       share:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>',
       speaker:'<path d="M11 5 6 9H3a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9.5 9.5 0 0 1 0 13"/>',
-      stop:'<rect x="6.5" y="6.5" width="11" height="11" rx="2"/>'
+      stop:'<rect x="6.5" y="6.5" width="11" height="11" rx="2"/>',
+      pause:'<path d="M9 5v14M15 5v14"/>',
+      play:'<path d="M8 5.5v13l11-6.5Z"/>'
     };
     return `<svg ${common}>${p[name] || p.spark}</svg>`;
   }
@@ -522,7 +527,7 @@
         <div class="lesson-top">
           <div class="lesson-kicker"><span class="pill">${esc(lesson.no)}</span><span class="pill">${esc(lesson.duration)}</span><span>${esc(t(course.groups.find(g=>g.id===lesson.group)))}</span></div>
           <div class="lesson-tools">
-            ${speech.supported ? `<button class="btn btn-secondary btn-small speak-btn" type="button" data-speak-lesson="${esc(lesson.id)}" aria-pressed="false">${speakButtonText(false)}</button>` : ''}
+            ${speech.supported ? `<div class="speak-area">${speakStartHTML()}</div>` : ''}
             <button class="btn btn-secondary btn-small share-btn" type="button" data-share-lesson="${esc(lesson.id)}">${icon('share',15)} ${U('shareLink')}</button>
           </div>
         </div>
@@ -675,7 +680,6 @@
       gSearch.addEventListener('input', () => applyGlossaryFilter(gSearch.value));
       applyGlossaryFilter('');
     }
-    document.querySelectorAll('[data-speak-lesson]').forEach(btn=>btn.addEventListener('click', toggleSpeaking));
     document.querySelectorAll('.reveal-btn').forEach(btn=>btn.addEventListener('click',()=>{
       const r=btn.closest('.reveal');
       r.classList.toggle('open');
@@ -842,7 +846,8 @@
   }
 
   // ---- ฟังเนื้อหาบทเรียนด้วย Web Speech API (speechSynthesis) ----
-  const speech = { supported: 'speechSynthesis' in window, active: false, done: 0, watch: null };
+  const speech = { supported: 'speechSynthesis' in window, active: false, paused: false, done: 0, gen: 0, chunks: [], voice: null, rate: 1, watch: null };
+  const SPEAK_RATES = [0.75, 1, 1.25, 1.5];
   const SPEAK_SELECTOR = 'h1, h2, h3, p, li, summary, .callout-title, .goal, .cmd-expect, .option, .compare > strong, .prompt-after > strong, .practice-label';
   // ข้ามทุกอย่างที่ "มองไม่เห็นบนจอ" (เฉลยที่ยังซ่อน, details ที่ปิด, panel ที่ไม่ได้เลือก) และโค้ด/ไดอะแกรมที่อ่านเป็นเสียงแล้วไม่มีความหมาย
   const SPEAK_SKIP = '.reveal:not(.open), details:not([open]), [hidden], .code-wrap, .mermaid, .diagram, .prompt-hint';
@@ -914,15 +919,30 @@
     });
   }
 
-  function speakButtonText(active) {
-    return `${icon(active ? 'stop' : 'speaker', 15)} ${esc(active ? U('stopListen') : U('listen'))}`;
+  function speakStartHTML() {
+    return `<button class="btn btn-secondary btn-small speak-btn" type="button" data-speak-start aria-pressed="false">${icon('speaker', 15)} <span>${esc(U('listen'))}</span></button>`;
   }
 
-  function updateSpeakButton() {
-    document.querySelectorAll('[data-speak-lesson]').forEach(btn => {
-      btn.classList.toggle('speaking', speech.active);
-      btn.setAttribute('aria-pressed', String(speech.active));
-      btn.innerHTML = speakButtonText(speech.active);
+  function speakPanelHTML() {
+    const pct = speech.chunks.length ? Math.min(100, Math.round(speech.done / speech.chunks.length * 100)) : 0;
+    return `<div class="speak-panel" role="group" aria-label="${esc(U('speakControls'))}">
+      <button class="btn btn-secondary btn-small" type="button" data-speak-pause aria-pressed="${speech.paused}">${icon(speech.paused ? 'play' : 'pause', 15)} <span>${esc(speech.paused ? U('speakResume') : U('speakPause'))}</span></button>
+      <button class="btn btn-secondary btn-small" type="button" data-speak-stop>${icon('stop', 15)} <span>${esc(U('speakStop'))}</span></button>
+      <span class="lang-switch lang-switch-compact rate-switch" role="group" aria-label="${esc(U('speakSpeed'))}">${SPEAK_RATES.map(r => `<button type="button" class="lang-opt${speech.rate === r ? ' active' : ''}" data-speak-rate="${r}" aria-pressed="${speech.rate === r}">${r}×</button>`).join('')}</span>
+      <span class="speak-progress" role="progressbar" aria-label="${esc(U('speakProgress'))}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><i style="width:${pct}%"></i></span>
+    </div>`;
+  }
+
+  function renderSpeakArea() {
+    document.querySelectorAll('.speak-area').forEach(area => { area.innerHTML = speech.active ? speakPanelHTML() : speakStartHTML(); });
+  }
+
+  function updateSpeakProgress() {
+    const pct = speech.chunks.length ? Math.min(100, Math.round(speech.done / speech.chunks.length * 100)) : 0;
+    document.querySelectorAll('.speak-progress').forEach(bar => {
+      bar.setAttribute('aria-valuenow', String(pct));
+      const fill = bar.querySelector('i');
+      if (fill) fill.style.width = pct + '%';
     });
   }
 
@@ -930,49 +950,110 @@
     if (speech.watch) { clearInterval(speech.watch); speech.watch = null; }
   }
 
-  function stopSpeaking() {
-    speech.active = false;
+  function finishSpeaking() {
+    if (!speech.active) return;
+    speech.active = false; speech.paused = false;
     stopSpeakWatch();
-    if (speech.supported) window.speechSynthesis.cancel();
-    updateSpeakButton();
+    renderSpeakArea();
+  }
+
+  function stopSpeaking() {
+    speech.gen++;
+    speech.active = false; speech.paused = false;
+    stopSpeakWatch();
+    if (speech.supported) {
+      const synth = window.speechSynthesis;
+      synth.cancel();
+      // Chrome บางรุ่นค้างธง paused ไว้หลัง cancel ทำให้รอบถัดไปไม่ออกเสียง
+      if (synth.paused) synth.resume();
+    }
+    renderSpeakArea();
+  }
+
+  // จัดคิวท่อนเสียงตั้งแต่ท่อนที่ from — ใช้ทั้งตอนเริ่มเล่นและตอนเปลี่ยนความเร็วกลางคัน
+  // gen คือหมายเลขรอบของคิว: cancel/re-queue ทำให้ onend/onerror ของ utterance เก่าถูกยิงตามมาช้า ๆ ทุก callback ต้องตรวจ gen ก่อนเชื่อผล
+  function speakChunksFrom(from) {
+    const synth = window.speechSynthesis;
+    const gen = ++speech.gen;
+    speech.done = from;
+    const queue = () => {
+      if (!speech.active || gen !== speech.gen) return;
+      for (let i = from; i < speech.chunks.length; i++) {
+        const u = new SpeechSynthesisUtterance(speech.chunks[i]);
+        u.lang = state.lang === 'th' ? 'th-TH' : 'en-US';
+        u.voice = speech.voice;
+        u.rate = speech.rate;
+        // onend/onerror นับความคืบหน้า ครบทุกท่อนจึงปลดสถานะกลับเป็นปุ่มเดิม
+        const step = () => {
+          if (gen !== speech.gen) return;
+          speech.done++;
+          updateSpeakProgress();
+          if (speech.done >= speech.chunks.length) finishSpeaking();
+        };
+        u.onend = step; u.onerror = step;
+        synth.speak(u);
+      }
+      // re-queue ระหว่างพักอยู่: คิวใหม่ต้องพักต่อทันที
+      if (speech.paused) synth.pause();
+    };
+    // cancel() แล้ว speak() ในทิกเดียวกัน Chrome บางเวอร์ชันกลืนคำสั่ง จึงหน่วงออกเล็กน้อยเมื่อต้องทิ้งคิวเก่าก่อน
+    if (synth.speaking || synth.pending) { synth.cancel(); setTimeout(queue, 60); }
+    else queue();
+    // บาง engine ตายเงียบไม่ยิง onend/onerror เลย — เฝ้าคิวไว้ ถ้าไม่มีอะไรกำลังพูด/รอคิว/พักอยู่ติดต่อกัน ~1.2 วิ ให้ปลดสถานะเอง
+    stopSpeakWatch();
+    let idle = 0;
+    speech.watch = setInterval(() => {
+      if (!speech.active) { stopSpeakWatch(); return; }
+      if (speech.paused || synth.speaking || synth.pending) { idle = 0; return; }
+      if (++idle >= 3) finishSpeaking();
+    }, 400);
   }
 
   async function toggleSpeaking() {
-    if (speech.active) { stopSpeaking(); return; }
     const header = document.querySelector('.content .lesson-header');
     const body = document.querySelector('.content .lesson-body');
     if (!header || !body) return;
     const chunks = buildSpeakChunks([...collectSpeakables(header), ...collectSpeakables(body)]);
     if (!chunks.length) return;
-    const synth = window.speechSynthesis;
     await waitForVoices();
     const voice = resolveSpeakVoice(state.lang);
     if (!voice) { showToast(U('noVoice')); return; }
-    // cancel() แล้ว speak() ในทิกเดียวกัน Chrome บางเวอร์ชันกลืนคำสั่ง จึง cancel เฉพาะเมื่อมีคิวค้างจริง
-    if (synth.speaking || synth.pending) synth.cancel();
-    speech.active = true; speech.done = 0;
-    updateSpeakButton();
-    const finish = () => { if (!speech.active) return; speech.active = false; stopSpeakWatch(); updateSpeakButton(); };
-    chunks.forEach(text => {
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = state.lang === 'th' ? 'th-TH' : 'en-US';
-      u.voice = voice;
-      // onend/onerror ใช้นับความคืบหน้ารวมกัน ครบทุกท่อนจึงปลดสถานะปุ่ม (cancel ก็มาทางนี้แต่ถูกกันด้วย speech.active)
-      const step = () => { speech.done++; if (speech.done >= chunks.length) finish(); };
-      u.onend = step; u.onerror = step;
-      synth.speak(u);
-    });
-    // บาง engine ตายเงียบไม่ยิง onend/onerror เลย — เฝ้าคิวไว้ ถ้าไม่มีอะไรกำลังพูด/รอคิวติดต่อกัน ~1.2 วิ ให้ปลดสถานะเอง
-    let idle = 0;
-    speech.watch = setInterval(() => {
-      if (!speech.active) { stopSpeakWatch(); return; }
-      if (synth.speaking || synth.pending) { idle = 0; return; }
-      if (++idle >= 3) finish();
-    }, 400);
+    speech.chunks = chunks; speech.voice = voice; speech.rate = state.speakRate || 1;
+    speech.active = true; speech.paused = false;
+    renderSpeakArea();
+    updateSpeakProgress();
+    speakChunksFrom(0);
+  }
+
+  function toggleSpeakPause() {
+    if (!speech.active) return;
+    speech.paused = !speech.paused;
+    if (speech.paused) window.speechSynthesis.pause();
+    else window.speechSynthesis.resume();
+    renderSpeakArea();
+  }
+
+  function setSpeakRate(rate) {
+    if (rate === speech.rate) return;
+    speech.rate = rate;
+    state.speakRate = rate;
+    persist();
+    if (!speech.active) return;
+    renderSpeakArea();
+    // rate ตั้งได้เฉพาะตอนสร้าง utterance จึงต้องทิ้งคิวเดิมแล้วเริ่มท่อนปัจจุบันใหม่ด้วยความเร็วที่เลือก
+    speakChunksFrom(speech.done);
   }
 
   function initDelegation() {
     document.addEventListener('click', e => {
+      const speakStart = e.target.closest('[data-speak-start]');
+      if (speakStart) { toggleSpeaking(); return; }
+      const speakPauseBtn = e.target.closest('[data-speak-pause]');
+      if (speakPauseBtn) { toggleSpeakPause(); return; }
+      const speakStopBtn = e.target.closest('[data-speak-stop]');
+      if (speakStopBtn) { stopSpeaking(); return; }
+      const speakRateBtn = e.target.closest('[data-speak-rate]');
+      if (speakRateBtn) { setSpeakRate(parseFloat(speakRateBtn.dataset.speakRate)); return; }
       const copyBtn = e.target.closest('.copy-btn');
       if (copyBtn) { copyText(decodeURIComponent(copyBtn.dataset.copy || '')); return; }
       const shareBtn = e.target.closest('[data-share-lesson]');
