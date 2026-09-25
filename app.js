@@ -746,14 +746,16 @@
     document.body.scrollLeft = 0;
   }
 
-  const diagramModal = { el:null, content:null, body:null, title:null, zoomLabel:null, scale:1, panX:0, panY:0 };
+  // scale 1 (100%) = ภาพเต็มความกว้างของพื้นที่แสดงผล fit คือสัดส่วนจากขนาดจริงของ SVG ไปเป็น 100%
+  const diagramModal = { el:null, content:null, body:null, title:null, zoomLabel:null, scale:1, fit:1, natural:0, panX:0, panY:0 };
 
   function applyDiagramTransform() {
-    diagramModal.content.style.transform = `translate(${diagramModal.panX}px, ${diagramModal.panY}px) scale(${diagramModal.scale})`;
+    const rendered = diagramModal.fit * diagramModal.scale;
+    diagramModal.content.style.transform = `translate(${diagramModal.panX}px, ${diagramModal.panY}px) scale(${rendered.toFixed(4)})`;
   }
 
   function setDiagramZoom(scale, resetPan=true) {
-    diagramModal.scale = Math.min(5, Math.max(0.4, Math.round(scale * 10) / 10));
+    diagramModal.scale = Math.max(0.4, Math.round(scale * 10) / 10);
     if (resetPan) { diagramModal.panX = 0; diagramModal.panY = 0; }
     applyDiagramTransform();
     diagramModal.zoomLabel.textContent = Math.round(diagramModal.scale * 100) + '%';
@@ -780,15 +782,30 @@
     body.addEventListener('pointercancel', stop);
   }
 
+  function computeDiagramFit() {
+    const cs = getComputedStyle(diagramModal.body);
+    const avail = diagramModal.body.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    if (!(diagramModal.natural > 0) || !(avail > 0)) { diagramModal.fit = 1; return; }
+    diagramModal.fit = avail / diagramModal.natural;
+  }
+
   function openDiagramModal(svg, title) {
     diagramModal.content.innerHTML = '';
     diagramModal.content.appendChild(svg.cloneNode(true));
     diagramModal.title.textContent = title;
     diagramModal.panX = 0; diagramModal.panY = 0;
-    setDiagramZoom(1);
     diagramModal.el.classList.add('open');
     diagramModal.el.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    // วัดความกว้างจริงของ SVG ตอนยังไม่มี transform และปิด transition ชั่วคราว ไม่ให้ค่าที่อ่านได้ติด animation
+    const svgEl = diagramModal.content.querySelector('svg');
+    const prevTransition = diagramModal.content.style.transition;
+    diagramModal.content.style.transition = 'none';
+    diagramModal.fit = 1; diagramModal.scale = 1; applyDiagramTransform();
+    diagramModal.natural = svgEl ? svgEl.getBoundingClientRect().width : 0;
+    diagramModal.content.style.transition = prevTransition;
+    computeDiagramFit();
+    setDiagramZoom(1);
   }
 
   function closeDiagramModal() {
@@ -814,6 +831,11 @@
     document.getElementById('diagramZoomReset').addEventListener('click', () => setDiagramZoom(1));
     modal.querySelectorAll('[data-modal-close]').forEach(el => el.addEventListener('click', closeDiagramModal));
     initDiagramPan();
+    window.addEventListener('resize', () => {
+      if (!diagramModal.el.classList.contains('open')) return;
+      computeDiagramFit();
+      applyDiagramTransform();
+    });
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape' && diagramModal.el.classList.contains('open')) closeDiagramModal();
     });
