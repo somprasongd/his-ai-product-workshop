@@ -572,14 +572,14 @@ Answer as questions back to me. Do not answer them on my behalf.`},
           '**test** — เพิ่มหรือแก้การทดสอบ',
           '**docs** — เอกสาร เช่น README หรือ template',
           '**refactor** — จัดระเบียบโค้ดโดยพฤติกรรมเหมือนเดิม',
-          '**chore** — งานตั้งต้นหรืองานระบบที่ผู้ใช้ไม่เห็นผล'
+          '**chore** (อ่านว่า “คอร์” แปลว่า “งานบ้าน”) — งานบำรุงรักษา repo เบื้องหลังที่ผู้ใช้ไม่มีทางรับรู้ เช่น tooling, config, dependency และงานตั้งต้นตอนเริ่มโปรเจกต์ ไม่ใช่ feat และไม่ใช่ fix',
         ],en:[
           '**feat** — a new user-visible feature',
           '**fix** — corrected behaviour',
           '**test** — tests added or changed',
           '**docs** — documentation such as a README or a template',
           '**refactor** — tidier code, same behaviour',
-          '**chore** — setup or housekeeping with no user-visible effect'
+          '**chore** — literally “housekeeping”: background repo maintenance users never see, such as tooling, config, dependencies, and initial setup — not a feat and not a fix'
         ]}},
         {type:'code',title:{th:'กายวิภาคของข้อความ commit',en:'Anatomy of a commit message'},
           lead:{th:'บรรทัดแรกคือสิ่งที่คนเห็นในประวัติ ส่วนย่อหน้าล่างคือสิ่งที่ช่วยคุณเองในอีกหกเดือน ให้บรรทัดแรกสั้นกว่า 72 ตัวอักษร และเขียนเป็นรูปปัจจุบัน (add ไม่ใช่ added)',en:'The first line is what people see in the history; the paragraph below is what helps you six months later. Keep the first line under 72 characters and write it in the present tense (add, not added).'},
