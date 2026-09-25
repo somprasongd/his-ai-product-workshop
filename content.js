@@ -227,19 +227,19 @@ Cite real file names for every point.`},
       intro:{th:'ก่อนจะเปิด branch หรือสั่ง Agent ต้องมี Issue หนึ่งใบที่บอกได้ว่างานนี้คืออะไร แค่ไหนถึงพอ และจะรู้ได้อย่างไรว่าเสร็จ',en:'Before any branch or any agent, one issue must say what the work is, where it stops, and how you will know it is done.'},
       outcomes:{th:['แยกให้ออกระหว่าง Requirement, Issue และ Acceptance Criteria','เขียน Issue ที่มี Context, In/Out of scope, AC และ Definition of Done','เขียน AC สองแบบ คือ AC ที่เป็นสถานะ และ AC ที่เป็นพฤติกรรม','ตัดงานที่ใหญ่เกินให้เหลือขนาดที่ 1 branch จบได้'],en:['Tell requirement, issue, and acceptance criteria apart','Write an issue with context, in/out of scope, ACs, and a definition of done','Write both kinds of AC: state ACs and behaviour ACs','Cut oversized work down to something one branch can finish']},
       blocks:[
-        {type:'prose',title:{th:'กล่องเดียวในภาพที่ AI ทำแทนคุณไม่ได้',en:'The one box in the picture the AI cannot fill for you'},body:{th:[
-          'ในบทที่แล้วเราเห็นเส้นทางของงานทั้งเส้น กล่องแรกสุดคือ **Requirement → Issue** และนี่คือกล่องเดียวในภาพที่เป็นการตัดสินใจว่า “อะไรคือสิ่งที่ถูกต้อง” ไม่ใช่ “ทำอย่างไร” — ซึ่งเป็นงานของคุณ ไม่ใช่ของ Agent',
+        {type:'prose',title:{th:'กล่องเดียวใน “เส้นทางของงาน” ที่ AI ทำแทนคุณไม่ได้',en:'The one box in the work journey the AI cannot fill for you'},body:{th:[
+          'ภาพ **เส้นทางของงาน** ในบทที่ 01 วาดการเดินทางของงานทั้งเส้น กล่องแรกสุดคือ **Requirement → Issue** และนี่คือกล่องเดียวในภาพนั้นที่เป็นการตัดสินใจว่า “อะไรคือสิ่งที่ถูกต้อง” ไม่ใช่ “ทำอย่างไร” — ซึ่งเป็นงานของคุณ ไม่ใช่ของ Agent',
           'Requirement เขียนไว้ให้คนอ่านแล้วเข้าใจภาพรวม ส่วน Issue เขียนไว้ให้คนลงมือทำได้ทันที ความต่างอยู่ตรงที่ Issue ต้องตอบสามคำถามให้ครบ คือ **ทำอะไร**, **แค่ไหนถึงพอ** และ **จะรู้ได้อย่างไรว่าเสร็จ**',
           'เมื่อผู้ลงมือคือ AI Agent ความต่างนี้ยิ่งสำคัญ เพราะ Agent ไม่ถามกลับเวลาไม่แน่ใจ มันจะเดาแล้วเขียนโค้ดต่อทันที ทุกช่องว่างใน Issue จึงเท่ากับการตัดสินใจทางธุรกิจที่ถูกยกให้ Agent ทำแทนคุณโดยที่คุณไม่รู้ตัว และคุณจะเพิ่งมาเห็นตอน review',
           'ข่าวดีคือ Issue ที่ดีไม่จำเป็นต้องยาว มันแค่ต้องคมในสี่จุด คือ **บริบท**, **ขอบเขต**, **เงื่อนไขการยอมรับ (AC)** และ **นิยามว่าเสร็จ (Definition of Done)** ที่เหลือปล่อยให้เป็นเรื่องของแผนที่ Agent จะเสนอมาให้คุณตรวจในบทที่ 05'
         ],en:[
-          'The previous lesson showed the whole journey. Its very first box is **Requirement → Issue**, and it is the only box in that picture that decides “what is correct” rather than “how to build it” — which makes it your job, not the agent’s.',
+          'The **work journey** diagram in lesson 01 showed the whole path. Its very first box is **Requirement → Issue**, and it is the only box in that diagram that decides “what is correct” rather than “how to build it” — which makes it your job, not the agent’s.',
           'A requirement is written so people understand the big picture. An issue is written so someone can start working immediately. The difference is that an issue must answer three questions: **what are we building**, **where does it stop**, and **how will we know it is done**.',
           'When the builder is an AI agent, that difference matters even more, because the agent never asks you back when it is unsure. It guesses and keeps writing code. Every gap in the issue is therefore a business decision handed to the agent without you noticing — and you only see it at review time.',
           'The good news is that a good issue is not a long one. It only has to be sharp on four things: **context**, **scope**, **acceptance criteria**, and **definition of done**. Everything else belongs in the plan the agent proposes for your review in lesson 05.'
         ]}},
         {type:'diagram',title:{th:'US-001 จาก requirement ไปสู่งานที่ตรวจได้',en:'US-001 from requirement to reviewable work'},
-          lead:{th:'ไฟล์ใน starter เป็น requirement ของ US-001 อยู่แล้ว งานในบทนี้คือแปลงเป็น Issue จริงหนึ่งใบโดยรักษา AC ครบ แล้วใช้เลข Issue เดียวจนส่งมอบ',en:'The starter already contains the US-001 requirement. Turn it into one real issue while preserving its ACs, then carry that issue number through delivery.'},
+          lead:{th:'ภาพนี้คือ “เส้นทางของงาน” จากบทที่ 01 เมื่อเจาะเฉพาะ US-001 — ไฟล์ใน starter เป็น requirement ของ US-001 อยู่แล้ว งานในบทนี้คือแปลงเป็น Issue จริงหนึ่งใบโดยรักษา AC ครบ แล้วใช้เลข Issue เดียวจนส่งมอบ',en:'This picture is the lesson 01 work journey zoomed into US-001 — the starter already contains the US-001 requirement. Turn it into one real issue while preserving its ACs, then carry that issue number through delivery.'},
           diagram:`flowchart LR
 R[US-001 requirement] --> I[Issue + AC]
 I --> B[Branch + worktree]
