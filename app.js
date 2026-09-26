@@ -317,7 +317,7 @@
       case 'code': return block.title || block.lead || block.note
         ? `<section class="block">${block.title?`<h2>${esc(t(block.title))}</h2>`:''}${lead(block)}${codeSectionBody(block)}${block.note?`<p class="block-outro">${rich(t(block.note))}</p>`:''}</section>`
         : codeSectionBody(block);
-      case 'diagram': return `<section class="block"><h2>${esc(t(block.title))}</h2>${lead(block)}<div class="diagram"><button class="diagram-expand" type="button" data-diagram-title="${esc(t(block.title))}" aria-label="${state.lang==='th'?'ดูภาพขยาย':'View full size'}">${icon('expand',15)}<span>${state.lang==='th'?'ขยาย':'Expand'}</span></button><div class="mermaid">${esc(block.diagram)}</div>${block.diagramMobile?`<div class="mermaid mermaid-mobile">${esc(block.diagramMobile)}</div>`:''}</div>${block.notes?`<div class="diagram-notes"><strong>${U('readDiagram')}</strong><ul class="clean">${t(block.notes).map(n=>`<li>${rich(n)}</li>`).join('')}</ul></div>`:''}${block.outro?`<p class="block-outro">${rich(t(block.outro))}</p>`:''}</section>`;
+      case 'diagram': return `<section class="block"><h2>${esc(t(block.title))}</h2>${lead(block)}<div class="diagram${block.diagramMobile?' has-mobile-diagram':''}"><button class="diagram-expand" type="button" data-diagram-title="${esc(t(block.title))}" aria-label="${state.lang==='th'?'ดูภาพขยาย':'View full size'}">${icon('expand',15)}<span>${state.lang==='th'?'ขยาย':'Expand'}</span></button><div class="mermaid">${esc(block.diagram)}</div>${block.diagramMobile?`<div class="mermaid mermaid-mobile">${esc(block.diagramMobile)}</div>`:''}</div>${block.notes?`<div class="diagram-notes"><strong>${U('readDiagram')}</strong><ul class="clean">${t(block.notes).map(n=>`<li>${rich(n)}</li>`).join('')}</ul></div>`:''}${block.outro?`<p class="block-outro">${rich(t(block.outro))}</p>`:''}</section>`;
       case 'prose': return `<section class="block prose">${block.title?`<h2>${esc(t(block.title))}</h2>`:''}${t(block.body).map(pg=>`<p>${rich(pg)}</p>`).join('')}${block.points?`<ul class="clean">${t(block.points).map(x=>`<li>${rich(x)}</li>`).join('')}</ul>`:''}</section>`;
       case 'commands': return commandsBlock(block);
       case 'agent-setup': return agentSetupBlock(block);
@@ -739,12 +739,46 @@
         if(el.dataset.rendered==='1') continue;
         const source=el.textContent; const id='m'+Math.random().toString(36).slice(2);
         const {svg}=await window.mermaid.render(id,source); el.innerHTML=svg; el.dataset.rendered='1';
+        sizeInlineDiagram(el);
       }
     } catch(err){ console.warn('Mermaid render failed',err); }
     // เคลียร์ pan แนวนอนที่อาจค้างจาก render ชั่วคราว (คุมทั้ง html และ body สำหรับ browser ที่ propagate ต่างกัน)
     document.scrollingElement.scrollLeft = 0;
     document.body.scrollLeft = 0;
+    // เผื่อ SVG ถูกแทนที่หลังจากนี้ (โหลดช้า/แท็บเบื้องหลัง): ยืนยันขนาดอีกรอบเมื่อทุกอย่างเซ็ตเทิล
+    setTimeout(()=>{document.querySelectorAll('.mermaid[data-rendered="1"]').forEach(sizeInlineDiagram);},400);
   }
+
+  // มือถือ: ไดอะแกรมแนวนอนที่กว้างเมื่อเทียบกับความสูง (เช่น 20:1) พอย่อให้พอดีความกว้างจอจะเหลือความสูง
+  // ไม่กี่สิบพิกเซลจนอ่านไม่ได้ จึงกำหนดขนาดจริง (width/height attribute) ให้ทุก SVG หลัง render
+  // โดยยึดความสูงขั้นต่ำ 170px คงสัดส่วนเดิมเสมอ ตัวที่สูงพออยู่แล้วย่อพอดีความกว้างตามเดิม
+  // ส่วนตัวที่ต้องขยาย (class diagram-pinned) จะกว้างเกินกรอบ เลื่อนแนวนอนในกล่อง หรือกดขยายดูทั้งภาพได้
+  const DIAGRAM_MIN_HEIGHT = 170;
+  function sizeInlineDiagram(el){
+    const svg=el.querySelector('svg'); const box=el.closest('.diagram');
+    if(!svg||!box) return;
+    const vb=svg.viewBox.baseVal;
+    if(!(vb.width>0)||!(vb.height>0)) return;
+    if(!window.matchMedia('(max-width: 780px)').matches){
+      svg.removeAttribute('width'); svg.removeAttribute('height'); svg.style.maxWidth='';
+      el.classList.remove('diagram-pinned');
+      return;
+    }
+    const avail=box.clientWidth-32;
+    if(!(avail>0)) return;
+    const fitH=avail*vb.height/vb.width;
+    const pinned=fitH<DIAGRAM_MIN_HEIGHT;
+    const h=pinned?DIAGRAM_MIN_HEIGHT:fitH;
+    svg.setAttribute('width',Math.round(h*vb.width/vb.height));
+    svg.setAttribute('height',Math.round(h));
+    svg.style.maxWidth=pinned?'none':'';
+    el.classList.toggle('diagram-pinned',pinned);
+  }
+  let diagramSizeTimer=0;
+  window.addEventListener('resize',()=>{
+    clearTimeout(diagramSizeTimer);
+    diagramSizeTimer=setTimeout(()=>{document.querySelectorAll('.mermaid[data-rendered="1"]').forEach(sizeInlineDiagram);},150);
+  });
 
   // scale 1 (100%) = ภาพเต็มความกว้างของพื้นที่แสดงผล fit คือสัดส่วนจากขนาดจริงของ SVG ไปเป็น 100%
   const diagramModal = { el:null, content:null, body:null, title:null, zoomLabel:null, scale:1, fit:1, natural:0, panX:0, panY:0 };
