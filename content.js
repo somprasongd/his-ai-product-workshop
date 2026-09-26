@@ -2003,8 +2003,30 @@ AGENTS.md                  <- กติกาที่ใช้ร่วมก�
 .gitignore                 <- .tmp/ และ .claude/skills`,
           note:{th:'เหตุผลที่แยกสองที่: `.agents/skills/` เป็นกลางและใช้ได้กับทุกเครื่องมือ ส่วน `.claude/skills` เป็นตำแหน่งเฉพาะของ Claude Code ซึ่งเป็นของแต่ละเครื่อง จึงใส่ไว้ใน `.gitignore` ไม่ commit ขึ้นไป เพราะ symlink ที่สร้างบน mac กับบน Windows ไม่เหมือนกัน ส่วน `.tmp/` คือที่พักของเนื้อหาที่ Agent ร่างก่อนส่ง เป็นไฟล์ชั่วคราวจึง ignore เช่นกัน',en:'Why two places: `.agents/skills/` is tool-neutral and works for everyone, while `.claude/skills` is Claude Code’s own location and belongs to each checkout — so it goes in `.gitignore` rather than into Git, because the link is created differently on macOS and on Windows. `.tmp/` is scratch space for bodies the agent drafts before sending, temporary and likewise ignored.'}},
         {type:'code',title:{th:'ตัวอย่าง SKILL.md สำหรับสร้าง Issue',en:'Example SKILL.md for filing an issue'},
-          lead:{th:'อ่านให้ออกว่าทุกบรรทัดกำลังทำอะไร: ส่วนหัวบอกว่า skill นี้ชื่ออะไรและใช้ตอนไหน ส่วนเนื้อหาคือขั้นตอนที่ Agent ต้องเดินตาม และท้ายสุดคือข้อห้าม',en:'Read what each part does: the header says what this skill is and when to use it, the body is the sequence the agent must follow, and the end is the list of prohibitions.'},
-          label:'.agents/skills/create-issue/SKILL.md',code:`---
+          lead:{th:'อ่านให้ออกว่าทุกบรรทัดกำลังทำอะไร: ส่วนหัวบอกว่า skill นี้ชื่ออะไรและใช้ตอนไหน ส่วนเนื้อหาคือขั้นตอนที่ Agent ต้องเดินตาม และท้ายสุดคือข้อห้าม ตัวอย่างทั้งสามมีทั้งสองภาษาให้สลับ — เลือกภาษาเดียวสำหรับไฟล์จริงและใช้เวอร์ชันนั้นตลอดทีม',en:'Read what each part does: the header says what this skill is and when to use it, the body is the sequence the agent must follow, and the end is the list of prohibitions. All three examples come in both Thai and English — pick one language for the real files and keep the whole team on it.'},
+          label:'.agents/skills/create-issue/SKILL.md',code:{th:`---
+name: create-issue
+description: ร่าง Issue จาก docs/templates/issue-template.md แล้วเสนอคำสั่งที่ใช้เปิดจริง
+  ใช้เมื่อผู้ใช้ขอเปิดหรือสร้าง Issue
+---
+
+# Create issue
+
+1. อ่าน docs/templates/issue-template.md และไฟล์ requirement ที่ผู้ใช้ระบุ
+2. กรอกทุกหัวข้อของ template โดยใช้เฉพาะสิ่งที่ requirement ระบุ
+3. ถ้า template ต้องการสิ่งที่ requirement ไม่ได้ตอบ ให้ถามผู้ใช้
+   ห้ามเดา AC เอง และห้ามเดาสิ่งที่อยู่นอกขอบเขตเอง
+4. เขียนผลลัพธ์ลง .tmp/issue-<slug>.md ห้ามแก้ไฟล์อื่นใด
+5. แสดงเนื้อหาในแชทแล้วหยุด รอผู้ใช้อนุมัติหรือแก้ไข
+6. หลังได้รับอนุมัติ เสนอคำสั่งเดียวเท่านั้น แล้วให้ผู้ใช้รันหรือกดอนุมัติเอง:
+   GitHub: gh issue create --title "<title>" --body-file .tmp/issue-<slug>.md
+   GitLab: glab issue create --title "<title>" --description .tmp/issue-<slug>.md
+7. รายงานเลข Issue ที่ได้กลับมา เพื่อนำไปตั้งชื่อ branch
+
+## Never
+- ห้ามสร้าง ปิด แก้ไข หรือคอมเมนต์ Issue อื่น
+- ห้าม commit, push หรือแตะ main
+- ห้ามใส่ข้อมูลผู้ป่วยจริง token หรือค่าใน .env ลงในเนื้อหา`,en:`---
 name: create-issue
 description: Draft an issue from docs/templates/issue-template.md and propose the
   command that files it. Use when the user asks to open or create an issue.
@@ -2026,11 +2048,34 @@ description: Draft an issue from docs/templates/issue-template.md and propose th
 ## Never
 - Never create, close, edit, or comment on any other issue.
 - Never commit, push, or touch main.
-- Never put real patient data, tokens, or .env values into the body.`,
+- Never put real patient data, tokens, or .env values into the body.`},
           note:{th:'ข้อ 3 คือหัวใจของ skill นี้ เพราะมันเปลี่ยนพฤติกรรมเริ่มต้นของ Agent จาก “เดาให้จบ” เป็น “ถามกลับ” ซึ่งเป็นสิ่งเดียวกับที่คุณฝึกทำเองในบทที่ 02',en:'Step 3 is the heart of it: it flips the agent’s default from “guess and finish” to “ask back” — the same move you practised by hand in lesson 02.'}},
         {type:'code',title:{th:'ตัวอย่าง SKILL.md สำหรับร่าง MR',en:'Example SKILL.md for drafting an MR'},
           lead:{th:'skill ตัวนี้ต่างจากตัวแรกตรงที่มันต้องอ่านหลักฐานจาก Git จริง ไม่ใช่จากความจำของบทสนทนา และต้องไม่แต่งเรื่องการทดสอบที่ยังไม่เกิดขึ้น',en:'This one differs in that it must read real evidence from Git rather than from the conversation’s memory — and must never invent testing that did not happen.'},
-          label:'.agents/skills/create-mr/SKILL.md',code:`---
+          label:'.agents/skills/create-mr/SKILL.md',code:{th:`---
+name: create-mr
+description: ร่าง Merge Request จาก docs/templates/mr-template.md ด้วย diff ของ
+  branch จริง แล้วเสนอคำสั่งที่เปิด MR เป็น Draft
+---
+
+# Create merge request
+
+1. รันคำสั่งอ่านอย่างเดียวเหล่านี้ แล้วใช้ผลลัพธ์เป็นแหล่งความจริง:
+   git log --oneline main..HEAD
+   git diff main...HEAD --stat
+2. อ่าน docs/templates/mr-template.md แล้วกรอกทุกหัวข้อจากผลลัพธ์นั้น
+3. หัวข้อ Verification ให้ระบุเฉพาะสิ่งที่ผู้ใช้ยืนยันว่าทำจริง
+   ถามว่า “คุณตรวจอะไรด้วยตัวเองบ้าง” ห้ามอ้างการทดสอบที่ไม่เกิดขึ้น
+4. ใส่ "Closes #<issue number>" เมื่อผู้ใช้บอกเลข Issue
+5. เขียนเนื้อหาลง .tmp/mr-<branch>.md แล้วแสดง หยุดรอการอนุมัติ
+6. หลังได้รับอนุมัติ เสนอคำสั่งเดียวเท่านั้น:
+   GitHub: gh pr create --draft --title "<title>" --body-file .tmp/mr-<branch>.md
+   GitLab: glab mr create --draft --title "<title>" --description .tmp/mr-<branch>.md
+
+## Never
+- ห้าม merge ห้ามอนุมัติ ห้าม push ขึ้น main
+- ห้ามเปลี่ยน MR จาก Draft เป็นพร้อม review เป็นสิทธิ์ของคน
+- ห้ามแก้ไฟล์ source ระหว่างร่าง`,en:`---
 name: create-mr
 description: Draft a merge request from docs/templates/mr-template.md using the real
   branch diff, then propose the command that opens it as a draft.
@@ -2053,11 +2098,42 @@ description: Draft a merge request from docs/templates/mr-template.md using the 
 ## Never
 - Never merge, never approve, never push to main.
 - Never mark the MR ready for review; the human does that.
-- Never edit source files while drafting.`,
+- Never edit source files while drafting.`},
           note:{th:'ข้อ 3 คือข้อที่ป้องกันปัญหาที่พบบ่อยที่สุดของ MR ที่ AI ร่าง คือมันเขียนว่า “ทดสอบครบทุกกรณีแล้ว” ทั้งที่ไม่มีใครเปิดดู ซึ่งทำให้ reviewer เชื่อผิด ๆ',en:'Step 3 prevents the most common failure of AI-drafted MRs: a confident “all cases tested” that nobody actually checked, which misleads the reviewer.'}},
         {type:'code',title:{th:'ตัวอย่าง SKILL.md สำหรับตรวจ diff',en:'Example SKILL.md for reviewing a diff'},
           lead:{th:'สอง skill แรกผลิตสิ่งที่จะส่งออก คือ Issue กับ MR ตัวนี้ต่างไปตรงที่ผลลัพธ์คือรายงานตรวจที่คุณใช้ตัดสินใจ ที่มาคือ Diff Review Prompt ในบทที่ 14 เราเอาหัวข้อรายงานทั้งหก คำสั่งอ่านหลักฐาน และรายการไฟล์ต้องห้าม มาใส่ไว้ในไฟล์เดียวให้ทำซ้ำได้ทุก branch',en:'The first two skills produce something outbound — an issue and an MR. This one produces a review report you decide on. Its source is the Diff Review Prompt from lesson 14: the six report headings, the evidence commands, and the forbidden-files list, packed into one file that repeats on any branch.'},
-          label:'.agents/skills/review-diff/SKILL.md',code:`---
+          label:'.agents/skills/review-diff/SKILL.md',code:{th:`---
+name: review-diff
+description: ตรวจ diff ของ branch ปัจจุบันแล้วรายงานเป็นภาษาธุรกิจ
+  ใช้เมื่อผู้ใช้ขอ review อธิบาย หรือเช็ก diff ก่อน commit หรือเปิด MR
+---
+
+# Review diff
+
+1. รันคำสั่งอ่านอย่างเดียวเหล่านี้ แล้วถือผลลัพธ์เป็นแหล่งความจริง:
+   git status
+   git log --oneline main..HEAD
+   git diff main...HEAD --stat
+2. อ่าน diff ทีละไฟล์ ถ้าอธิบายไฟล์ไหนไม่ได้ ให้บอกตรง ๆ
+3. รายงานตามหัวข้อเหล่านี้ ใช้ภาษาธุรกิจมากกว่าศัพท์เทคนิค:
+   - สรุปภาพรวมของการเปลี่ยนแปลงทั้งหมด
+   - ทีละไฟล์: เปลี่ยนอะไร และงานนี้จำเป็นต้องมีเพราะอะไร
+   - ไฟล์ที่ไม่เกี่ยวกับงาน หรือถูกแก้โดยไม่ตั้งใจ
+   - dependency ใหม่ หรือไฟล์ config ที่ใช้ร่วมกันถูกแก้
+   - จุดที่เสี่ยงต่อส่วนอื่นของระบบ
+   - สิ่งที่ทดสอบจริง พร้อมผลที่ได้
+4. สแกน git status หาไฟล์ที่ห้ามเข้า commit: .env หรือไฟล์ที่มี key หรือ token,
+   ข้อมูลผู้ป่วยจริง, build output อย่าง .next/ หรือ storybook-static/
+   และไฟล์งานชั่วคราวที่ค้างอยู่ ถ้าเจอให้ระบุชื่อที่พบ
+5. ถ้าผู้ใช้ขอ quality gates ให้รัน npm run lint, npm run test และ npm run build
+   ทีละตัว แล้วรายงานผลดิบ
+6. จบด้วยคำตัดสินรายหัวข้อแล้วหยุด คนเป็นผู้ตัดสินผ่านหรือไม่ผ่าน
+
+## Never
+- ห้ามแก้ สร้าง หรือลบไฟล์ใด ๆ ระหว่างตรวจ
+- ห้ามลบหรือแก้ test ให้อ่อนแรงลงเพื่อให้ check ผ่าน
+- ห้ามอ้างว่า check รันแล้วทั้งที่ไม่ได้รัน
+- ห้าม commit, push หรือเปิด MR ออกจากการตรวจนี้`,en:`---
 name: review-diff
 description: Review the current branch diff and report it in business language.
   Use when the user asks to review, explain, or sanity-check a diff before
@@ -2089,7 +2165,7 @@ description: Review the current branch diff and report it in business language.
 - Never modify, create, or delete any file while reviewing.
 - Never delete or weaken a test to make a check pass.
 - Never claim a check ran when it did not.
-- Never commit, push, or open an MR out of this review.`,
+- Never commit, push, or open an MR out of this review.`},
           note:{th:'ข้อห้ามชุดนี้คือหัวใจของ skill ตรวจ: บทบาทของมันคือผู้สืบสวน ไม่ใช่ผู้แก้ ถ้าปล่อยให้มัน “เดาว่า test ผ่าน” หรือ “ลบ test ที่ fail ทิ้ง” รายงานที่ได้จะเป็นเท็จ เหมือน MR ที่เขียนว่าทดสอบครบทั้งที่ไม่มีใครเปิดดู',en:'The prohibitions are the heart of a review skill: its role is investigator, not fixer. Let it “assume the tests pass” or “delete the failing test” and the report becomes as false as an MR claiming full testing nobody did.'}},
         {type:'agent-setup',title:{th:'ติดตั้ง skill ในเครื่องมือที่คุณใช้',en:'Install the skills in the tool you use'},
           lead:{th:'สองเครื่องมือเก็บ “คำสั่งที่ใช้ซ้ำ” คนละที่ แต่แนวคิดเดียวกัน คือเขียนขั้นตอนไว้เป็นไฟล์ในโปรเจกต์ แล้วให้เครื่องมืออ่าน เลือกแท็บของเครื่องมือที่คุณใช้ ตัวเลือกนี้เป็นตัวเดียวกับที่เลือกไว้ในบทที่ 00 ถ้าเปลี่ยนที่นี่ บทที่ 00 ก็จะเปลี่ยนตาม',en:'The two tools keep “reusable instructions” in different places but with the same idea: write the steps into a file in the project and let the tool read it. Pick the tab for the tool you use. It is the same choice you made in lesson 00 — change it here and lesson 00 follows.'},
