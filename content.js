@@ -34,7 +34,7 @@ window.COURSE = {
     debugging: { th:'หลักฐานปัญหา สาเหตุ และผลแก้', en:'Bug evidence, cause, and verified fix' },
     'diff-quality': { th:'diff อยู่ใน scope + quality checks ผ่าน', en:'Scoped diff + passing quality checks' },
     delivery: { th:'MR ที่มีหลักฐานและ trace ถึง Issue', en:'Evidence-backed MR linked to the issue' },
-    'agent-skills': { th:'handoff ที่โยง AC กับหลักฐาน', en:'Handoff mapping ACs to evidence' },
+    handoff: { th:'handoff ที่โยง AC กับหลักฐาน', en:'Handoff mapping ACs to evidence' },
     capstone: { th:'MR ใหม่: clinic availability + หลักฐาน regression', en:'New MR: clinic availability + regression evidence' }
   },
   lessons: [
@@ -1837,7 +1837,7 @@ Synthetic/mock data only. No production data.`},
       wrap:{th:['Feature branch → sync main → MR → review → merge → cleanup','MR คือ handoff artifact ที่ผูกกลับไปหา Issue ด้วย `Closes`','รอบแก้ตาม review คืองานปกติ ไม่ใช่ความล้มเหลว','merge เข้า main เป็นสิทธิ์ของผู้ review เสมอ'],en:['Feature branch → sync main → MR → review → merge → cleanup','The MR is the handoff artifact, tied back to the issue with `Closes`','A review-fix round is normal work, not failure','Merging into main is always the reviewer’s call']}
     },
     {
-      id:'agent-skills', group:'day3', no:'16', duration:'45 min',
+      id:'handoff', group:'day3', no:'16', duration:'45 min',
       title:{th:'ส่งต่อ Prototype ให้ Developer',en:'Developer Handoff & Repeatable Review'},
       intro:{th:'รวบรวม behavior, mock contract, หลักฐาน และคำถามค้างจากงาน US-001 เดิม เพื่อให้ Developer เปิดงานและทำต่อได้',en:'Gather behavior, mock contracts, evidence, and open questions from the same US-001 work so developers can run and continue it.'},
       outcomes:{th:['โยง AC กับหลักฐานที่เปิดซ้ำได้','แยกสิ่งที่ตรวจแล้วกับสิ่งที่ยังเป็น mock','ส่งคำสั่งรันและขอบเขตให้ Developer','เห็นงานซ้ำที่เหมาะกับ template หรือ Agent Skill'],en:['Link ACs to repeatable evidence','Separate checked behavior from mocks','Give developers run steps and clear scope','Identify repeatable work for a template or agent skill']},

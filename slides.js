@@ -41,7 +41,7 @@
   const LESSON_IDS = [
     'prerequisites', 'mental-model', 'requirement-issue', 'git-basics', 'worktree', 'agent-plan',
     'next-literacy', 'design-system', 'component-state', 'storybook', 'acceptance-interaction',
-    'mock-data', 'integration', 'debugging', 'diff-quality', 'delivery', 'agent-skills', 'capstone'
+    'mock-data', 'integration', 'debugging', 'diff-quality', 'delivery', 'handoff', 'capstone'
   ];
   const LESSON_TITLES = {
     'prerequisites': S('เตรียมพร้อม', 'Prerequisites'),
@@ -60,7 +60,7 @@
     'debugging': S('Debug ด้วยหลักฐาน', 'Debug with Evidence'),
     'diff-quality': S('Git Diff & คุณภาพ', 'Diff & Quality'),
     'delivery': S('ส่งมอบ: Draft MR', 'Delivery: Draft MR'),
-    'agent-skills': S('ส่งต่อ Developer', 'Developer Handoff'),
+    'handoff': S('ส่งต่อ Developer', 'Developer Handoff'),
     'capstone': S('ต่อยอด US-001', 'Extend US-001')
   };
 
