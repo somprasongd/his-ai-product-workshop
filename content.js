@@ -280,6 +280,8 @@ Requirement: docs/requirements/US-001-opd-checkin-th.md
 - AC8 ไม่เลือก clinic ไปต่อไม่ได้; AC9 chief complaint เว้นว่างได้
 - AC10 มี Preview ก่อนยืนยัน; AC11 Back กลับแก้ได้โดยค่าที่กรอกยังอยู่
 - AC12 ยืนยันแล้วแสดง Success และเลขคิวจำลอง A012
+
+## Acceptance Criteria - quality
 - AC13 ค้นหา เลือกผู้ป่วย/clinic, Back และ Confirm มี label/focus และใช้ keyboard ได้
 - AC14 จอมือถือแคบไม่มีการเลื่อนแนวนอนหรือปุ่มหลักหาย
 
@@ -316,6 +318,8 @@ Requirement: docs/requirements/US-001-opd-checkin.md
 - AC8 Clinic is required; AC9 chief complaint may be blank
 - AC10 Preview precedes confirmation; AC11 Back preserves entered values
 - AC12 Confirm shows Success with synthetic queue A012
+
+## Acceptance Criteria - quality
 - AC13 Search, selection, clinic, Back, Confirm have labels/focus and work by keyboard
 - AC14 Narrow mobile width has no horizontal scroll or hidden primary action
 
@@ -349,6 +353,9 @@ Requirement ต้นทาง: docs/requirements/<ชื่อไฟล์>
 ## Acceptance Criteria - behaviour
 - <Given ..., when ..., then ...> ใช้ค่าตายตัวจาก mock data
 
+## Acceptance Criteria - quality
+- <AC กลุ่ม keyboard responsive หรือข้อกำหนดอื่นใน requirement ที่ไม่ใช่ state หรือพฤติกรรม>
+
 ## Definition of Done
 - ทุก state มี Storybook story ของตัวเอง
 - behaviour AC อย่างน้อย 1 ข้อ มี interaction test ครอบ
@@ -374,6 +381,9 @@ Requirement: docs/requirements/<filename>
 
 ## Acceptance Criteria - behaviour
 - <Given ..., when ..., then ...> using fixed values from the mock data
+
+## Acceptance Criteria - quality
+- <Keyboard, responsive, or other non-state ACs stated in the requirement>
 
 ## Definition of Done
 - Every state above exists as a Storybook story
@@ -416,7 +426,7 @@ Synthetic/mock data only. No production data, no real patient records.`},
           'This is not documentation tidiness; it is what lets you verify the agent’s work yourself',
           'The trick that makes ACs truly checkable is **using fixed values from the mock data**, such as HN `65000123` instead of “a patient”, because a fixed value reproduces the same result every time'
         ]}},
-        {type:'list',title:{th:'เช็กลิสต์ก่อนกด Create Issue',en:'Checklist before you click Create Issue'},items:{th:['หัวข้อบอกผลลัพธ์ต่อผู้ใช้ ไม่ใช่แค่ชื่อหน้าจอ','มีลิงก์กลับไปยัง requirement ต้นทาง','ระบุ Out of scope อย่างน้อย 2 ข้อ','AC ทุกข้อตอบได้ว่า ผ่าน หรือ ไม่ผ่าน โดยไม่ต้องตีความ','AC ที่เป็นพฤติกรรมใช้ค่าตายตัวจาก mock data','ไม่มีคำว่า “ใช้งานง่าย” หรือ “สวยงาม” ลอย ๆ โดยไม่มีเกณฑ์','งานจบได้ใน 1 branch ถ้าไม่จบ ให้ตัดเป็นสองใบ','ระบุชัดว่าใช้ข้อมูลสมมติเท่านั้น'],en:['The title states a user outcome, not just a screen name','It links back to the source requirement','It names at least two out-of-scope items','Every AC answers pass or fail with no interpretation','Behaviour ACs use fixed values from the mock data','No floating “easy to use” or “looks nice” without a criterion','The work fits in one branch — if not, split it into two issues','It states explicitly that only synthetic data is used']}},
+        {type:'list',title:{th:'เช็กลิสต์ก่อนกด Create Issue',en:'Checklist before you click Create Issue'},items:{th:['หัวข้อบอกผลลัพธ์ต่อผู้ใช้ ไม่ใช่แค่ชื่อหน้าจอ','มีลิงก์กลับไปยัง requirement ต้นทาง','ระบุ Out of scope อย่างน้อย 2 ข้อ','AC ทุกข้อตอบได้ว่า ผ่าน หรือ ไม่ผ่าน โดยไม่ต้องตีความ','AC ที่เป็นพฤติกรรมใช้ค่าตายตัวจาก mock data','AC จาก requirement ถูกยกมาครบทุกข้อ รวมกลุ่ม keyboard และ responsive','ไม่มีคำว่า “ใช้งานง่าย” หรือ “สวยงาม” ลอย ๆ โดยไม่มีเกณฑ์','งานจบได้ใน 1 branch ถ้าไม่จบ ให้ตัดเป็นสองใบ','ระบุชัดว่าใช้ข้อมูลสมมติเท่านั้น'],en:['The title states a user outcome, not just a screen name','It links back to the source requirement','It names at least two out-of-scope items','Every AC answers pass or fail with no interpretation','Behaviour ACs use fixed values from the mock data','Every AC from the requirement appears in the issue, including the keyboard and responsive ones','No floating “easy to use” or “looks nice” without a criterion','The work fits in one branch — if not, split it into two issues','It states explicitly that only synthetic data is used']}},
         {type:'callout',tone:'danger',title:{th:'Red flag',en:'Red flag'},text:{th:'AC ที่เขียนว่า “ระบบต้องค้นหาผู้ป่วยได้อย่างรวดเร็วและใช้งานง่าย” ตรวจไม่ได้ว่าผ่านหรือไม่ผ่าน Agent จะตีความเอง และตอน review คุณจะเถียงไม่ได้ เพราะไม่เคยมีเกณฑ์ตั้งแต่แรก',en:'An AC that reads “patient search must be fast and easy to use” cannot be judged pass or fail. The agent will interpret it for you, and at review time you have no ground to disagree because no criterion ever existed.'}},
         {type:'agent-setup',store:'repoHost',title:{th:'เปิด Issue จริงบน GitHub หรือ GitLab',en:'File the real issue on GitHub or GitLab'},
           lead:{th:'เลือกแท็บให้ตรงกับ repository ที่คุณสร้างไว้ในบทที่ 00 — ระบบจำแท็บที่เคยเลือกไว้ทั้งเว็บ ถ้าเคยเลือกแล้วแท็บจะถูกเลือกให้เอง',en:'Pick the tab that matches the repository you created in lesson 00 — the site remembers your tab choice across pages, so it is usually already selected.'},
@@ -2006,27 +2016,26 @@ Return a short plan with regression risks and wait for my review.`},after:{th:['
 .claude/
   skills -> ../.agents/skills   <- symlink ต่อเครื่อง / per-checkout link
 AGENTS.md                  <- กติกาที่ใช้ร่วมกันทุกเครื่องมือ / shared rules
-.gitignore                 <- .tmp/ และ .claude/skills`,
-          note:{th:'เหตุผลที่แยกสองที่: `.agents/skills/` เป็นกลางและใช้ได้กับทุกเครื่องมือ ส่วน `.claude/skills` เป็นตำแหน่งเฉพาะของ Claude Code ซึ่งเป็นของแต่ละเครื่อง จึงใส่ไว้ใน `.gitignore` ไม่ commit ขึ้นไป เพราะ symlink ที่สร้างบน mac กับบน Windows ไม่เหมือนกัน ส่วน `.tmp/` คือที่พักของเนื้อหาที่ Agent ร่างก่อนส่ง เป็นไฟล์ชั่วคราวจึง ignore เช่นกัน',en:'Why two places: `.agents/skills/` is tool-neutral and works for everyone, while `.claude/skills` is Claude Code’s own location and belongs to each checkout — so it goes in `.gitignore` rather than into Git, because the link is created differently on macOS and on Windows. `.tmp/` is scratch space for bodies the agent drafts before sending, temporary and likewise ignored.'}},
+.gitignore                 <- .tmp/ และ .claude/`,
+          note:{th:'เหตุผลที่แยกสองที่: `.agents/skills/` เป็นกลางและใช้ได้กับทุกเครื่องมือ ส่วนโฟลเดอร์ `.claude/` เป็นตำแหน่งเฉพาะของ Claude Code ซึ่งเป็นของแต่ละเครื่อง จึง ignore ทั้งโฟลเดอร์ ไม่ commit ขึ้นไป เพราะ symlink ที่สร้างบน mac กับบน Windows ไม่เหมือนกัน และไฟล์ตั้งค่ารายเครื่องอย่าง `.claude/settings.local.json` ก็ไม่ควรขึ้น Git ส่วน `.tmp/` คือที่พักของเนื้อหาที่ Agent ร่างก่อนส่ง เป็นไฟล์ชั่วคราวจึง ignore เช่นกัน',en:'Why two places: `.agents/skills/` is tool-neutral and works for everyone, while the `.claude/` folder is Claude Code’s own location and belongs to each checkout — so the whole folder goes into `.gitignore` rather than into Git, because the link is created differently on macOS and on Windows, and per-machine settings such as `.claude/settings.local.json` do not belong in Git either. `.tmp/` is scratch space for bodies the agent drafts before sending, temporary and likewise ignored.'}},
         {type:'code',title:{th:'ตัวอย่าง SKILL.md สำหรับสร้าง Issue',en:'Example SKILL.md for filing an issue'},
-          lead:{th:'อ่านให้ออกว่าทุกบรรทัดกำลังทำอะไร: ส่วนหัวบอกว่า skill นี้ชื่ออะไรและใช้ตอนไหน ส่วนเนื้อหาคือขั้นตอนที่ Agent ต้องเดินตาม และท้ายสุดคือข้อห้าม ตัวอย่างทั้งสามมีทั้งสองภาษาให้สลับ — เลือกภาษาเดียวสำหรับไฟล์จริงและใช้เวอร์ชันนั้นตลอดทีม',en:'Read what each part does: the header says what this skill is and when to use it, the body is the sequence the agent must follow, and the end is the list of prohibitions. All three examples come in both Thai and English — pick one language for the real files and keep the whole team on it.'},
+          lead:{th:'อ่านให้ออกว่าทุกบรรทัดกำลังทำอะไร: ส่วนหัวบอกว่า skill นี้ชื่ออะไรและใช้ตอนไหน ส่วนเนื้อหาคือขั้นตอนที่ Agent ต้องเดินตาม และท้ายสุดคือข้อห้าม ตัวอย่างทั้งสามมีทั้งสองภาษาให้สลับ — เลือกภาษาเดียวสำหรับไฟล์จริงและใช้เวอร์ชันนั้นตลอดทีม และเขียน description เป็นบรรทัดเดียวสั้น ๆ (ไม่เกินราว 250 ตัวอักษร) เพราะบางเครื่องมืออ่าน description ที่ตัดบรรทัดไม่ได้ และตัดคำอธิบายให้สั้นลงตอนเลือก skill',en:'Read what each part does: the header says what this skill is and when to use it, the body is the sequence the agent must follow, and the end is the list of prohibitions. All three examples come in both Thai and English — pick one language for the real files and keep the whole team on it. Keep the description on one short line, roughly under 250 characters: some tools cannot read a wrapped description, and tools truncate it when matching.'},
           label:'.agents/skills/create-issue/SKILL.md',code:{th:`---
 name: create-issue
-description: ร่าง Issue จาก docs/templates/issue-template.md แล้วเสนอคำสั่งที่ใช้เปิดจริง
-  ใช้เมื่อผู้ใช้ขอเปิดหรือสร้าง Issue
+description: ร่าง Issue จาก docs/templates/issue-template.md แล้วเสนอคำสั่งที่ใช้เปิดจริง ใช้เมื่อผู้ใช้ขอเปิดหรือสร้าง Issue
 ---
 
 # Create issue
 
-1. อ่าน docs/templates/issue-template.md และไฟล์ requirement ที่ผู้ใช้ระบุ
+1. อ่าน docs/templates/issue-template.md และ requirement ที่ผู้ใช้ระบุ — จะเป็นไฟล์หรือ brief ที่วางในแชทก็ได้
 2. กรอกทุกหัวข้อของ template โดยใช้เฉพาะสิ่งที่ requirement ระบุ
 3. ถ้า template ต้องการสิ่งที่ requirement ไม่ได้ตอบ ให้ถามผู้ใช้
    ห้ามเดา AC เอง และห้ามเดาสิ่งที่อยู่นอกขอบเขตเอง
 4. เขียนผลลัพธ์ลง .tmp/issue-<slug>.md ห้ามแก้ไฟล์อื่นใด
 5. แสดงเนื้อหาในแชทแล้วหยุด รอผู้ใช้อนุมัติหรือแก้ไข
 6. หลังได้รับอนุมัติ เสนอคำสั่งเดียวเท่านั้น แล้วให้ผู้ใช้รันหรือกดอนุมัติเอง:
-   GitHub: gh issue create --title "<title>" --body-file .tmp/issue-<slug>.md
    GitLab: glab issue create --title "<title>" --description .tmp/issue-<slug>.md
+   GitHub: gh issue create --title "<title>" --body-file .tmp/issue-<slug>.md
 7. รายงานเลข Issue ที่ได้กลับมา เพื่อนำไปตั้งชื่อ branch
 
 ## Never
@@ -2034,21 +2043,20 @@ description: ร่าง Issue จาก docs/templates/issue-template.md แ�
 - ห้าม commit, push หรือแตะ main
 - ห้ามใส่ข้อมูลผู้ป่วยจริง token หรือค่าใน .env ลงในเนื้อหา`,en:`---
 name: create-issue
-description: Draft an issue from docs/templates/issue-template.md and propose the
-  command that files it. Use when the user asks to open or create an issue.
+description: Draft an issue from docs/templates/issue-template.md and propose the command that files it. Use when the user asks to open or create an issue.
 ---
 
 # Create issue
 
-1. Read docs/templates/issue-template.md and the requirement file the user names.
+1. Read docs/templates/issue-template.md and the requirement the user names — a file path or a brief pasted into the chat.
 2. Fill every section of the template. Use only what the requirement states.
 3. If the template needs something the requirement does not answer, ask the user.
    Never invent acceptance criteria and never guess what is out of scope.
 4. Write the result to .tmp/issue-<slug>.md. Do not modify any other file.
 5. Show the body in the chat and stop. Wait for the user to approve or edit.
 6. After approval, propose exactly one command and let the user run or approve it:
-   GitHub: gh issue create --title "<title>" --body-file .tmp/issue-<slug>.md
    GitLab: glab issue create --title "<title>" --description .tmp/issue-<slug>.md
+   GitHub: gh issue create --title "<title>" --body-file .tmp/issue-<slug>.md
 7. Report the issue number that comes back, so it can be used in the branch name.
 
 ## Never
@@ -2060,8 +2068,7 @@ description: Draft an issue from docs/templates/issue-template.md and propose th
           lead:{th:'skill ตัวนี้ต่างจากตัวแรกตรงที่มันต้องอ่านหลักฐานจาก Git จริง ไม่ใช่จากความจำของบทสนทนา และต้องไม่แต่งเรื่องการทดสอบที่ยังไม่เกิดขึ้น',en:'This one differs in that it must read real evidence from Git rather than from the conversation’s memory — and must never invent testing that did not happen.'},
           label:'.agents/skills/create-mr/SKILL.md',code:{th:`---
 name: create-mr
-description: ร่าง Merge Request จาก docs/templates/mr-template.md ด้วย diff ของ
-  branch จริง แล้วเสนอคำสั่งที่เปิด MR เป็น Draft
+description: ร่าง Merge Request จาก docs/templates/mr-template.md ด้วย diff ของ branch จริง แล้วเสนอคำสั่งที่เปิด MR เป็น Draft
 ---
 
 # Create merge request
@@ -2075,16 +2082,15 @@ description: ร่าง Merge Request จาก docs/templates/mr-template.md 
 4. ใส่ "Closes #<issue number>" เมื่อผู้ใช้บอกเลข Issue
 5. เขียนเนื้อหาลง .tmp/mr-<branch>.md แล้วแสดง หยุดรอการอนุมัติ
 6. หลังได้รับอนุมัติ เสนอคำสั่งเดียวเท่านั้น:
-   GitHub: gh pr create --draft --title "<title>" --body-file .tmp/mr-<branch>.md
    GitLab: glab mr create --draft --title "<title>" --description .tmp/mr-<branch>.md
+   GitHub: gh pr create --draft --title "<title>" --body-file .tmp/mr-<branch>.md
 
 ## Never
 - ห้าม merge ห้ามอนุมัติ ห้าม push ขึ้น main
 - ห้ามเปลี่ยน MR จาก Draft เป็นพร้อม review เป็นสิทธิ์ของคน
 - ห้ามแก้ไฟล์ source ระหว่างร่าง`,en:`---
 name: create-mr
-description: Draft a merge request from docs/templates/mr-template.md using the real
-  branch diff, then propose the command that opens it as a draft.
+description: Draft a merge request from docs/templates/mr-template.md using the real branch diff, then propose the command that opens it as a draft.
 ---
 
 # Create merge request
@@ -2098,8 +2104,8 @@ description: Draft a merge request from docs/templates/mr-template.md using the 
 4. Include "Closes #<issue number>" when the user gives the issue number.
 5. Write the body to .tmp/mr-<branch>.md and show it. Stop and wait for approval.
 6. After approval, propose exactly one command:
-   GitHub: gh pr create --draft --title "<title>" --body-file .tmp/mr-<branch>.md
    GitLab: glab mr create --draft --title "<title>" --description .tmp/mr-<branch>.md
+   GitHub: gh pr create --draft --title "<title>" --body-file .tmp/mr-<branch>.md
 
 ## Never
 - Never merge, never approve, never push to main.
@@ -2110,8 +2116,7 @@ description: Draft a merge request from docs/templates/mr-template.md using the 
           lead:{th:'สอง skill แรกผลิตสิ่งที่จะส่งออก คือ Issue กับ MR ตัวนี้ต่างไปตรงที่ผลลัพธ์คือรายงานตรวจที่คุณใช้ตัดสินใจ ที่มาคือ Diff Review Prompt ในบทที่ 14 เราเอาหัวข้อรายงานทั้งหก คำสั่งอ่านหลักฐาน และรายการไฟล์ต้องห้าม มาใส่ไว้ในไฟล์เดียวให้ทำซ้ำได้ทุก branch',en:'The first two skills produce something outbound — an issue and an MR. This one produces a review report you decide on. Its source is the Diff Review Prompt from lesson 14: the six report headings, the evidence commands, and the forbidden-files list, packed into one file that repeats on any branch.'},
           label:'.agents/skills/review-diff/SKILL.md',code:{th:`---
 name: review-diff
-description: ตรวจ diff ของ branch ปัจจุบันแล้วรายงานเป็นภาษาธุรกิจ
-  ใช้เมื่อผู้ใช้ขอ review อธิบาย หรือเช็ก diff ก่อน commit หรือเปิด MR
+description: ตรวจ diff ของ branch ปัจจุบันแล้วรายงานเป็นภาษาธุรกิจ ใช้เมื่อผู้ใช้ขอ review อธิบาย หรือเช็ก diff ก่อน commit หรือเปิด MR
 ---
 
 # Review diff
@@ -2120,7 +2125,10 @@ description: ตรวจ diff ของ branch ปัจจุบันแล�
    git status
    git log --oneline main..HEAD
    git diff main...HEAD --stat
-2. อ่าน diff ทีละไฟล์ ถ้าอธิบายไฟล์ไหนไม่ได้ ให้บอกตรง ๆ
+   git diff main --stat
+   git ls-files --others --exclude-standard
+   สองคำสั่งท้ายสำคัญก่อน commit แรก เพราะตอนนั้น main...HEAD ยังว่าง และ git diff ไม่เคยแสดงไฟล์ที่ยังไม่ถูกติดตาม
+2. อ่านทุกไฟล์ที่เปลี่ยนและทุกไฟล์ untracked ทีละไฟล์ ถ้าอธิบายไฟล์ไหนไม่ได้ ให้บอกตรง ๆ
 3. รายงานตามหัวข้อเหล่านี้ ใช้ภาษาธุรกิจมากกว่าศัพท์เทคนิค:
    - สรุปภาพรวมของการเปลี่ยนแปลงทั้งหมด
    - ทีละไฟล์: เปลี่ยนอะไร และงานนี้จำเป็นต้องมีเพราะอะไร
@@ -2141,9 +2149,7 @@ description: ตรวจ diff ของ branch ปัจจุบันแล�
 - ห้ามอ้างว่า check รันแล้วทั้งที่ไม่ได้รัน
 - ห้าม commit, push หรือเปิด MR ออกจากการตรวจนี้`,en:`---
 name: review-diff
-description: Review the current branch diff and report it in business language.
-  Use when the user asks to review, explain, or sanity-check a diff before
-  committing or opening an MR.
+description: Review the current branch diff and report it in business language. Use when the user asks to review, explain, or sanity-check a diff before committing or opening an MR.
 ---
 
 # Review diff
@@ -2152,7 +2158,10 @@ description: Review the current branch diff and report it in business language.
    git status
    git log --oneline main..HEAD
    git diff main...HEAD --stat
-2. Read the diff file by file. If you cannot justify a file, say so plainly.
+   git diff main --stat
+   git ls-files --others --exclude-standard
+   The last two matter before the first commit: main...HEAD is still empty then, and git diff never shows untracked files.
+2. Read every changed and untracked file, one by one. If you cannot justify a file, say so plainly.
 3. Report on these headings, in business language rather than jargon:
    - Overall summary of all changes
    - File by file: what changed and why the task needs it
@@ -2180,7 +2189,7 @@ description: Review the current branch diff and report it in business language.
               {title:{th:'เก็บแบบฟอร์มเป็นไฟล์ template',en:'Save the forms as template files'},what:{th:'สร้างโฟลเดอร์ `docs/templates/` แล้วเก็บแบบฟอร์มเปล่า Issue จากบทที่ 02 เป็น `issue-template.md` และแบบฟอร์มเปล่า MR จากบทที่ 15 เป็น `mr-template.md` ในไฟล์ต้องมีแต่หัวข้อและกติกาที่ใช้กับทุกงาน เช่น Definition of Done — ห้ามมีเนื้อหาของ US-001 ติดอยู่ เพราะ template ต้องใช้กับงานถัดไปได้',en:'Create the `docs/templates/` folder and save the blank issue form from lesson 02 as `issue-template.md` and the blank MR form from lesson 15 as `mr-template.md`. Keep only the headings and rules that apply to every task, such as the Definition of Done — no US-001 content goes in, because a template has to fit the next task too.'},cmd:`mkdir -p docs/templates`,expect:{th:'`docs/templates/issue-template.md` และ `docs/templates/mr-template.md` มีอยู่จริงในโปรเจกต์',en:'`docs/templates/issue-template.md` and `docs/templates/mr-template.md` exist in the project.'}},
               {title:{th:'เขียนไฟล์ skill ไว้ที่ .agents/skills',en:'Write the skill files under .agents/skills'},what:{th:'ใช้ตำแหน่งเดียวกับฝั่ง Claude คือ `.agents/skills/create-issue/SKILL.md`, `.agents/skills/create-mr/SKILL.md` และ `.agents/skills/review-diff/SKILL.md` โดยคัดลอกเนื้อหาจากสามบล็อกตัวอย่างด้านบน ประโยชน์ของการใช้ที่เดียวกันคือทีมมีขั้นตอนชุดเดียว ไม่ว่าใครจะใช้เครื่องมือตัวไหน',en:'Use the same location as the Claude side: `.agents/skills/create-issue/SKILL.md`, `.agents/skills/create-mr/SKILL.md`, and `.agents/skills/review-diff/SKILL.md`, pasting the content from the three example blocks above. The point of sharing the location is that the team has one set of steps regardless of which tool each person uses.'},cmd:`mkdir -p .agents/skills/create-issue .agents/skills/create-mr .agents/skills/review-diff`,expect:{th:'ไฟล์ SKILL.md ทั้งสามอยู่ใน `.agents/skills/` และพร้อม commit',en:'All three SKILL.md files sit under `.agents/skills/`, ready to commit.'}},
               {title:{th:'ชี้ทางใน AGENTS.md',en:'Point to them from AGENTS.md'},what:{th:'Codex อ่าน `AGENTS.md` ของโปรเจกต์อยู่แล้วตั้งแต่บทที่ 05 จึงไม่ต้องทำ symlink แบบฝั่ง Claude เพิ่มหัวข้อใหม่ว่า เมื่อผู้ใช้ขอให้สร้าง Issue ให้ทำตาม `.agents/skills/create-issue/SKILL.md` เมื่อขอให้ร่าง MR ให้ทำตาม `.agents/skills/create-mr/SKILL.md` และเมื่อขอให้ตรวจ diff ให้ทำตาม `.agents/skills/review-diff/SKILL.md` พร้อมย้ำว่าเขียนผลลง `.tmp/` และห้ามยิงคำสั่งเองโดยไม่ได้รับอนุมัติ',en:'Codex already reads the project `AGENTS.md`, as of lesson 05, so no symlink is needed on this side. Add a section saying that a request to create an issue follows `.agents/skills/create-issue/SKILL.md`, a request to draft an MR follows `.agents/skills/create-mr/SKILL.md`, a request to review a diff follows `.agents/skills/review-diff/SKILL.md`, results go into `.tmp/`, and no command is fired without approval.'},expect:{th:'`AGENTS.md` มีหัวข้อใหม่ที่ชี้ไปยังไฟล์ skill ทั้งสาม',en:'`AGENTS.md` has a new section pointing at all three skill files.'}},
-              {title:{th:'ใส่ .tmp/ ลงใน .gitignore',en:'Add .tmp/ to .gitignore'},what:{th:'ไฟล์ที่ Agent ร่างก่อนส่งเป็นของชั่วคราว ไม่ควรอยู่ในประวัติ ฝั่งนี้ไม่ต้อง ignore `.claude/skills` เพราะไม่ได้สร้างลิงก์ แต่ถ้าในทีมมีคนใช้ Claude ด้วย ใส่ไว้ทั้งสองบรรทัดเลยจะง่ายกว่า',en:'Bodies drafted before sending are temporary and do not belong in history. You do not need to ignore `.claude/skills` on this side because there is no link — but if anyone on the team uses Claude, adding both lines is simpler.'},cmd:`printf '.tmp/\\n.claude/skills\\n' >> .gitignore`,expect:{th:'`git status` ไม่แสดงไฟล์ใน `.tmp/` อีกต่อไป',en:'`git status` no longer lists anything under `.tmp/`.'}},
+              {title:{th:'ใส่ .tmp/ ลงใน .gitignore',en:'Add .tmp/ to .gitignore'},what:{th:'ไฟล์ที่ Agent ร่างก่อนส่งเป็นของชั่วคราว ไม่ควรอยู่ในประวัติ ฝั่งนี้ไม่ได้สร้างลิงก์ จึงไม่จำเป็นต้อง ignore `.claude/` แต่ถ้าในทีมมีคนใช้ Claude ด้วย ใส่ `.claude/` ทั้งโฟลเดอร์เลยจะง่ายกว่า และกันไฟล์ตั้งค่ารายเครื่องหลุดขึ้น Git',en:'Bodies drafted before sending are temporary and do not belong in history. There is no link on this side, so ignoring `.claude/` is optional — but if anyone on the team uses Claude, ignoring the whole folder is simpler and keeps per-machine settings out of Git.'},cmd:`printf '.tmp/\\n.claude/\\n' >> .gitignore`,expect:{th:'`git status` ไม่แสดงไฟล์ใน `.tmp/` อีกต่อไป',en:'`git status` no longer lists anything under `.tmp/`.'}},
               {title:{th:'ทดสอบกับงานจริงหนึ่งใบ',en:'Test it on one real piece of work'},what:{th:'วาง prompt แล้วสั่งให้ร่าง Issue จาก requirement ใบถัดไป ดูว่ามันถามกลับในจุดที่ requirement ไม่ได้ตอบหรือไม่ ถ้ามันเดาแทนที่จะถาม แปลว่าข้อความในไฟล์ยังไม่หนักแน่นพอ ให้เติมคำว่า “ห้ามเดา ให้ถามกลับ” เข้าไป',en:'Paste the prompt and ask it to draft an issue for the next requirement. Watch whether it asks back where the requirement is silent. If it guesses instead, the wording is not firm enough — add an explicit “do not guess; ask me”.'},expect:{th:'ได้ไฟล์ร่างใน `.tmp/` พร้อมคำถามกลับ และยังไม่มีอะไรถูกสร้างบนเว็บ',en:'A draft file in `.tmp/`, a question or two back, and nothing created online yet.'}}
             ]},
             {id:'claude',name:{th:'Claude Desktop App',en:'Claude Desktop App'},steps:[
@@ -2189,7 +2198,7 @@ description: Review the current branch diff and report it in business language.
               {title:{th:'เขียนไฟล์ SKILL.md ทั้งสามตัว',en:'Write all three SKILL.md files'},what:{th:'คัดลอกเนื้อหาจากสามบล็อกตัวอย่างด้านบนมาวาง แล้วแก้ชื่อไฟล์ template ในสองตัวแรกให้ตรงกับของจริงในโปรเจกต์ ส่วนหัวที่คั่นด้วย `---` สำคัญมาก เพราะเป็นที่ที่เครื่องมืออ่านชื่อและคำอธิบายว่าจะหยิบ skill นี้มาใช้ตอนไหน',en:'Paste the content from the three example blocks above, correcting the template filenames in the first two to match the project. The `---` header matters: it is where the tool reads the name and the description that decide when this skill gets picked up.'},expect:{th:'`.agents/skills/create-issue/SKILL.md`, `.agents/skills/create-mr/SKILL.md` และ `.agents/skills/review-diff/SKILL.md` มีเนื้อหาครบ',en:'`.agents/skills/create-issue/SKILL.md`, `.agents/skills/create-mr/SKILL.md`, and `.agents/skills/review-diff/SKILL.md` are all complete.'}},
               {title:{th:'ลิงก์ .claude/skills ให้ชี้ไปที่ .agents/skills',en:'Link .claude/skills to .agents/skills'},what:{th:'เครื่องมือบางเวอร์ชันอ่าน `.agents/skills` ได้เองแล้ว ให้ลองเรียก skill ก่อน ถ้ายังไม่เห็นจึงค่อยสร้างลิงก์ Claude Code มองหา skill ที่ `.claude/skills` เท่านั้น เราจึงสร้าง **symlink** คือทางลัดที่ชี้ไปยังโฟลเดอร์จริง แทนที่จะคัดลอกไฟล์ไปไว้สองที่ (ซึ่งจะเริ่มไม่ตรงกันในสัปดาห์ถัดไป) ลิงก์นี้เป็นของแต่ละเครื่อง ต้องสร้างใหม่ทุกครั้งที่ clone และ Git จะไม่เก็บมันเพราะเราใส่ `.claude/skills` ไว้ใน `.gitignore` — บน Windows ให้เปิด Developer Mode หรือรัน Command Prompt แบบ Administrator แล้วใช้คำสั่ง `mklink` แทนบรรทัดล่าง',en:'Some tool versions already read `.agents/skills` by themselves — try calling a skill first and only create the link if it does not show up. Claude Code only looks in `.claude/skills`, so we create a **symlink** — a shortcut pointing at the real folder — instead of copying the files into two places, which start drifting apart by the following week. The link belongs to each checkout, has to be recreated after every clone, and Git never stores it because `.claude/skills` is in `.gitignore`. On Windows, enable Developer Mode or open Command Prompt as Administrator and use `mklink` instead of the line below.'},cmd:`mkdir -p .claude && ln -s ../.agents/skills .claude/skills`,label:'macOS / Linux',expect:{th:'`ls .claude/skills` แสดงโฟลเดอร์ `create-issue`, `create-mr` และ `review-diff` ที่มาจาก `.agents/skills`',en:'`ls .claude/skills` lists `create-issue`, `create-mr`, and `review-diff`, served from `.agents/skills`.'}},
               {title:{th:'บน Windows ใช้ mklink แทน',en:'On Windows, use mklink instead'},what:{th:'คำสั่งนี้รันใน Command Prompt (ไม่ใช่ PowerShell) โดยเปิดแบบ Run as Administrator หรือเปิด Developer Mode ไว้ก่อน `/D` แปลว่าลิงก์นี้ชี้ไปยังโฟลเดอร์ ถ้าข้ามขั้นนี้ Claude Code จะไม่เห็น skill เลย และคุณจะนึกว่าเขียนไฟล์ผิด ทั้งที่ไฟล์ถูกอยู่แล้ว',en:'Run this in Command Prompt (not PowerShell), started as Administrator or with Developer Mode enabled. `/D` means the link points to a directory. Skip this and Claude Code simply will not see the skills, and you will suspect the files are wrong when they are fine.'},cmd:`mklink /D ".claude\\skills" "..\\.agents\\skills"`,label:'Windows',expect:{th:'ข้อความยืนยันว่าสร้าง symbolic link แล้ว และเปิด `.claude\\skills` แล้วเห็นไฟล์เดียวกับใน `.agents\\skills`',en:'A confirmation that the symbolic link was created, and `.claude\\skills` shows the same files as `.agents\\skills`.'}},
-              {title:{th:'บอก Git ให้ข้ามลิงก์นี้',en:'Tell Git to skip the link'},what:{th:'เพิ่มสองบรรทัดลงใน `.gitignore` คือ `.tmp/` และ `.claude/skills` บรรทัดหลังสำคัญ เพราะ symlink ที่สร้างบน mac ใช้กับ Windows ไม่ได้ ถ้าเผลอ commit ไป เพื่อนร่วมทีมที่ใช้อีกระบบจะได้ไฟล์เสีย ส่วนตัว skill จริงยังถูก commit ตามปกติ เพราะอยู่ที่ `.agents/skills`',en:'Add two lines to `.gitignore`: `.tmp/` and `.claude/skills`. The second matters because a symlink made on macOS does not work on Windows, and committing it hands a broken file to teammates on the other system. The real skills are still committed as usual, because they live in `.agents/skills`.'},cmd:`printf '.tmp/\\n.claude/skills\\n' >> .gitignore\ngit status --short`,expect:{th:'`git status` แสดง `.gitignore` กับ `.agents/` เป็นไฟล์ที่เปลี่ยน และไม่มี `.claude/` โผล่มาในรายการ',en:'`git status` shows `.gitignore` and `.agents/` as changed, with no `.claude/` in the list.'}},
+              {title:{th:'บอก Git ให้ข้ามลิงก์นี้',en:'Tell Git to skip the link'},what:{th:'เพิ่มสองบรรทัดลงใน `.gitignore` คือ `.tmp/` และ `.claude/` บรรทัดหลัง ignore ทั้งโฟลเดอร์ เพราะ symlink ที่สร้างบน mac ใช้กับ Windows ไม่ได้ และไฟล์ตั้งค่ารายเครื่องอย่าง `.claude/settings.local.json` ก็ไม่ควรขึ้น Git ถ้าเผลอ commit ไป เพื่อนร่วมทีมที่ใช้อีกระบบจะได้ไฟล์เสีย ส่วนตัว skill จริงยังถูก commit ตามปกติ เพราะอยู่ที่ `.agents/skills`',en:'Add two lines to `.gitignore`: `.tmp/` and `.claude/`. The second ignores the whole folder, because a symlink made on macOS does not work on Windows, and per-machine settings such as `.claude/settings.local.json` do not belong in Git either. The real skills are still committed as usual, because they live in `.agents/skills`.'},cmd:`printf '.tmp/\\n.claude/\\n' >> .gitignore\ngit status --short`,expect:{th:'`git status` แสดง `.gitignore` กับ `.agents/` เป็นไฟล์ที่เปลี่ยน และไม่มี `.claude/` โผล่มาในรายการ',en:'`git status` shows `.gitignore` and `.agents/` as changed, with no `.claude/` in the list.'}},
               {title:{th:'ทดสอบเรียกใช้',en:'Try calling it'},what:{th:'ปิดแล้วเปิดโปรเจกต์ใหม่ใน Claude Desktop หนึ่งครั้งเพื่อให้มันอ่าน skill จากลิงก์ที่เพิ่งสร้าง แล้วพิมพ์ `/create-issue` ในช่องแชท หรือบอกเป็นภาษาคนว่า “ช่วยร่าง Issue จาก requirement ใบถัดไปให้หน่อย” ถ้า skill ถูกอ่านแล้ว Agent จะเดินตามลำดับในไฟล์ คือถามกลับก่อน แล้วค่อยเขียนลง `.tmp/` และหยุดรอการอนุมัติ ถ้ามันไม่รู้จัก `/create-issue` เลย ให้กลับไปตรวจว่าลิงก์ชี้ถูกที่หรือยังด้วย `ls .claude/skills` แล้วลอง `/review-diff` บน branch นี้ด้วย ถ้าได้รายงานครบทั้งหกหัวข้อโดยไม่มีไฟล์ถูกแก้ แปลว่า skill ตัวที่สามก็ทำงาน',en:'Reopen the project in Claude Desktop once so it reads the skills through the new link, then type `/create-issue` in the chat, or simply say “draft an issue for the next requirement”. If the skill was picked up, the agent follows the file’s sequence: ask back first, write into `.tmp/`, then stop for approval. If it does not recognise `/create-issue` at all, check the link with `ls .claude/skills` before suspecting the file. Then try `/review-diff` on this branch: a full six-heading report with no file touched means the third skill works too.'},expect:{th:'Agent ถามกลับในจุดที่ requirement ไม่ได้ตอบ และยังไม่มีคำสั่งไหนถูกรันโดยไม่ผ่านการกดยืนยัน',en:'The agent asks back where the requirement is silent, and no command runs without your confirmation.'}}
             ]}
           ],
@@ -2217,7 +2226,38 @@ Then create .agents/skills/create-issue/SKILL.md under these conditions:
 
 Create only this one file, run no commands, and show me the content first.`},
           after:{th:['อ่านไฟล์ที่ได้ทีละบรรทัดเหมือนอ่าน Issue ถ้าบรรทัดไหนกำกวม Agent จะตีความเอง','ทดสอบทันทีด้วยงานจริงหนึ่งใบ อย่าเพิ่งเชื่อว่าไฟล์ถูกเพราะอ่านแล้วดูดี','ทำซ้ำอีกรอบสำหรับ `create-mr` โดยเปลี่ยน template และเพิ่มเงื่อนไขว่าต้องอ่าน `git log main..HEAD` เป็นหลักฐาน','แล้วรอบที่สามสำหรับ `review-diff` โดยยกหัวข้อรายงานทั้งหกจาก Diff Review Prompt ในบทที่ 14 มาเป็นขั้นตอน พร้อมห้ามแก้ไฟล์ระหว่างตรวจ'],en:['Read the result line by line as you would an issue — any vague line is a line the agent will interpret for itself','Test it on one real task immediately; do not trust it because it reads well','Repeat for `create-mr`, swapping the template and adding the requirement to read `git log main..HEAD` as evidence','Then a third round for `review-diff`, lifting the six report headings from the lesson 14 Diff Review Prompt into the steps, plus the ban on modifying files while reviewing']}},
-        {type:'practice',title:{th:'ลงมือทำ: ใช้ skill กับงานใบที่สอง',en:'Practice: use the skill on a second piece of work'},steps:{th:['สร้าง `docs/templates/issue-template.md` และ `docs/templates/mr-template.md` จากแบบฟอร์มเปล่าในบทที่ 02 และ 15 — ในไฟล์มีแต่หัวข้อกับกติกาที่ใช้กับทุกงาน ไม่มีเนื้อหาของ US-001','สร้าง skill ทั้งสามไว้ที่ `.agents/skills/` ตามแท็บเครื่องมือของคุณ และถ้าเครื่องมือของคุณไม่อ่าน `.agents/skills` เอง ค่อยเพิ่มทางลัดตามแท็บ (เช่น symlink `.claude/skills`)','เพิ่ม `.tmp/` ลงใน `.gitignore` และเพิ่ม `.claude/skills` ด้วยถ้ามีลิงก์','ใช้ skill ร่าง Issue ใบที่สอง เช่น US-002 Queue Board แล้วนับว่ามันถามกลับกี่ข้อ','เทียบร่างที่ได้กับเช็กลิสต์ในบทที่ 02 ว่าข้อไหนยังขาด แล้วแก้ที่ **ไฟล์ skill** ไม่ใช่แก้ที่ร่าง','เรียก `/review-diff` บน branch `chore/agent-skills` นี้เอง แล้วเช็กว่ารายงานอธิบายไฟล์ template กับ skill ทุกไฟล์ได้ และไม่มีไฟล์ถูกแตะระหว่างตรวจ','commit งานนี้: `git add docs .agents .gitignore` แล้ว `git commit -m "docs: add templates with issue, MR and diff-review skills"` — สังเกตว่า `.claude/skills` ไม่โผล่ในรายการ เพราะถูก ignore ไว้ และ commit นี้ไม่มี `Refs #` ฝังท้ายเหมือนงานฟีเจอร์ เพราะเป็นงาน chore ของทีมที่ไม่มี Issue รองรับ — กติกา `Refs` ใช้เฉพาะงานที่มี Issue เท่านั้น','push แล้วเปิด MR เล็ก ๆ ใบนี้ให้เพื่อน review ว่าข้อห้ามใน skill รัดกุมพอหรือยัง','หลัง MR ใบนี้ถูก merge ให้เก็บกวาดเหมือนบทที่ 15: กลับที่ repo หลัก แล้ว `git switch main`, `git pull` และ `git branch -d chore/agent-skills` — branch นี้ไม่ได้ใช้ worktree จึงไม่มีอะไรต้อง remove'],en:['Create `docs/templates/issue-template.md` and `docs/templates/mr-template.md` from the blank forms in lessons 02 and 15 — only the headings and rules that apply to every task, with no US-001 content','Create all three skills under `.agents/skills/` following your tool tab, and if your tool does not read `.agents/skills` itself, add the shortcut from the tab (such as the `.claude/skills` symlink)','Add `.tmp/` to `.gitignore`, plus `.claude/skills` if you created the link','Use it to draft a second issue, e.g. US-002 Queue Board, and count how many questions it asks back','Compare the draft against the lesson 02 checklist, then fix what is missing in the **skill file**, not in the draft','Run `/review-diff` on this very `chore/agent-skills` branch and check the report explains every template and skill file, with nothing touched during the review','Commit the work: `git add docs .agents .gitignore` then `git commit -m "docs: add templates with issue, MR and diff-review skills"` — note that `.claude/skills` never appears, because it is ignored. This commit also carries no `Refs #` footer unlike the feature work: it is team chore with no issue behind it, and the `Refs` rule applies only to work backed by an issue','Push and open this small MR for a peer to review whether the prohibitions are tight enough','Once that MR merges, clean up as in lesson 15: back in the main repo run `git switch main`, `git pull`, and `git branch -d chore/agent-skills` — this branch used no worktree, so there is nothing to remove']},expected:{th:'Issue ใบที่สองใช้เวลาน้อยกว่าใบแรกมาก แต่ยังมีหัวข้อครบเท่ากัน คุณยังเป็นคนตอบคำถามเรื่องขอบเขตกับ AC เองทุกข้อ และรายงานจาก review-diff อธิบายไฟล์ทุกไฟล์ของ branch นี้ได้',en:'The second issue takes far less time than the first while covering the same sections, you still answer every scope and AC question yourself, and the review-diff report accounts for every file on this branch.'}}
+        {type:'code',title:{th:'Brief US-002 Queue Board สำหรับทดสอบ skill',en:'The US-002 Queue Board brief for testing the skill'},lead:{th:'brief สั้น ๆ สำหรับงานใบที่สอง ตั้งใจเว้นช่องว่างไว้ให้ถาม เช่น สถานะเมื่อคิวว่าง วิธีที่กระดานรู้ตัวว่ามีคิวใหม่ จำนวนรายการที่แสดง และขอบเขตวันที่ เพราะ brief จริงไม่เคยตอบครบทุกอย่าง และ skill ที่ดีต้องถามกลับตรงจุดเหล่านั้น ไม่เดาเอง',en:'A short brief for the second piece of work, with questions left open on purpose: the empty-queue state, how the board learns about a new check-in, how many entries to show, and the date scope. Real briefs never answer everything, and a good skill must ask back at exactly those gaps instead of guessing.'},label:'US-002 · Clinic Queue Board · brief',code:{th:`US-002 — กระดานคิวคลินิก (brief)
+
+User story: ในฐานะเจ้าหน้าที่ OPD ฉันต้องการเห็นคิวปัจจุบันของแต่ละคลินิก เพื่อบอกผู้ป่วยได้ว่าอยู่ลำดับไหน
+
+Context: หลังผู้ป่วย check-in แล้ว (US-001) คลินิกต้องการกระดานง่าย ๆ ที่แสดงผู้รอคอย ใช้กติกา synthetic/mock data เดียวกับ US-001 และไม่ต่อกับระบบคิวจริง
+
+In scope:
+- แสดงคิวของคลินิกที่เลือกหนึ่งที่ โดยผู้ป่วยที่ check-in ล่าสุดอยู่ท้ายสุด
+- แต่ละรายการแสดง เลขคิว ชื่อผู้ป่วย และเวลาที่ check-in
+- เมื่อมีผู้ป่วย check-in ใหม่ กระดานต้องแสดงรายการนั้นเพิ่มเข้ามา
+
+Out of scope:
+- เรียกคิวหรือจัดลำดับคิวใหม่
+- Backend หรือระบบคิวจริงทุกชนิด
+
+Data: ใช้ synthetic/mock data เท่านั้น ต้องมีอย่างน้อยสองคลินิกที่จำนวนคิวต่างกัน`,en:`US-002 — Clinic Queue Board (brief)
+
+User story: As an OPD staff member, I want to see the current queue of each clinic so that I can tell patients where they stand in line.
+
+Context: After a patient checks in (US-001), the clinic needs a simple board showing who is waiting. It follows the same synthetic/mock data rules as US-001 and does not connect to a real queue system.
+
+In scope:
+- Show the queue of one selected clinic, with the most recent check-in last
+- Show each entry with its queue number, patient name, and check-in time
+- When a new patient checks in, the board adds that entry
+
+Out of scope:
+- Calling patients or reordering the queue
+- Any backend or real queue system
+
+Data: synthetic/mock data only, with at least two clinics of different queue lengths`},note:{th:'สังเกตสี่จุดที่ brief ไม่ได้ตอบ: คิวว่างแล้วหน้าจอแสดงอะไร รีเฟรชด้วยวิธีไหน แสดงกี่รายการ และใช้ข้อมูลของวันนี้หรือทั้งวัน รัน skill create-issue กับ brief นี้แล้วดูว่ามันถามกลับครบหรือไม่ ถ้ามันเดาแปลว่าไฟล์ skill ยังไม่รัดกุม ให้กลับไปแก้ที่ไฟล์',en:'Note four things the brief does not answer: what the screen shows when a queue is empty, how refreshing happens, how many entries to show, and whether the board covers today only. Run the create-issue skill against this brief and watch whether it asks about all of them — if it guesses instead, the skill file is not tight enough, so fix the file.'}},
+        {type:'practice',title:{th:'ลงมือทำ: ใช้ skill กับงานใบที่สอง',en:'Practice: use the skill on a second piece of work'},steps:{th:['สร้าง `docs/templates/issue-template.md` และ `docs/templates/mr-template.md` จากแบบฟอร์มเปล่าในบทที่ 02 และ 15 — ในไฟล์มีแต่หัวข้อกับกติกาที่ใช้กับทุกงาน ไม่มีเนื้อหาของ US-001','สร้าง skill ทั้งสามไว้ที่ `.agents/skills/` ตามแท็บเครื่องมือของคุณ และถ้าเครื่องมือของคุณไม่อ่าน `.agents/skills` เอง ค่อยเพิ่มทางลัดตามแท็บ (เช่น symlink `.claude/skills`)','เพิ่ม `.tmp/` และ `.claude/` ลงใน `.gitignore` — ignore ทั้งโฟลเดอร์ไม่มีผลเสียแม้จะไม่ได้ใช้ Claude','ใช้ skill ร่าง Issue ใบที่สองจาก brief US-002 Queue Board ในบล็อกก่อนหน้า (วาง brief ในแชทหรือเซฟลง `.tmp/` ก็ได้) แล้วนับว่ามันถามกลับกี่ข้อ — brief ตั้งใจเว้นช่องว่างไว้ให้ถาม','เทียบร่างที่ได้กับเช็กลิสต์ในบทที่ 02 ว่าข้อไหนยังขาด แล้วแก้ที่ **ไฟล์ skill** ไม่ใช่แก้ที่ร่าง','เรียก `/review-diff` บน branch `chore/agent-skills` นี้เอง แล้วเช็กว่ารายงานอธิบายไฟล์ template กับ skill ทุกไฟล์ได้ และไม่มีไฟล์ถูกแตะระหว่างตรวจ','commit งานนี้: `git add docs .agents AGENTS.md .gitignore` แล้ว `git commit -m "docs(skills): add templates with issue, MR and diff-review skills"` — สังเกตว่า `.claude/` ไม่โผล่ในรายการ เพราะถูก ignore ไว้ (และเพิ่ม `AGENTS.md` เข้าไปด้วย เพราะแท็บ Codex ต้องแก้ไฟล์นี้) และ commit นี้ไม่มี `Refs #` ฝังท้ายเหมือนงานฟีเจอร์ เพราะเป็นงาน chore ของทีมที่ไม่มี Issue รองรับ — กติกา `Refs` ใช้เฉพาะงานที่มี Issue เท่านั้น และกติกา chore นี้ (prefix `chore/` ไม่มีเลข Issue และไม่ต้องมี worktree) บันทึกไว้ใน AGENTS.md เช่นกัน','push แล้วเปิด MR เล็ก ๆ ใบนี้ให้เพื่อน review ว่าข้อห้ามใน skill รัดกุมพอหรือยัง','หลัง MR ใบนี้ถูก merge ให้เก็บกวาดเหมือนบทที่ 15: กลับที่ repo หลัก แล้ว `git switch main`, `git pull` และ `git branch -d chore/agent-skills` — branch นี้ไม่ได้ใช้ worktree จึงไม่มีอะไรต้อง remove'],en:['Create `docs/templates/issue-template.md` and `docs/templates/mr-template.md` from the blank forms in lessons 02 and 15 — only the headings and rules that apply to every task, with no US-001 content','Create all three skills under `.agents/skills/` following your tool tab, and if your tool does not read `.agents/skills` itself, add the shortcut from the tab (such as the `.claude/skills` symlink)','Add `.tmp/` and `.claude/` to `.gitignore` — ignoring the whole folder harms nothing even if you never use Claude','Use it to draft a second issue from the US-002 Queue Board brief in the block above (paste it into the chat or save it under `.tmp/`), and count how many questions it asks back — the brief leaves gaps open on purpose','Compare the draft against the lesson 02 checklist, then fix what is missing in the **skill file**, not in the draft','Run `/review-diff` on this very `chore/agent-skills` branch and check the report explains every template and skill file, with nothing touched during the review','Commit the work: `git add docs .agents AGENTS.md .gitignore` then `git commit -m "docs(skills): add templates with issue, MR and diff-review skills"` — note that `.claude/` never appears, because it is ignored (and `AGENTS.md` joins the list because the Codex tab edits that file). This commit also carries no `Refs #` footer unlike the feature work: it is team chore with no issue behind it, and the `Refs` rule applies only to work backed by an issue — the chore convention is documented in AGENTS.md as well','Push and open this small MR for a peer to review whether the prohibitions are tight enough','Once that MR merges, clean up as in lesson 15: back in the main repo run `git switch main`, `git pull`, and `git branch -d chore/agent-skills` — this branch used no worktree, so there is nothing to remove']},expected:{th:'Issue ใบที่สองใช้เวลาน้อยกว่าใบแรกมาก แต่ยังมีหัวข้อครบเท่ากัน คุณยังเป็นคนตอบคำถามเรื่องขอบเขตกับ AC เองทุกข้อ และรายงานจาก review-diff อธิบายไฟล์ทุกไฟล์ของ branch นี้ได้',en:'The second issue takes far less time than the first while covering the same sections, you still answer every scope and AC question yourself, and the review-diff report accounts for every file on this branch.'}}
       ],
       quiz:{q:{th:'ข้อใดไม่ควรอยู่ใน skill สร้าง Issue?',en:'Which of these does not belong in an issue-filing skill?'},options:{th:['ลำดับขั้นตอนการกรอกทุกหัวข้อของ template','การตัดสินว่าฟีเจอร์ไหนอยู่นอกขอบเขตของรอบนี้','ข้อห้ามไม่ให้ merge หรือ push main'],en:['The sequence for filling every template section','Deciding which features are out of scope this round','The prohibition on merging or pushing to main']},answer:1,why:{th:'การตัดสินขอบเขตเป็นการตัดสินใจทางธุรกิจที่ต้องมาจากคน skill ทำได้แค่บังคับให้ถามกลับเมื่อข้อมูลไม่พอ',en:'Scope is a business decision that must come from a person. The skill’s job is only to force a question when information is missing.'}},
       wrap:{th:['ทำเองก่อนจนมีเกณฑ์ แล้วค่อยทำให้ทำซ้ำได้','template และ skill อยู่ในโปรเจกต์เพราะเป็นของทีม ส่วนลิงก์เข้าเครื่องมือเป็นของแต่ละเครื่อง','skill กรอกฟอร์ม เสนอคำสั่ง และรายงานผลตรวจ ส่วนการกดส่งกับคำตัดสินยังเป็นของคน','แก้พฤติกรรมที่ไฟล์ ไม่ใช่ที่แชท'],en:['Do it by hand until you have a standard, then make it repeatable','Templates and skills live in the project because they belong to the team; the link into a tool belongs to each checkout','The skill fills the form, proposes the command, and reports the review; pressing send and calling pass or fail stay human','Fix behaviour in the file, not in the chat']}
