@@ -118,7 +118,7 @@ Add `Closes #<your issue number>` and verify that the same number appears in the
 
 “A clickable page alone is not a handoff. A developer needs to know which ACs have evidence in Storybook, an interaction test, or a manual flow. They need instructions to run the app and Storybook, and they need to know where mocks stand in for real systems and which product decisions still need an owner.
 
-Gather the evidence already present in the issue, MR, diff, and check results. State the limits plainly: there is no real backend, authentication, or queue integration here. Ask someone else to open the work using only the handoff steps. If they must guess, add the missing instruction or name the decision owner. A template or agent skill may draft this later, but a person reviews and approves anything sent outside the machine.”
+Gather the evidence already present in the issue, MR, diff, and check results. State the limits plainly: there is no real backend, authentication, or queue integration here. Ask someone else to open the work using only the handoff steps. If they must guess, add the missing instruction or name the decision owner. Then paste the handoff into the MR’s Handoff section, mark the Draft ready for review, let the reviewer merge, and clean up the worktree after the merge. A template or agent skill may draft this later, but a person reviews and approves anything sent outside the machine.”
 
 ## Slide 20 · Lesson 17: Extend US-001 Capstone
 
