@@ -232,7 +232,7 @@
     return `<div class="shell">
       <header class="topbar">
         <a class="brand" href="#/">
-          <span class="brand-mark">${icon('spark',20)}</span>
+          <img class="brand-mark" src="./assets/logo.png" alt="" width="38" height="38" />
           <span class="brand-copy"><span>AI Product Workshop</span></span>
         </a>
         <div class="top-actions">
@@ -565,7 +565,7 @@
     const blocks = lesson.blocks.filter(b => b.type !== 'practice' && b.share !== false);
     return `<div class="content share-page">
       <div class="share-topbar">
-        <a class="share-badge" href="#/" title="${U('home')}">${icon('spark',14)} AI Product Workshop</a>
+        <a class="share-badge" href="#/" title="${U('home')}"><img src="./assets/logo.png" alt="" width="18" height="18" /> AI Product Workshop</a>
         <div class="share-actions">
           <button class="icon-btn lang-btn" id="langBtn" aria-label="Language" title="${state.lang==='th'?'Switch to English':'เปลี่ยนเป็นภาษาไทย'}">${state.lang==='th'?'TH':'EN'}</button>
           <button class="icon-btn" id="themeBtn" aria-label="Theme">${state.theme==='dark'?icon('sun'):icon('moon')}</button>
