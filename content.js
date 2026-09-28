@@ -1417,8 +1417,12 @@ Propose a plan first. Wait for my approval before implementing.`},
           diagram:`flowchart TD\nA[Search HN / Name] --> B{Result}\nB -->|loading| L[Loading]\nB -->|empty| E[Empty]\nB -->|error| X[Error]\nB -->|found| R[Select Patient]\nR --> F[Choose Clinic + Chief Complaint]\nF --> V{Valid?}\nV -->|No| VE[Validation message]\nV -->|Yes| P[Preview]\nP --> C[Confirm]\nC --> S[Check-in Success + Queue No.]`,
           notes:{th:['กล่องสี่เหลี่ยมขนมเปียกปูนคือจุดตัดสินใจ ซึ่งเป็นจุดที่มักมี bug มากที่สุด','เส้นทางจาก B ไป Empty/Error ต้องทดสอบด้วย mock scenario ไม่ใช่รอให้เกิดเอง','Preview ก่อน Confirm มีไว้เพื่อให้ผู้ใช้ย้อนกลับไปแก้ได้ — ต้องทดสอบการย้อนกลับด้วย','ทดสอบด้วยว่าเมื่อจบ flow แล้วเริ่มใหม่ ข้อมูลเก่าไม่ค้าง'],en:['Diamonds are decision points, and decision points hold most of the bugs','The paths from B to Empty/Error must be forced with mock scenarios rather than waited for','Preview before Confirm exists so users can go back and edit — test going back','Also test that starting over after a completed flow leaves no stale data']}},
         {type:'prompt',title:{th:'Prompt: ประกอบ component เข้าเป็นหน้าจริง',en:'Prompt: assemble the components into the real page'},
-          when:{th:'ใช้เมื่อ component ทุกตัวที่เกี่ยวข้องผ่าน Storybook review แล้วเท่านั้น จุดสำคัญคือย้ำว่าให้ใช้ของเดิมที่ตรวจแล้ว ไม่ใช่สร้างใหม่ทับ',en:'Use it only after every relevant component has passed Storybook review. The key point is to insist on reusing what was reviewed rather than rebuilding on top of it.'},
-          prompt:{th:`นำ component ที่ผ่านการ review แล้วมาประกอบเป็นหน้า /opd/check-in
+          when:{th:'ใช้เมื่อ component ทุกตัวที่เกี่ยวข้องผ่าน Storybook review แล้วเท่านั้น แนบภาพ `docs/design/opd-check-in-reference.png` เข้าไปกับ prompt นี้ด้วย — ภาพนี้ใช้บอกแค่ layout ไม่ใช่พฤติกรรม และย้ำว่าให้ใช้ของเดิมที่ตรวจแล้ว ไม่ใช่สร้างใหม่ทับ',en:'Use it only after every relevant component has passed Storybook review. Attach the image `docs/design/opd-check-in-reference.png` along with this prompt — it only describes layout, not behavior. The key point is to insist on reusing what was reviewed rather than rebuilding on top of it.'},
+          prompt:{th:`อ่านภาพ docs/design/opd-check-in-reference.png ที่แนบมา ใช้เฉพาะสำหรับ "การจัดวางหน้า"
+(layout 2 คอลัมน์, ระยะห่างระหว่างการ์ด, โครงหัวเรื่องหน้า) เท่านั้น
+ไม่ใช่แหล่งอ้างอิงพฤติกรรม — พฤติกรรมให้ยึดตาม requirement
+
+นำ component ที่ผ่านการ review แล้วมาประกอบเป็นหน้า /opd/check-in
 
 ข้อกำหนดด้านการทำงาน
 - ต้องใช้ component และ mock service ที่มีอยู่แล้ว ห้ามสร้างใหม่ซ้ำซ้อน
@@ -1431,9 +1435,20 @@ Propose a plan first. Wait for my approval before implementing.`},
 ข้อห้าม
 - ห้ามเพิ่ม backend หรือ database
 - ห้ามแก้ไฟล์ที่ไม่เกี่ยวกับ US-001
+- ห้ามแก้ visual style ภายในตัว component ที่ผ่าน review แล้ว (สีปุ่ม, badge,
+  รูปแบบภายใน card ฯลฯ) แม้จะเห็นว่าไม่ตรงกับภาพ — ถ้าพบจุดที่ไม่ตรง
+  ให้แยกรายงานเป็นรายการ "feedback สำหรับ Storybook" ของ component นั้น
+  แทนที่จะแก้ตรงนี้เลย
 - ห้าม commit และห้าม push
 
-เมื่อเสร็จแล้ว อธิบายเป็นข้อ ๆ ว่าหน้าจอเปลี่ยนสถานะอย่างไรตั้งแต่เริ่มค้นหาจนถึงสำเร็จ`,en:`Assemble the reviewed components into the /opd/check-in page.
+เมื่อเสร็จแล้ว
+1. อธิบายเป็นข้อ ๆ ว่าหน้าจอเปลี่ยนสถานะอย่างไรตั้งแต่เริ่มค้นหาจนถึงสำเร็จ
+2. แยกรายการ (ถ้ามี) ว่าเจอจุดไหนที่หน้าตา component ไม่ตรงกับภาพ design
+   บ้าง เพื่อนำไปเป็น feedback รอบ Storybook ต่อไป`,en:`Read the attached image docs/design/opd-check-in-reference.png. Use it only for
+"page layout" (the 2-column layout, spacing between cards, page heading
+structure) — it is not a source of behavior; behavior follows the requirement.
+
+Assemble the reviewed components into the /opd/check-in page.
 
 Behaviour requirements:
 - Reuse the existing components and mock service; do not create duplicates
@@ -1446,10 +1461,16 @@ Behaviour requirements:
 Prohibitions:
 - Do not add a backend or database
 - Do not modify files unrelated to US-001
+- Do not change the visual style inside already-reviewed components (button
+  colors, badges, internal card layout, etc.), even where it does not match
+  the image — if you find a mismatch, list it separately as "Storybook
+  feedback" for that component instead of fixing it here
 - Do not commit and do not push
 
-When finished, describe step by step how the screen changes state from the first search to success.`},
-          after:{th:['อย่าเชื่อคำอธิบาย ให้เปิด `/opd/check-in` แล้วเดินเองทุกเส้นทางในผังด้านบน','รัน `git diff --stat` ดูจำนวนไฟล์ ถ้าเยอะเกินคาดให้หยุดและถามก่อน','กลับไปเปิด Storybook อีกรอบ เพื่อยืนยันว่า Storybook story เดิมยังไม่พัง'],en:['Do not trust the description — open `/opd/check-in` and walk every path in the diagram yourself','Run `git diff --stat` and check the file count; if it is higher than expected, stop and ask','Reopen Storybook to confirm the existing Storybook stories did not break']}},
+When finished:
+1. Describe step by step how the screen changes state from the first search to success
+2. List separately (if any) where a component's appearance does not match the design image, as feedback for the next Storybook round`},
+          after:{th:['อย่าเชื่อคำอธิบาย ให้เปิด `/opd/check-in` แล้วเดินเองทุกเส้นทางในผังด้านบน','รัน `git diff --stat` ดูจำนวนไฟล์ ถ้าเยอะเกินคาดให้หยุดและถามก่อน','กลับไปเปิด Storybook อีกรอบ เพื่อยืนยันว่า Storybook story เดิมยังไม่พัง','ถ้า Agent รายงานว่าหน้าตา component ไม่ตรงกับภาพ ให้ตรวจว่ามันแยกไว้เป็นรายการ feedback เท่านั้น ไม่ได้แก้โค้ด component ไปแล้ว'],en:['Do not trust the description — open `/opd/check-in` and walk every path in the diagram yourself','Run `git diff --stat` and check the file count; if it is higher than expected, stop and ask','Reopen Storybook to confirm the existing Storybook stories did not break','If the agent reports a mismatch between a component and the image, confirm it was only listed as feedback, not fixed in the component code']}},
         {type:'commands',title:{th:'เดิน flow จริงอย่างเป็นระบบ',en:'Walk the real flow systematically'},
           lead:{th:'อย่าสุ่มกด ให้เดินตามลำดับนี้ทีละรอบ และจดผลทุกรอบ เพราะสิ่งที่คุณจดจะกลายเป็นเนื้อหาของ Merge Request ในบทสุดท้าย',en:'Do not click at random. Walk these rounds in order and record each result — what you record becomes the content of your Merge Request in the final lesson.'},
           steps:[
