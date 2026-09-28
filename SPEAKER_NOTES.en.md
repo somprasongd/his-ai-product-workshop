@@ -106,7 +106,7 @@ Ask the agent to explain the root cause from that evidence before proposing a fi
 
 “Before accepting a ‘done’ report, predict which kinds of files this issue should change. Compare that prediction with `git status` and `git diff main...HEAD --stat`, which compares the whole branch with main. If a PatientSearch issue changed authentication or the global layout, ask why. Open unexpected files and have the agent explain each change.
 
-Then run lint, test, and build using this project's commands; `npm run test` covers unit tests only, so check the interaction test's PASS in Storybook. Review each Storybook state and walk the real flow again. If `next-env.d.ts` or a Next.js block in `AGENTS.md` shows as changed, restore it with `git restore` — the tooling wrote it, not the issue. Before staging, make sure no `.env`, secret, real patient data, build output, or agent scratch file is included. The evidence we need is a scoped diff plus passing checks and a human review of behavior, not merely an agent summary.”
+Then run lint, test, and build using this project's commands; `npm run test` covers unit tests only, so check the interaction test's PASS in Storybook. Review each Storybook state and walk the real flow again. Before staging, make sure no `.env`, secret, real patient data, build output, or agent scratch file is included. The evidence we need is a scoped diff plus passing checks and a human review of behavior, not merely an agent summary.”
 
 ## Slide 18 · Lesson 15: Deliver through a Draft MR
 

@@ -106,7 +106,7 @@ Mock ที่ดีต้องทำซ้ำได้: input เดิมใ�
 
 “ก่อนเชื่อว่างานเสร็จ ให้เดาก่อนว่า Issue นี้ควรเปลี่ยนไฟล์ประเภทไหน แล้วเทียบกับ `git status` และ `git diff main...HEAD --stat` ซึ่งเทียบทั้ง branch กับ main ถ้า Issue เรื่อง PatientSearch แต่ diff ไปแตะ auth หรือ global layout ต้องถามเหตุผลให้ชัด เปิด diff ของไฟล์ที่ไม่คาดไว้และให้ Agent อธิบายทีละไฟล์
 
-จากนั้นรัน lint, test และ build ตามคำสั่งใน project โดย `npm run test` รันแค่ unit test ส่วน interaction test ต้องดู PASS ใน Storybook ตรวจ Storybook ทุก state และเดิน flow จริงอีกครั้ง ถ้าเห็น `next-env.d.ts` หรือบล็อกของ Next.js ใน `AGENTS.md` เปลี่ยน ให้คืนค่าด้วย `git restore` เพราะเครื่องมือเขียนเอง ไม่ใช่งานของ Issue ก่อน stage ให้ดูว่าไม่มี `.env`, secret, ข้อมูลผู้ป่วยจริง, build output หรือไฟล์ทดลองของ Agent ติดไปด้วย หลักฐานที่ต้องการคือ diff อยู่ใน scope และ quality checks ผ่าน ไม่ใช่เพียงข้อความสรุปว่า ‘done’”
+จากนั้นรัน lint, test และ build ตามคำสั่งใน project โดย `npm run test` รันแค่ unit test ส่วน interaction test ต้องดู PASS ใน Storybook ตรวจ Storybook ทุก state และเดิน flow จริงอีกครั้ง ก่อน stage ให้ดูว่าไม่มี `.env`, secret, ข้อมูลผู้ป่วยจริง, build output หรือไฟล์ทดลองของ Agent ติดไปด้วย หลักฐานที่ต้องการคือ diff อยู่ใน scope และ quality checks ผ่าน ไม่ใช่เพียงข้อความสรุปว่า ‘done’”
 
 ## สไลด์ 18 · บท 15: ส่งมอบผ่าน Draft MR
 
