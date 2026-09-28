@@ -98,9 +98,9 @@ Try cases that reveal problems between states. After selecting a patient, does a
 
 ## Slide 16 · Lesson 13: Debug with Evidence
 
-“When something fails, avoid sending only ‘please fix it’ to the agent. Gather evidence from four places: the terminal for build or type errors, the browser UI for what the user sees, the Console for runtime errors, and Network for requests and responses. In an error message, identify its type, message, file, and line so we can locate the problem.
+“When something fails, avoid sending only ‘please fix it’ to the agent. Gather evidence from four places: the terminal for compile errors (type errors need `npm run build` to show), the browser UI for what the user sees, the Console for runtime errors, and Network for requests to a server — in this course the mock runs in the browser, so search never appears there. In an error message, identify its type, message, file, and line so we can locate the problem.
 
-Ask the agent to explain the root cause from that evidence before proposing a fix. Then explain the cause in your own words. After a change, reproduce the original failing case and check nearby behavior. ‘Port 3000 is in use’ is a process conflict, not a UI bug. Record the before-and-after evidence for the fourth commit checkpoint.”
+Ask the agent to explain the root cause from that evidence before proposing a fix. Then explain the cause in your own words. After a change, reproduce the original failing case and check nearby behavior. ‘Port 3000 is in use’ is a process conflict, not a UI bug. If the flow walk turned up a real bug, record its before-and-after evidence in the fourth commit checkpoint; undo practice errors instead of committing them.”
 
 ## Slide 17 · Lesson 14: Git Diff & Quality
 
