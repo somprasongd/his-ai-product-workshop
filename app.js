@@ -314,7 +314,7 @@
     switch(block.type) {
       case 'callout': return `<section class="block callout ${block.tone||''}"><div class="callout-title">${esc(t(block.title))}</div><p>${rich(t(block.text))}</p></section>`;
       case 'list': return `<section class="block"><h2>${esc(t(block.title))}</h2><ul class="clean">${t(block.items).map(x=>`<li>${rich(x)}</li>`).join('')}</ul></section>`;
-      case 'two': return `<section class="block"><h2>${esc(t(block.title))}</h2><div class="two-col">${compareCol(block.left)}${compareCol(block.right)}</div></section>`;
+      case 'two': return `<section class="block"><h2>${esc(t(block.title))}</h2><div class="two-col">${compareCol(block.left)}${compareCol(block.right)}</div>${block.note?`<p class="block-outro">${rich(t(block.note))}</p>`:''}</section>`;
       case 'code': return block.title || block.lead || block.note
         ? `<section class="block">${block.title?`<h2>${esc(t(block.title))}</h2>`:''}${lead(block)}${codeSectionBody(block)}${block.note?`<p class="block-outro">${rich(t(block.note))}</p>`:''}</section>`
         : codeSectionBody(block);
