@@ -72,7 +72,7 @@ Commit คือจุดบันทึกที่เราตรวจแล�
 
 ## สไลด์ 12 · บท 09: Storybook Review
 
-“Storybook เป็นหน้าเว็บอีกชุดสำหรับเปิด component ทีละ state โดยไม่ต้องทำให้ระบบจริงเกิดเหตุการณ์นั้นก่อน เราจะเริ่มจาก PatientSearch ให้ Agent สร้าง component พร้อม stories แล้วเปิดดู Default, Loading, Empty, WithResults และ Error ด้วยตาของเรา
+“Storybook เป็นหน้าเว็บอีกชุดสำหรับเปิด component ทีละ state โดยไม่ต้องทำให้ระบบจริงเกิดเหตุการณ์นั้นก่อน เราจะเริ่มจาก PatientSearch ให้ Agent สร้าง component พร้อม stories แล้วเปิดดู Default, Loading, Empty, WithResults และ Error ด้วยตาของเรา และลองกดค้นหาโดยไม่พิมพ์อะไร ต้องเห็นข้อความให้พิมพ์ HN หรือชื่อก่อน ไม่ใช่ข้อความไม่พบผู้ป่วยของ Empty
 
 เวลาส่ง feedback ให้พูดเป็นภาษาผลิตภัณฑ์ เช่น ‘ข้อความ Empty ยังไม่บอกว่าควรทำอะไรต่อ’ หรือ ‘ชื่อยาวทำให้ปุ่มหายบนจอแคบ’ ไม่ต้องสั่งว่าจะเขียน CSS บรรทัดไหน ตรวจ keyboard และ focus ด้วย เมื่อ stories ผ่านการ review แล้วจึงบันทึก commit checkpoint แรกพร้อม `DESIGN.md` และหน้า `/design` ที่ตรวจแล้ว
 

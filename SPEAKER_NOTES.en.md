@@ -72,7 +72,7 @@ Write your own first draft before asking the agent to critique it. Every state s
 
 ## Slide 12 · Lesson 09: Storybook Review
 
-“Storybook is another website where we can open one component in a chosen state without forcing that state in the full app. We will start with PatientSearch. Ask the agent to create the component together with its stories, then inspect Default, Loading, Empty, WithResults, and Error yourself.
+“Storybook is another website where we can open one component in a chosen state without forcing that state in the full app. We will start with PatientSearch. Ask the agent to create the component together with its stories, then inspect Default, Loading, Empty, WithResults, and Error yourself. Also press search with nothing typed: you should be asked for an HN or name, not shown Empty’s “no patient found”.
 
 Give feedback in product language: ‘The Empty message does not tell me what to do next,’ or ‘A long name hides the button on a narrow screen.’ You do not need to prescribe a CSS fix. Check keyboard navigation and visible focus too. When the stories pass human review, make the first commit checkpoint, including the reviewed `DESIGN.md` and `/design` page.
 
