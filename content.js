@@ -1113,16 +1113,21 @@ Story ที่ต้องมี
 - Loading: กำลังค้นหา
 - Empty: ค้นหาแล้วไม่พบผู้ป่วย
 - WithResults: พบผู้ป่วยหลายคน
-- Error: ระบบค้นหาขัดข้อง
+- Error: ระบบค้นหาขัดข้อง (ถ้าชื่อ "Error" ชนกับ type ของ TypeScript ในไฟล์ story ให้เปลี่ยนชื่อ export เป็น ErrorState แทน)
+
+Component ต้อง
+- แสดงผลการค้นหาแต่ละคนอย่างน้อย: HN, ชื่อเต็ม, วันเกิด, เพศ (อ้างอิง AC7 ใน US-001)
+- มี prop สำหรับรับผลตอนเลือกผู้ป่วย เช่น onSelectPatient
+- reuse mock service ที่มีอยู่แล้วใน src/services (อย่าสร้าง mock data layer ใหม่) โดย inject ฟังก์ชันค้นหาผ่าน prop เพื่อคุม state ใน Storybook ได้แบบ deterministic
 
 ข้อกำหนด
 - ใช้ mock data ที่กำหนดค่าตายตัว ผลลัพธ์ต้องเหมือนเดิมทุกครั้งที่เปิด
-- อ้างอิงสี ตัวอักษร และระยะห่างจาก DESIGN.md เท่านั้น (ดูที่ /design หรือไฟล์ DESIGN.md) ห้าม hardcode ค่าใหม่ที่ไม่มีในนั้น
+- อ้างอิงสี ตัวอักษร และระยะห่างจาก DESIGN.md เท่านั้น (ดูที่ /design หรือไฟล์ DESIGN.md) ห้าม hardcode ค่าใหม่ที่ไม่มีในนั้น ถ้าจำเป็นต้องใช้ค่าที่ยังไม่มีใน DESIGN.md (เช่น สี error) ให้หยุดถามก่อน ไม่ใช่เดาเอง
 - ห้ามต่อ backend จริง
 - ห้ามนำไป integrate เข้า page ในรอบนี้
 - ห้าม commit และห้าม push
 
-เมื่อเสร็จแล้ว บอกชื่อไฟล์ทั้งหมดที่สร้างหรือแก้ไข`,en:`Create an isolated component named PatientSearch. Do not add it to any real page yet.
+เมื่อเสร็จแล้ว บอกชื่อไฟล์ทั้งหมดที่สร้างหรือแก้ไข และสรุปว่าอ้างอิง token ไหนจาก DESIGN.md บ้าง`,en:`Create an isolated component named PatientSearch. Do not add it to any real page yet.
 
 Create these two files together:
 - PatientSearch.tsx
@@ -1133,17 +1138,22 @@ Required stories:
 - Loading: search in progress
 - Empty: search returned no patients
 - WithResults: several patients found
-- Error: the search service failed
+- Error: the search service failed (if the name "Error" collides with a TypeScript type in the story file, rename the export to ErrorState instead)
+
+The component must:
+- Show at least HN, full name, date of birth, and gender for each result (see AC7 in US-001)
+- Accept a prop for selecting a patient, such as onSelectPatient
+- Reuse the mock service already in src/services (do not build a new mock data layer) by injecting the search function through a prop, so Storybook can control state deterministically
 
 Constraints:
 - Use fixed mock data so results look identical on every open
-- Reference colors, type, and spacing from DESIGN.md only (see /design or the DESIGN.md file) — never hardcode a new value not found there
+- Reference colors, type, and spacing from DESIGN.md only (see /design or the DESIGN.md file) — never hardcode a new value not found there; if you need a value that DESIGN.md does not have yet (such as an error color), stop and ask instead of guessing
 - Do not connect to a real backend
 - Do not integrate it into the page in this round
 - Do not commit and do not push
 
-When finished, list every file you created or changed.`},
-          after:{th:['เปิด Storybook แล้วต้องเห็นครบทั้ง 5 Storybook story ถ้าขาดข้อไหนให้ตีกลับพร้อมระบุชื่อ Storybook story','ดูว่าข้อมูลเหมือนเดิมทุกครั้งที่ refresh ถ้าเปลี่ยนไปเรื่อย ๆ แปลว่าใช้ข้อมูลสุ่ม ซึ่งทำให้ review ยาก','สุ่มตรวจสีปุ่มหรือสี error สักหนึ่งจุด เทียบกับหน้า `/design` — ถ้าไม่ตรง แปลว่า Agent hardcode ค่าใหม่แทนที่จะอ้างอิง DESIGN.md','ตรวจว่ายังไม่มีการแก้ไฟล์ page จริง ด้วย `git status`'],en:['Open Storybook and confirm all five Storybook stories exist; if one is missing, send it back naming the Storybook story','Refresh and confirm the data stays identical — random data makes review harder','Spot-check one color, such as the button or the error state, against the `/design` page — a mismatch means the agent hardcoded a new value instead of referencing DESIGN.md','Use `git status` to confirm no real page file was touched']}},
+When finished, list every file you created or changed, and summarize which DESIGN.md tokens you referenced.`},
+          after:{th:['เปิด Storybook แล้วต้องเห็นครบทั้ง 5 Storybook story (ชื่อ Error หรือ ErrorState ก็นับเป็นตัวเดียวกัน) ถ้าขาดข้อไหนให้ตีกลับพร้อมระบุชื่อ Storybook story','ดูว่าข้อมูลเหมือนเดิมทุกครั้งที่ refresh ถ้าเปลี่ยนไปเรื่อย ๆ แปลว่าใช้ข้อมูลสุ่ม ซึ่งทำให้ review ยาก','เปิด story WithResults แล้วตรวจว่าแต่ละแถวแสดง HN ชื่อเต็ม วันเกิด และเพศครบตาม AC7 — ถ้าขาดฟิลด์ไหนให้ตีกลับ','คลิกเลือกผู้ป่วยใน story WithResults แล้วดู Storybook Actions panel ว่า `onSelectPatient` ถูกเรียกพร้อมข้อมูลผู้ป่วยที่ถูกต้อง','ตรวจ `git status`/`git diff` ว่าไม่มีไฟล์ mock data ใหม่ถูกสร้างขึ้น — ต้อง reuse service เดิมใน src/services เท่านั้น','สุ่มตรวจสีปุ่มหรือสี error สักหนึ่งจุด เทียบกับหน้า `/design` — ถ้าไม่ตรง แปลว่า Agent hardcode ค่าใหม่แทนที่จะอ้างอิง DESIGN.md และอ่านสรุปท้ายข้อความว่า Agent ระบุ token ที่อ้างอิงครบหรือไม่','ตรวจว่ายังไม่มีการแก้ไฟล์ page จริง ด้วย `git status`'],en:['Open Storybook and confirm all five Storybook stories exist (Error or ErrorState both count); if one is missing, send it back naming the Storybook story','Refresh and confirm the data stays identical — random data makes review harder','Open the WithResults story and confirm each row shows HN, full name, date of birth, and gender per AC7 — send it back if a field is missing','Select a patient in the WithResults story and check the Storybook Actions panel that `onSelectPatient` fires with the right patient data','Check `git status`/`git diff` to confirm no new mock data file was created — it must reuse the existing service in src/services only','Spot-check one color, such as the button or the error state, against the `/design` page — a mismatch means the agent hardcoded a new value instead of referencing DESIGN.md; also read the closing summary to confirm the agent listed the tokens it referenced','Use `git status` to confirm no real page file was touched']}},
         {type:'callout',tone:'warning',title:{th:'Storybook 10: import จาก `storybook/test` และระวัง userEvent.type',en:'Storybook 10: import from `storybook/test` and watch out for userEvent.type'},text:{th:'ตั้งแต่ Storybook 9–10 ต้อง import จาก `storybook/test` ไม่ใช่ `@storybook/test` แบบเอกสารเวอร์ชันเก่า (module จะหาไม่เจอ) และเวลาเขียน play/interaction ถ้า `userEvent.type` รายงาน step ผ่าน (เขียว) แต่ React ไม่รับค่าในช่อง — พิมพ์แล้วช่องยังว่าง กดค้นหาแล้วขึ้น validation แทนผลลัพธ์ — ให้เปลี่ยนไปใช้ `fireEvent.change(input, { target: { value: "65000123" } })` เติมค่าแทน แล้วค่อยกดปุ่มด้วย `userEvent.click` อาการนี้พบกับ controlled input ของ React',en:'Since Storybook 9–10 the import path is `storybook/test`, not `@storybook/test` from older docs — that module no longer resolves. Also, in play/interaction functions, if `userEvent.type` reports a passing step but React never receives the value (the field stays empty and search shows validation instead of results), fill the field with `fireEvent.change(input, { target: { value: "65000123" } })` instead and press the button with `userEvent.click`. This shows up with React controlled inputs.'}},
         {type:'prompt',title:{th:'Prompt: ส่ง feedback กลับเป็นภาษา Product',en:'Prompt: send feedback back in product language'},
           when:{th:'ใช้หลังเปิด Storybook แล้วเจอสิ่งที่ยังไม่ถูกต้อง หลักการคือบอก “ผลลัพธ์ที่ต้องการ” ไม่ใช่ “วิธีเขียนโค้ด” เพราะการบอกวิธีทั้งที่เราไม่ถนัด มักทำให้ผลแย่ลง',en:'Use it after Storybook review reveals problems. Describe the outcome you want, not the code to write — prescribing implementation you are not expert in usually makes results worse.'},
