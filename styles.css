@@ -171,7 +171,8 @@ a { color: inherit; }
 
 .share-page { padding-top:32px; }
 .share-topbar { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
-.share-badge { display:inline-flex; align-items:center; gap:8px; padding:7px 12px; border-radius:999px; background:var(--primary-soft); color:color-mix(in srgb,var(--primary) 82%,var(--text)); font-weight:800; font-size:12px; letter-spacing:.02em; }
+.share-badge { display:inline-flex; align-items:center; gap:8px; padding:7px 12px; border-radius:999px; background:var(--primary-soft); color:color-mix(in srgb,var(--primary) 82%,var(--text)); font-weight:800; font-size:12px; letter-spacing:.02em; text-decoration:none; transition:box-shadow .18s ease; }
+.share-badge:hover { box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--primary) 45%,transparent); }
 .share-actions { display:flex; align-items:center; gap:8px; }
 
 .lesson-header { padding:28px 0 12px; }

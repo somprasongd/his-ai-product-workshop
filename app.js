@@ -22,7 +22,7 @@
       audienceValue: 'PM · BA · Product Design', formatValue: '3 วัน + Capstone · Hands-on', durationValue: '≈ 20.5 ชั่วโมง',
       progress: 'ความคืบหน้า', complete: 'เรียนจบบทนี้', completed: 'เรียนจบแล้ว',
       next: 'บทถัดไป', previous: 'บทก่อนหน้า', copy: 'คัดลอก', copied: 'คัดลอกแล้ว',
-      shareLink: 'แชร์บทเรียนนี้', linkCopied: 'คัดลอกลิงก์แล้ว',
+      shareLink: 'แชร์บทเรียนนี้', shareSite: 'แชร์เว็บนี้', linkCopied: 'คัดลอกลิงก์แล้ว',
       listen: 'ฟังเนื้อหา', speakLoading: 'กำลังเตรียมเสียง', speakPause: 'พัก', speakResume: 'เล่นต่อ', speakStop: 'หยุด', speakSpeed: 'ความเร็วอ่าน', speakControls: 'ตัวควบคุมการฟังเนื้อหา', speakProgress: 'ความคืบหน้าการอ่าน',
       noVoice: 'ไม่พบเสียงอ่านภาษาไทยบนอุปกรณ์นี้ ลองติดตั้งเสียงภาษาไทยในตั้งค่าระบบของอุปกรณ์ แล้วกดฟังอีกครั้ง',
       speechFailed: 'เล่นเสียงไม่สำเร็จ ลองกดเล่นอีกครั้งหรือเปลี่ยนเสียงในตั้งค่าระบบ',
@@ -63,7 +63,7 @@
       audienceValue: 'PM · BA · Product Design', formatValue: '3 days + Capstone · Hands-on', durationValue: '≈ 20.5 hours',
       progress: 'Progress', complete: 'Mark lesson complete', completed: 'Completed',
       next: 'Next lesson', previous: 'Previous lesson', copy: 'Copy', copied: 'Copied',
-      shareLink: 'Share this lesson', linkCopied: 'Link copied',
+      shareLink: 'Share this lesson', shareSite: 'Share this site', linkCopied: 'Link copied',
       listen: 'Listen', speakLoading: 'Preparing voice', speakPause: 'Pause', speakResume: 'Resume', speakStop: 'Stop', speakSpeed: 'Reading speed', speakControls: 'Listen playback controls', speakProgress: 'Reading progress',
       noVoice: 'No text-to-speech voice for this language was found on your device. Install one in your device settings, then try again.',
       speechFailed: 'Playback failed. Try again or choose another voice in your device settings.',
@@ -292,6 +292,7 @@
           <div class="hero-actions">
             <a class="btn btn-primary" href="#/lesson/${hasProgress?state.last:'prerequisites'}">${hasProgress?U('continue'):U('start')} ${icon('arrow',17)}</a>
             <a class="btn btn-secondary" href="#curriculum">${U('curriculum')}</a>
+            <button class="btn btn-secondary" type="button" data-share-site>${icon('share',17)} ${U('shareSite')}</button>
           </div>
           <div class="hero-meta"><span>◷ ${U('durationValue')}</span><span>◎ ${U('audienceValue')}</span><span>◈ ${U('formatValue')}</span></div>
         </div>
@@ -564,7 +565,7 @@
     const blocks = lesson.blocks.filter(b => b.type !== 'practice' && b.share !== false);
     return `<div class="content share-page">
       <div class="share-topbar">
-        <span class="share-badge">${icon('spark',14)} AI Product Workshop</span>
+        <a class="share-badge" href="#/" title="${U('home')}">${icon('spark',14)} AI Product Workshop</a>
         <div class="share-actions">
           <button class="icon-btn lang-btn" id="langBtn" aria-label="Language" title="${state.lang==='th'?'Switch to English':'เปลี่ยนเป็นภาษาไทย'}">${state.lang==='th'?'TH':'EN'}</button>
           <button class="icon-btn" id="themeBtn" aria-label="Theme">${state.theme==='dark'?icon('sun'):icon('moon')}</button>
@@ -902,10 +903,12 @@
     showToast(message || U('copied'));
   }
 
-  async function shareLesson(lessonId) {
+  function shareLesson(lessonId) {
     const lesson = course.lessons.find(l => l.id === lessonId);
-    const url = `${location.origin}${location.pathname}#/share/${lessonId}`;
-    const title = lesson ? t(lesson.title) : document.title;
+    shareUrl(lesson ? t(lesson.title) : document.title, `${location.origin}${location.pathname}#/share/${lessonId}`);
+  }
+
+  async function shareUrl(title, url) {
     if (navigator.share) {
       try { await navigator.share({ title, url }); return; }
       catch (err) { if (err?.name === 'AbortError') return; }
@@ -1003,6 +1006,7 @@
       if (copyBtn) { copyText(decodeURIComponent(copyBtn.dataset.copy || '')); return; }
       const shareBtn = e.target.closest('[data-share-lesson]');
       if (shareBtn) { shareLesson(shareBtn.dataset.shareLesson); return; }
+      if (e.target.closest('[data-share-site]')) { shareUrl(document.title, `${location.origin}${location.pathname}`); return; }
       const exBtn = e.target.closest('[data-prompt-example]');
       if (exBtn) {
         const bl = exBtn.closest('.prompt-block');
