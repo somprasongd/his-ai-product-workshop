@@ -826,7 +826,13 @@
 
   function openDiagramModal(svg, title) {
     diagramModal.content.innerHTML = '';
-    diagramModal.content.appendChild(svg.cloneNode(true));
+    const clone = svg.cloneNode(true);
+    // ไดอะแกรมบนจอกว้างถูกลบ width/height attribute ออกแล้วพึ่งพา flex ของ .mermaid ให้กำหนดขนาด
+    // (ดู sizeInlineDiagram) แต่ในโมดัลไม่มี flex context แบบนั้น ถ้าไม่ตั้ง width เอง SVG จะไม่มี
+    // ขนาดตั้งต้นให้ layout อ้างอิง (แม้มี viewBox) จนกลายเป็นกล่องขนาด 0 ทั้งภาพและการวัด natural width
+    const vb = clone.viewBox && clone.viewBox.baseVal;
+    if (vb && vb.width > 0) clone.setAttribute('width', vb.width);
+    diagramModal.content.appendChild(clone);
     diagramModal.title.textContent = title;
     diagramModal.panX = 0; diagramModal.panY = 0;
     diagramModal.el.classList.add('open');
