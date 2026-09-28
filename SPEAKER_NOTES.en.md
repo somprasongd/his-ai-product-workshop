@@ -64,7 +64,7 @@ Then use that same file to build a `/design` page where the values can be inspec
 
 ## Slide 11 · Lesson 08: Component & State
 
-“The whole check-in page is too large to review as one unit. Break it into PatientSearch, search results, the form, preview, and success. Give each part the user-visible states it needs, such as default, loading, empty, results, and error.
+“The whole check-in page is too large to review as one unit. Break it into PatientSearch (keeping the result list inside it, because results change with the search state), CheckInForm, CheckInPreview, and CheckInSuccess. Give each part the user-visible states it needs, such as default, loading, empty, results, and error.
 
 Write your own first draft before asking the agent to critique it. Every state should trace to an acceptance criterion. If a state has no user impact or criterion, we do not need another story just to increase the count. PM and BA inspect the business rules. Product Design inspects copy, hierarchy, focus, and narrow screens. The output of this lesson is a component and state map that another person can review.”
 
@@ -72,7 +72,9 @@ Write your own first draft before asking the agent to critique it. Every state s
 
 “Storybook is another website where we can open one component in a chosen state without forcing that state in the full app. We will start with PatientSearch. Ask the agent to create the component together with its stories, then inspect Default, Loading, Empty, WithResults, and Error yourself.
 
-Give feedback in product language: ‘The Empty message does not tell me what to do next,’ or ‘A long name hides the button on a narrow screen.’ You do not need to prescribe a CSS fix. Check keyboard navigation and visible focus too. When the stories pass human review, make the first commit checkpoint, including the reviewed `DESIGN.md` and `/design` page.”
+Give feedback in product language: ‘The Empty message does not tell me what to do next,’ or ‘A long name hides the button on a narrow screen.’ You do not need to prescribe a CSS fix. Check keyboard navigation and visible focus too. When the stories pass human review, make the first commit checkpoint, including the reviewed `DESIGN.md` and `/design` page.
+
+Then run the same loop on CheckInForm, CheckInPreview, and CheckInSuccess, one at a time. The agent stops after each one; we finish reviewing it before it starts the next. Record checkpoint 1b before leaving this lesson — lesson 12 assembles only pieces that have already passed review.”
 
 ## Slide 13 · Lesson 10: Acceptance & Interaction
 

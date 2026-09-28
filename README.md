@@ -6,7 +6,7 @@ A bilingual (Thai/English), static learning website for PM, BA, and Product Desi
 
 The course uses one continuous scenario — **US-001 OPD Patient Check-in Lite** — from requirement and issue through a working prototype, review, merge, and developer handoff. The capstone then adds a small clinic-availability follow-up in the same flow, with a new issue/MR and regression evidence. Learners guide an AI coding agent and verify results without writing code themselves. The course excludes backend/database implementation and uses deterministic mock/synthetic data.
 
-Schedule: three core workshop days plus a separate three-hour capstone after the original US-001 MR is merged (about 20 hours of learning time in total).
+Schedule: three core workshop days plus a separate three-hour capstone after the original US-001 MR is merged (about 20.5 hours of learning time in total, excluding the bonus lesson).
 
 Facilitator scripts for every slide are available in [Thai](SPEAKER_NOTES.th.md) and [English](SPEAKER_NOTES.en.md). They follow the 21-slide order in `slides.html` and draw on the lesson content in `content.js`. The slide deck reads these files aloud in the selected language using the browser's installed voices. Narration stops when the slide or language changes.
 

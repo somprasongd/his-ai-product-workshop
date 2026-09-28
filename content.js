@@ -28,7 +28,7 @@ window.COURSE = {
     'next-literacy': { th:'ระบุ route, component และ mock ที่เกี่ยว', en:'Locate the route, components, and mocks' },
     'design-system': { th:'DESIGN.md + /design ที่ตรวจจากภาพจริง', en:'Reference-checked DESIGN.md and /design' },
     'component-state': { th:'แผน component/state ผูกกับ AC', en:'Component/state map tied to ACs' },
-    storybook: { th:'PatientSearch + stories ที่คนตรวจแล้ว', en:'Human-reviewed PatientSearch stories' },
+    storybook: { th:'component ทั้ง 4 ตัว + stories ที่คนตรวจแล้ว', en:'Human-reviewed stories for all four components' },
     'acceptance-interaction': { th:'AC → story/interaction ที่รันได้', en:'Runnable AC → story/interaction map' },
     'mock-data': { th:'mock scenario ที่ทำซ้ำได้', en:'Repeatable mock scenarios' },
     integration: { th:'หน้า check-in ที่เดินครบ flow', en:'Working check-in flow' },
@@ -989,8 +989,8 @@ Tell me which URL to open to see the result.`},
         ]}},
         {type:'diagram',title:{th:'จาก Page ลงสู่สิ่งที่ทดสอบได้',en:'From page to testable pieces'},
           lead:{th:'ชั้นบนคือสิ่งที่ผู้ใช้เห็นเป็นหน้าเดียว ชั้นกลางคือหน่วยที่ Agent สร้างทีละชิ้น ชั้นล่างคือสถานะที่เราจะเปิดตรวจใน Storybook',en:'The top layer is what the user sees as one page; the middle is what the agent builds piece by piece; the bottom is the states we open and check in Storybook.'},
-          diagram:`flowchart TD\nP[OPD Check-in Page] --> S[PatientSearch]\nP --> R[PatientResults]\nP --> F[CheckInForm]\nP --> C[Confirmation]\nP --> X[Success]\nS --> S1[Default]\nS --> S2[Loading]\nS --> S3[Empty]\nS --> S4[WithResults]\nS --> S5[Error]`,
-          notes:{th:['ยิ่งแตกละเอียดเกินไป ยิ่งตรวจยากเพราะมีของให้ดูเยอะ — เป้าหมายคือ “เล็กพอที่จะตัดสินได้” ไม่ใช่ “เล็กที่สุดเท่าที่ทำได้”','เราแตก state เฉพาะของ PatientSearch ให้ดูเป็นตัวอย่าง component อื่นก็มี state ของตัวเองเช่นกัน','state ที่ไม่มีผลต่อผู้ใช้ ไม่ต้องทำเป็น Storybook story'],en:['Over-splitting makes review harder because there is more to look at — aim for “small enough to judge”, not “as small as possible”','Only PatientSearch’s states are expanded here as an example; every other component has its own','States with no user-visible difference do not need their own Storybook story']}},
+          diagram:`flowchart TD\nP[OPD Check-in Page] --> S[PatientSearch\\nsearch + results]\nP --> F[CheckInForm]\nP --> C[CheckInPreview]\nP --> X[CheckInSuccess]\nS --> S1[Default]\nS --> S2[Loading]\nS --> S3[Empty]\nS --> S4[WithResults]\nS --> S5[Error]`,
+          notes:{th:['ยิ่งแตกละเอียดเกินไป ยิ่งตรวจยากเพราะมีของให้ดูเยอะ — เป้าหมายคือ “เล็กพอที่จะตัดสินได้” ไม่ใช่ “เล็กที่สุดเท่าที่ทำได้”','รายการผลการค้นหาอยู่ใน PatientSearch ไม่แยกเป็น PatientResults เพราะผลลัพธ์เปลี่ยนตาม state ของการค้นหาโดยตรง (Loading, Empty, Error, WithResults) ถ้าแยกออกมาก็ยังต้องเปิดตรวจคู่กันทุกครั้งอยู่ดี — นี่คือตัวอย่างของ “เล็กพอที่จะตัดสินได้”','เราแตก state เฉพาะของ PatientSearch ให้ดูเป็นตัวอย่าง ส่วน state ของ CheckInForm, CheckInPreview และ CheckInSuccess จะกำหนดในบทที่ 09','state ที่ไม่มีผลต่อผู้ใช้ ไม่ต้องทำเป็น Storybook story'],en:['Over-splitting makes review harder because there is more to look at — aim for “small enough to judge”, not “as small as possible”','The result list lives inside PatientSearch rather than a separate PatientResults, because results change directly with the search state (Loading, Empty, Error, WithResults) — split apart, you would still have to review them together every time. That is “small enough to judge” in practice','Only PatientSearch’s states are expanded here as an example; the states for CheckInForm, CheckInPreview, and CheckInSuccess are defined in lesson 09','States with no user-visible difference do not need their own Storybook story']}},
         {type:'two',title:{th:'มุมมองของแต่ละ Role',en:'Role lenses'},left:{title:{th:'PM + BA',en:'PM + BA'},items:{th:['Scope และ flow','Business rules','Validation','Acceptance criteria','Edge cases'],en:['Scope and flow','Business rules','Validation','Acceptance criteria','Edge cases']}},right:{title:{th:'Product Design',en:'Product Design'},items:{th:['Visual hierarchy','Component boundaries','Loading/empty/error states','Interaction','Responsive behavior'],en:['Visual hierarchy','Component boundaries','Loading/empty/error states','Interaction','Responsive behavior']}}},
         {type:'list',title:{th:'US-001 ที่เราจะสร้างต่อเนื่อง',en:'Our continuous US-001 example'},items:{th:['ค้นหาผู้ป่วยด้วย HN หรือชื่อ','ระหว่างค้นหาแสดง Loading','ไม่พบข้อมูลแสดง Empty','ผิดพลาดแสดง Error','เลือกผู้ป่วยและดูรายละเอียด','เลือก Clinic','Chief Complaint เป็น optional','Preview → Back/Edit → Confirm → Success','ใช้ keyboard ได้และจอแคบยังเห็น action หลัก'],en:['Search patients by HN or name','Show Loading during search','Show Empty when no results','Show Error on failure','Select a patient and view details','Choose a Clinic','Chief Complaint is optional','Preview → Back/Edit → Confirm → Success','Keyboard access and usable narrow viewport']}},
         {type:'prose',title:{th:'ลำดับที่แนะนำ: คิดเองก่อน แล้วค่อยให้ AI วิจารณ์',en:'Recommended order: think first, then let the AI critique'},body:{th:[
@@ -1038,11 +1038,11 @@ CheckInForm (ฟอร์มลงทะเบียนเข้ารับบ�
 - Default: ผู้ป่วยถูกเติมจากที่เลือกไว้ Clinic ยังว่าง
 - Validation: กดยืนยันโดยไม่เลือก Clinic แล้วแสดงข้อความเตือน
 
-Confirmation (ตรวจสอบก่อนบันทึก)
+CheckInPreview (ตรวจสอบก่อนบันทึก)
 - Preview: แสดงข้อมูลทั้งหมดที่จะบันทึก ก่อนกดยืนยัน
 
-Success (หลังบันทึกสำเร็จ)
-- Success: แสดงเลขที่การเข้ารับบริการ พร้อมปุ่มกลับหน้าค้นหา
+CheckInSuccess (หลังบันทึกสำเร็จ)
+- Success: แสดงหมายเลขคิว พร้อมปุ่มกลับหน้าค้นหา
 
 ห้ามแก้ไขไฟล์ ให้วิจารณ์รายการนี้ในมุมของ product review
 1. มี UI state ไหนที่ผู้ใช้จะเจอจริง แต่ฉันยังไม่ได้ระบุ
@@ -1065,11 +1065,11 @@ CheckInForm (check-in form)
 - Default: patient pre-filled from the selection, Clinic still empty
 - Validation: pressing confirm without a Clinic shows a warning message
 
-Confirmation (review before saving)
+CheckInPreview (review before saving)
 - Preview: shows everything that will be saved, before confirming
 
-Success (after saving)
-- Success: shows the visit number with a button back to the search page
+CheckInSuccess (after saving)
+- Success: shows the queue number with a button back to the search page
 
 Do not modify any files. Critique this list as a product review:
 1. Which states will real users hit that I have not listed?
@@ -1078,17 +1078,17 @@ Do not modify any files. Critique this list as a product review:
 4. If we trimmed this to only what the acceptance criteria require, what would remain?
 
 Answer as a short list with one line of reasoning each.`},
-          after:{th:['อย่ารับทุกข้อเสนอ เลือกเฉพาะที่ตอบ acceptance criteria จริง','ถ้ามันเสนอ component เพิ่มเยอะผิดปกติ ให้ถามว่าข้อไหน “จำเป็น” และข้อไหน “แค่ดีถ้ามี”'],en:['Do not accept every suggestion; keep only what the acceptance criteria demand','If it proposes an unusual number of extra components, ask which are “required” and which are “nice to have”']}},
+          after:{th:['อย่ารับทุกข้อเสนอ เลือกเฉพาะที่ตอบ acceptance criteria จริง','ถ้ามันเสนอ component เพิ่มเยอะผิดปกติ ให้ถามว่าข้อไหน “จำเป็น” และข้อไหน “แค่ดีถ้ามี”','ร่างตัวอย่างนี้แยก PatientResults ออกจาก PatientSearch ไว้ ถ้า Agent ชี้ในข้อ 2 ว่าแตกย่อยเกินจำเป็น ให้เทียบกับ diagram ด้านบน — คอร์สนี้เลือกรวมไว้ในตัวเดียว และจะใช้โครงนี้ต่อในบทที่ 09'],en:['Do not accept every suggestion; keep only what the acceptance criteria demand','If it proposes an unusual number of extra components, ask which are “required” and which are “nice to have”','This example draft splits PatientResults out of PatientSearch. If the agent flags it under question 2 as split too finely, compare with the diagram above — this course keeps them together and carries that structure into lesson 09']}},
         {type:'practice',title:{th:'ลงมือทำ: State inventory',en:'Practice: state inventory'},steps:{th:['เขียน component ที่คิดว่าจำเป็นก่อนถาม Agent','สำหรับแต่ละ component เขียน states ที่มีผลต่อผู้ใช้','ส่ง Prompt วิจารณ์ให้ Agent','ปรับให้เหลือชุดที่ Human review ได้ง่าย และอธิบายได้ว่าแต่ละ state มาจาก AC ข้อไหน'],en:['Write the components you think are needed before asking the agent','List user-visible states for each component','Send the critique prompt','Trim to a set humans can review easily, and be able to trace each state to an acceptance criterion']},expected:{th:'ได้ component/state map ที่ครอบคลุม Default, Loading, Empty, Error, Data, Validation และ Success เท่าที่เกี่ยวข้อง',en:'A component/state map covering Default, Loading, Empty, Error, Data, Validation, and Success where relevant.'}}
       ],
       quiz:{q:{th:'ชุด Storybook story ที่ชื่อ “Default, DefaultWithPadding, DefaultWide, Default2” เป็นสัญญาณอะไร?',en:'What does a set of Storybook stories like “Default, DefaultWithPadding, DefaultWide, Default2” suggest?'},options:{th:['State design ชัดมาก','อาจกำลังสร้าง Storybook story ตาม implementation detail มากกว่า meaningful user state','ต้องเพิ่มอีก 10 Storybook stories'],en:['Excellent state design','Storybook stories may be tracking implementation details rather than meaningful user states','Add ten more Storybook stories']},answer:1,why:{th:'Storybook story คือ component หนึ่งตัวใน state หนึ่ง ไม่ใช่ user story มันควรสื่อ state/behavior ที่มีความหมายต่อ requirement และ review',en:'A Storybook story is one component in one state — not a user story. It should communicate states/behaviors meaningful to requirements and review.'}},
       wrap:{th:['Component Thinking สำคัญกว่า React syntax สำหรับกลุ่มนี้','State inventory ช่วยจับ requirement ที่ตกหล่น','ไม่ใช่ทุก div ต้องเป็น component หรือ Storybook story'],en:['Component thinking matters more than React syntax for this audience','State inventory catches missing requirements','Not every div needs a component or Storybook story']}
     },
     {
-      id:'storybook', group:'day2', no:'09', duration:'75 min',
+      id:'storybook', group:'day2', no:'09', duration:'105 min',
       title:{th:'Component + Storybook ต้องเกิดคู่กัน',en:'Build Components and Storybook Stories Together'},
       intro:{th:'ใช้ Storybook เป็น review surface ของ Product Component ก่อนประกอบเข้า Page โดยให้ AI เขียน code แต่ Human นิยาม states',en:'Use Storybook as the review surface for product components before page integration. AI writes code; humans define states.'},
-      outcomes:{th:['เข้าใจว่า Storybook story = ตัวอย่าง state ที่ทำซ้ำได้','สั่ง Agent สร้าง Component.tsx + Component.stories.tsx คู่กัน โดยอ้างอิงสี/ฟอนต์/ระยะห่างจาก DESIGN.md','review UI ผ่าน browser โดยไม่ต้องอ่านโค้ดทุกบรรทัด','ใช้ mock data ที่ deterministic ใน Storybook stories'],en:['Understand a Storybook story as a repeatable UI state','Ask the agent to create Component.tsx + Component.stories.tsx together, referencing DESIGN.md for color/type/spacing','Review UI in the browser without reading every line of code','Use deterministic mock data in Storybook stories']},
+      outcomes:{th:['เข้าใจว่า Storybook story = ตัวอย่าง state ที่ทำซ้ำได้','สั่ง Agent สร้าง Component.tsx + Component.stories.tsx คู่กัน โดยอ้างอิงสี/ฟอนต์/ระยะห่างจาก DESIGN.md','review UI ผ่าน browser โดยไม่ต้องอ่านโค้ดทุกบรรทัด','ใช้ mock data ที่ deterministic ใน Storybook stories','วน review loop เดิมกับ component ที่เหลือของ US-001 ทีละตัว ก่อนนำไปประกอบหน้า'],en:['Understand a Storybook story as a repeatable UI state','Ask the agent to create Component.tsx + Component.stories.tsx together, referencing DESIGN.md for color/type/spacing','Review UI in the browser without reading every line of code','Use deterministic mock data in Storybook stories','Repeat the same review loop for each remaining US-001 component, one at a time, before page assembly']},
       blocks:[
         {type:'prose',title:{th:'Storybook คืออะไร และทำไม PM/BA/Designer ควรใช้',en:'What Storybook is, and why PM/BA/Design should use it'},body:{th:[
           'Storybook คือเว็บอีกตัวหนึ่งที่รันคู่กับแอปของเรา แต่แทนที่จะแสดง “หน้าเว็บทั้งหน้า” มันแสดง **component ทีละชิ้นในสถานะที่เรากำหนด** เปิดดูได้เหมือนแคตตาล็อก',
@@ -1229,7 +1229,108 @@ Summarize how you addressed each point.`},
             {title:{th:'บันทึกพร้อมเหตุผลและเลข Issue',en:'Record it with a reason and the issue number'},what:{th:'`-m` ตัวแรกคือบรรทัดหัวเรื่องที่คนเห็นในประวัติ ส่วน `-m` ตัวที่สองกลายเป็นย่อหน้าถัดไป ใช้ใส่เลข Issue ของคุณ (เปลี่ยน `#1` เป็นเลขจริง) โครงสร้างนี้คือสิ่งที่เรียนไว้ในบทที่ 03',en:'The first `-m` is the headline people see in the history; the second becomes the next paragraph, where your issue number goes (replace `#1` with your real number). This is the shape you learned in lesson 03.'},cmd:`git commit -m "feat(us001): add PatientSearch with loading, empty and error states" -m "Refs #1"`,expect:{th:'สรุปจำนวนไฟล์และบรรทัดที่ถูกบันทึก และ `git status` สะอาดขึ้นกว่าเดิม',en:'A summary of files and lines recorded, and a cleaner `git status` than before.'}}
           ],
           outro:{th:'ยังไม่ต้อง push ตอนนี้ commit อยู่ในเครื่องคุณเท่านั้น การส่งขึ้น server จะเกิดครั้งเดียวในบทที่ 15 พร้อมกันทุก commit',en:'Do not push yet. The commit lives on your machine only; sending everything to the server happens once, in lesson 15.'}},
-        {type:'practice',title:{th:'ลงมือทำ: PatientSearch Storybook stories',en:'Practice: PatientSearch Storybook stories'},steps:{th:['ส่ง prompt สร้าง component ให้ Agent','รัน Storybook','เปิด Storybook story ทั้ง 5 state ทีละตัว','จด feedback ในภาษาของ Product ไม่ต้องอธิบายวิธีเขียน code','ส่ง Feedback Prompt แล้ว review ซ้ำจนผ่าน'],en:['Send the component prompt to the agent','Run Storybook','Open all five states one by one','Write product-language feedback without prescribing code','Send the feedback prompt and review again until it passes']},expected:{th:'มี PatientSearch component กับ Storybook stories 5 state ที่เปิดได้แยกกัน และยังไม่ผูกกับ page จริง',en:'A PatientSearch component with five independently viewable Storybook stories, not yet integrated into the real page.'}}
+        {type:'prose',title:{th:'รอบที่สอง: วน loop เดิมกับ component ที่เหลือ',en:'Round two: run the same loop on the remaining components'},body:{th:[
+          'PatientSearch เป็นแค่หนึ่งในสี่ชิ้นของ component map จากบทที่ 08 ถ้าหยุดแค่ตรงนี้ บทที่ 12 จะไม่มี CheckInForm, CheckInPreview และ CheckInSuccess ให้ประกอบ Agent ต้องสร้างสามตัวนี้ขึ้นมาตอนประกอบหน้า ซึ่งเท่ากับข้ามจุดตรวจที่คุ้มค่าที่สุดของวงจรนี้ไป — ถ้าเจอปัญหาทีหลัง คุณจะแยกไม่ออกว่าผิดที่ชิ้นส่วนหรือผิดที่การประกอบ',
+          'ดังนั้นก่อนออกจากบทนี้ ให้วน loop เดิมอีกสามรอบ: สั่งสร้างทีละตัวพร้อม stories → เปิดดูทีละ state → ส่ง feedback เป็นภาษา product → ผ่านแล้วจึงไปตัวถัดไป ทั้งสามตัวยังเป็น component แยกอิสระที่ไม่เรียก service เอง ข้อมูลทั้งหมดเข้ามาทาง prop แล้วหน้า `/opd/check-in` จะเป็นคนส่งข้อมูลเข้าไปในบทที่ 12',
+          'state ที่ต้องมีมาจาก AC7–AC12 โดยตรง ลองเทียบรายการด้านล่างกับ state map ที่คุณร่างไว้ในบทที่ 08 ก่อนส่ง prompt'
+        ],en:[
+          'PatientSearch is only one of the four pieces in the lesson 08 component map. Stop here and lesson 12 has no CheckInForm, CheckInPreview, or CheckInSuccess to assemble — the agent would have to build them during page assembly, skipping the most valuable checkpoint in this loop. If a problem appears later, you could no longer tell whether it lives in a piece or in the assembly.',
+          'So before leaving this lesson, run the same loop three more times: build one component with its stories → open each state → send product-language feedback → move on only once it passes. All three stay isolated and never call a service themselves; every piece of data arrives through props, and the `/opd/check-in` page supplies it in lesson 12.',
+          'The required states come straight from AC7–AC12. Compare the list below with the state map you drafted in lesson 08 before sending the prompt.'
+        ]},points:{th:[
+          '**CheckInForm** — `Default` แสดงผู้ป่วยที่เลือก (HN, ชื่อเต็ม, วันเกิด, เพศ ตาม AC7) และยังไม่ได้เลือก Clinic · `ClinicRequired` เห็นข้อความเตือนเมื่อไปต่อโดยไม่เลือก Clinic (AC8) · `ReturnedFromPreview` Clinic และ Chief Complaint ที่เคยกรอกยังอยู่ครบ (AC11) · การเว้น Chief Complaint ว่าง (AC9) ตรวจผ่าน Actions panel แทนการทำ story แยก',
+          '**CheckInPreview** — `WithChiefComplaint` และ `WithoutChiefComplaint` แสดงผู้ป่วย Clinic และ Chief Complaint เมื่อกรอก (AC10) พร้อมปุ่มย้อนกลับไปแก้ (AC11) และปุ่มยืนยัน',
+          '**CheckInSuccess** — `Success` แสดงหมายเลขคิวสมมติ `A012` พร้อมปุ่มเริ่ม check-in ใหม่ (AC12)'
+        ],en:[
+          '**CheckInForm** — `Default` shows the selected patient (HN, full name, date of birth, gender per AC7) with no Clinic chosen yet · `ClinicRequired` shows the warning after continuing without a Clinic (AC8) · `ReturnedFromPreview` keeps the previously chosen Clinic and Chief Complaint (AC11) · a blank Chief Complaint (AC9) is checked in the Actions panel rather than with its own story',
+          '**CheckInPreview** — `WithChiefComplaint` and `WithoutChiefComplaint` show the patient, the Clinic, and the Chief Complaint when entered (AC10), with a Back-to-edit button (AC11) and a Confirm button',
+          '**CheckInSuccess** — `Success` shows the synthetic queue number `A012` with a button to start a new check-in (AC12)'
+        ]}},
+        {type:'prompt',title:{th:'Prompt: สร้าง component ที่เหลือทีละตัว',en:'Prompt: build the remaining components one at a time'},
+          when:{th:'ใช้หลังจาก PatientSearch ผ่าน review และบันทึก commit checkpoint 1 แล้ว prompt นี้สั่งให้ Agent ทำทีละตัวแล้วหยุดรอ ทุกครั้งที่มันหยุด ให้เปิด Storybook ตรวจตัวนั้นให้จบ แล้วตอบว่า “ผ่าน ไปตัวถัดไป” หรือส่ง feedback ด้วย prompt ส่ง feedback ด้านบน โดยเปลี่ยนชื่อ component ให้ตรงกับตัวที่ตรวจ',en:'Use it after PatientSearch has passed review and commit checkpoint 1 is recorded. This prompt makes the agent build one component and then stop. Each time it stops, finish reviewing that component in Storybook, then reply “approved, next one” or send feedback with the feedback prompt above, swapping in the name of the component you reviewed.'},
+          prompt:{th:`สร้าง component ที่เหลือของ US-001 แบบแยกอิสระ ยังไม่ต้องนำไปใส่ในหน้าจริง
+อ่าน docs/requirements/US-001-opd-checkin.md (AC7–AC12) ก่อนเริ่ม
+
+ทำทีละตัวตามลำดับด้านล่าง แต่ละตัวสร้างไฟล์ component คู่กับไฟล์ .stories.tsx
+เมื่อเสร็จแต่ละตัวให้หยุด บอกชื่อไฟล์ที่สร้างหรือแก้ไข และ token จาก DESIGN.md ที่อ้างอิง แล้วรอฉัน review ใน Storybook
+ห้ามเริ่มตัวถัดไปจนกว่าฉันจะตอบว่า "ผ่าน" — ถ้าฉันส่ง feedback ให้แก้ตัวนั้นให้เสร็จก่อน
+
+1. CheckInForm
+   Story ที่ต้องมี
+   - Default: แสดงผู้ป่วยที่เลือก (HN, ชื่อเต็ม, วันเกิด, เพศ ตาม AC7) และยังไม่ได้เลือก Clinic
+   - ClinicRequired: สถานะหลังกดไปต่อโดยไม่เลือก Clinic — เปิด story แล้วต้องเห็นข้อความเตือนที่ชัดเจนทันที (AC8)
+   - ReturnedFromPreview: Clinic และ Chief Complaint ที่เคยกรอกไว้ยังอยู่ครบ (AC11)
+   Component ต้อง
+   - ให้ Chief Complaint เว้นว่างได้ (AC9)
+   - มี prop สำหรับไปต่อ เช่น onContinue ที่ส่งค่า Clinic และ Chief Complaint ออกมา
+
+2. CheckInPreview
+   Story ที่ต้องมี
+   - WithChiefComplaint และ WithoutChiefComplaint: แสดงผู้ป่วยที่เลือก, Clinic และ Chief Complaint เมื่อกรอก (AC10)
+   Component ต้อง
+   - มีปุ่มย้อนกลับไปแก้ (onBack, AC11) และปุ่มยืนยัน (onConfirm, AC10)
+
+3. CheckInSuccess
+   Story ที่ต้องมี
+   - Success: แสดงหมายเลขคิวสมมติ A012 (AC12)
+   Component ต้อง
+   - มีปุ่มเริ่ม check-in ใหม่ (onStartNew, AC12)
+
+ข้อกำหนด
+- วางไฟล์ไว้ใน src/features/opd-checkin/ ข้าง PatientSearch
+- ทั้งสามตัวรับข้อมูลผ่าน prop เท่านั้น (ผู้ป่วยที่เลือก, รายการ Clinic, ค่าในฟอร์ม, หมายเลขคิว) ห้ามเรียก service เอง ใน story ให้ใช้ผู้ป่วยจาก src/mocks/patients.ts
+- ถ้าโปรเจกต์ยังไม่มีรายการ Clinic สมมติ ให้เพิ่มเป็นค่าตายตัวไฟล์เดียวใน src/mocks/ (เช่น General Medicine ใช้ id gen-med) ห้ามสร้าง service ใหม่
+- อ้างอิงสี ตัวอักษร และระยะห่างจาก DESIGN.md เท่านั้น ถ้าต้องใช้ค่าที่ยังไม่มีใน DESIGN.md ให้หยุดถามก่อน
+- จุดที่ requirement ไม่ได้บอกชัด (เช่น Preview ควรแสดงอะไรเมื่อไม่ได้กรอก Chief Complaint) ให้ถามก่อน ห้ามเดาเอง
+- ห้ามแก้ PatientSearch และ story ของมัน
+- ห้ามนำไป integrate เข้า page ในรอบนี้
+- ห้าม commit และห้าม push`,en:`Create the remaining US-001 components as isolated components. Do not add them to any real page yet.
+Read docs/requirements/US-001-opd-checkin.md (AC7–AC12) before starting.
+
+Build them one at a time, in the order below, each as a component file paired with its .stories.tsx file.
+After each one, stop: list the files you created or changed and the DESIGN.md tokens you referenced, then wait for my review in Storybook.
+Do not start the next component until I reply "approved" — if I send feedback, finish fixing that component first.
+
+1. CheckInForm
+   Required stories:
+   - Default: shows the selected patient (HN, full name, date of birth, gender per AC7) with no Clinic chosen yet
+   - ClinicRequired: the state after continuing without a Clinic — opening the story must show a clear warning immediately (AC8)
+   - ReturnedFromPreview: the previously chosen Clinic and entered Chief Complaint are still in place (AC11)
+   The component must:
+   - Allow Chief Complaint to be left blank (AC9)
+   - Accept a prop for continuing, such as onContinue, that passes out the Clinic and Chief Complaint
+
+2. CheckInPreview
+   Required stories:
+   - WithChiefComplaint and WithoutChiefComplaint: show the selected patient, the Clinic, and the Chief Complaint when entered (AC10)
+   The component must:
+   - Have a button to go back and edit (onBack, AC11) and a Confirm button (onConfirm, AC10)
+
+3. CheckInSuccess
+   Required stories:
+   - Success: shows the synthetic queue number A012 (AC12)
+   The component must:
+   - Have a button to start a new check-in (onStartNew, AC12)
+
+Constraints:
+- Put the files in src/features/opd-checkin/ next to PatientSearch
+- All three receive data through props only (selected patient, Clinic list, form values, queue number) and never call a service themselves; stories use patients from src/mocks/patients.ts
+- If the project has no synthetic Clinic list yet, add one fixed list in a single file under src/mocks/ (for example General Medicine with id gen-med); do not create a new service
+- Reference colors, type, and spacing from DESIGN.md only; if you need a value DESIGN.md does not have yet, stop and ask
+- Where the requirement is unclear (for example what Preview shows when no Chief Complaint was entered), ask first — do not guess
+- Do not modify PatientSearch or its stories
+- Do not integrate anything into the page in this round
+- Do not commit and do not push`},
+          after:{th:['ตรวจทีละตัวตอนที่ Agent หยุด อย่ารอให้ครบสามตัวแล้วดูรวดเดียว — ถ้ามันสร้างต่อโดยไม่หยุดรอ ให้ตีกลับ','CheckInForm: เปิด story ClinicRequired แล้วอ่านว่าข้อความเตือนบอกชัดไหมว่าต้องทำอะไร จากนั้นใน story Default เลือก Clinic โดยเว้น Chief Complaint ว่างไว้แล้วกดไปต่อ ดูใน Actions panel ว่า `onContinue` ถูกเรียก (AC9)','CheckInPreview: เทียบ story WithChiefComplaint กับ WithoutChiefComplaint แล้วกดปุ่มย้อนกลับและยืนยัน ดูใน Actions panel ว่า `onBack` และ `onConfirm` ถูกเรียก','CheckInSuccess: หมายเลขคิวต้องเป็น `A012` ตาม requirement ไม่ใช่เลขที่ Agent คิดขึ้นเอง','กด Tab ไล่ทุกช่องและทุกปุ่มในทั้งสามตัว focus ต้องมองเห็นได้ชัด (AC13)','ตรวจ `git status` ว่าไฟล์ mock ใหม่มีได้แค่รายการ Clinic ไฟล์เดียว และ PatientSearch ไม่ถูกแตะ'],en:['Review each component when the agent stops — do not wait for all three and review them in one sitting. If it carries on without stopping, send it back','CheckInForm: open the ClinicRequired story and check the warning says clearly what to do; then in the Default story choose a Clinic, leave Chief Complaint blank, continue, and confirm in the Actions panel that `onContinue` fires (AC9)','CheckInPreview: compare the WithChiefComplaint and WithoutChiefComplaint stories, then press Back and Confirm and check the Actions panel shows `onBack` and `onConfirm`','CheckInSuccess: the queue number must be `A012` from the requirement, not a number the agent made up','Tab through every field and button in all three; focus must be clearly visible (AC13)','Check `git status`: the only new mock file allowed is the Clinic list, and PatientSearch is untouched']}},
+        {type:'commands',title:{th:'Commit checkpoint 1b · component ที่เหลือที่ผ่าน review',en:'Commit checkpoint 1b · the remaining reviewed components'},
+          lead:{th:'สามคำสั่งนี้ **คุณเป็นคนรันเอง** ไม่ใช่ Agent และรันจากในโฟลเดอร์ worktree `wt-us001-patient-checkin` เหมือน checkpoint 1 ทำหลังจาก CheckInForm, CheckInPreview และ CheckInSuccess ผ่าน review ใน Storybook ครบทั้งสามตัวแล้วเท่านั้น ถ้ายังมีตัวไหนค้างอยู่ อย่าเพิ่ง commit',en:'You run these three yourself — not the agent — from inside the `wt-us001-patient-checkin` worktree, as in checkpoint 1. Only once CheckInForm, CheckInPreview, and CheckInSuccess have all passed review in Storybook — if any of them is still open, do not commit yet.'},
+          steps:[
+            {title:{th:'ดูว่ามีอะไรเปลี่ยนไปบ้าง และอยู่ branch ถูกหรือเปล่า',en:'See what changed, and confirm the branch'},what:{th:'บรรทัดแรกต้องเป็น `On branch feature/1-us001-patient-checkin` จากนั้นอ่านรายชื่อไฟล์ ควรเห็นไฟล์ของสาม component พร้อม stories และอาจมีไฟล์รายการ Clinic ใหม่ใน `src/mocks` หนึ่งไฟล์ ถ้าเห็นไฟล์ของ PatientSearch เปลี่ยนด้วย ให้ถาม Agent ก่อนว่าเพราะอะไร',en:'The first line must read `On branch feature/1-us001-patient-checkin`. Then read the file list: you should see the three components with their stories, and possibly one new Clinic list file under `src/mocks`. If PatientSearch files changed too, ask the agent why before going on.'},cmd:`git status`,expect:{th:'ชื่อ branch ถูกต้อง และทุกไฟล์ในรายการอธิบายได้',en:'The right branch name, and every file in the list is one you can explain.'}},
+            {title:{th:'เลือกเฉพาะไฟล์ของงานนี้',en:'Stage only this task’s files'},what:{th:'ระบุสอง path ตรง ๆ คือโฟลเดอร์ component และโฟลเดอร์ mock ที่เก็บรายการ Clinic ถ้า Agent ไม่ได้เพิ่มอะไรใน `src/mocks` คำสั่งนี้ก็ยังใช้ได้ เพราะ Git จะไม่เพิ่มอะไรจาก path ที่ไม่มีการเปลี่ยนแปลง',en:'Name the two paths directly: the component folder and the mock folder holding the Clinic list. If the agent added nothing under `src/mocks`, the command still works — Git stages nothing from a path with no changes.'},cmd:`git add src/features/opd-checkin src/mocks`,expect:{th:'`git status` แสดงไฟล์ของสาม component และ stories อยู่ใต้ `Changes to be committed`',en:'`git status` lists the three components and their stories under `Changes to be committed`.'}},
+            {title:{th:'บันทึกพร้อมเหตุผลและเลข Issue',en:'Record it with a reason and the issue number'},what:{th:'ยังเป็น `feat` เพราะรอบนี้เพิ่มชิ้นส่วนที่ผู้ใช้จะเห็น และยังอ้างถึง Issue เดิม (เปลี่ยน `#1` เป็นเลขจริงของคุณ)',en:'Still `feat`, because this round adds pieces the user will see, and it still references the same issue (replace `#1` with your real number).'},cmd:`git commit -m "feat(us001): add check-in form, preview and success components" -m "Refs #1"`,expect:{th:'สรุปจำนวนไฟล์และบรรทัดที่ถูกบันทึก และ `git status` สะอาดขึ้นกว่าเดิม',en:'A summary of files and lines recorded, and a cleaner `git status` than before.'}}
+          ],
+          outro:{th:'ตอนนี้ component ทั้งสี่ตัวใน diagram ของบทที่ 08 มีครบและผ่าน review แล้ว บทที่ 12 จึงเหลือแค่งานประกอบจริง ๆ ไม่ใช่งานสร้างชิ้นส่วนใหม่',en:'All four components from the lesson 08 diagram now exist and have passed review, so lesson 12 is purely assembly — not building new pieces.'}},
+        {type:'practice',title:{th:'ลงมือทำ: component ทั้งสี่ตัวพร้อม Storybook stories',en:'Practice: all four components with Storybook stories'},steps:{th:['ส่ง prompt สร้าง PatientSearch ให้ Agent','รัน Storybook','เปิด Storybook story ทั้ง 5 state ทีละตัว','จด feedback ในภาษาของ Product ไม่ต้องอธิบายวิธีเขียน code','ส่ง Feedback Prompt แล้ว review ซ้ำจนผ่าน แล้วบันทึก commit checkpoint 1','ส่ง prompt สร้าง component ที่เหลือ แล้ว review CheckInForm, CheckInPreview และ CheckInSuccess ทีละตัวทุกครั้งที่ Agent หยุดรอ','บันทึก commit checkpoint 1b เมื่อทั้งสามตัวผ่านแล้ว'],en:['Send the PatientSearch prompt to the agent','Run Storybook','Open all five states one by one','Write product-language feedback without prescribing code','Send the feedback prompt, review again until it passes, then record commit checkpoint 1','Send the remaining-components prompt and review CheckInForm, CheckInPreview, and CheckInSuccess one at a time whenever the agent stops','Record commit checkpoint 1b once all three pass']},expected:{th:'มี PatientSearch, CheckInForm, CheckInPreview และ CheckInSuccess พร้อม Storybook stories ที่คุณเปิดตรวจครบทุก state แล้ว ทั้งหมดยังไม่ผูกกับ page จริง และมี commit checkpoint 1 กับ 1b อยู่ในประวัติ',en:'PatientSearch, CheckInForm, CheckInPreview, and CheckInSuccess, each with Storybook stories you have opened and checked state by state — none integrated into the real page yet — with commit checkpoints 1 and 1b in the history.'}}
       ],
       quiz:{q:{th:'ใครควรเป็นเจ้าของการนิยาม “ต้องมี Storybook story อะไรบ้าง”?',en:'Who should own the decision about which Storybook stories matter?'},options:{th:['AI อย่างเดียว','Human จาก requirement/state แล้วให้ AI implement','Storybook CLI'],en:['AI alone','Humans derive them from requirements/states, then AI implements','Storybook CLI']},answer:1,why:{th:'AI ช่วยเสนอได้ แต่ state ที่ต้องครอบคลุมเป็น product decision',en:'AI can suggest, but required state coverage is a product decision.'}},
       wrap:{th:['Storybook คือพื้นที่ review ไม่ใช่แค่เอกสารของ Dev','Component และ Storybook story เดินคู่กัน','Human ระบุ state; AI รับผิดชอบ implementation'],en:['Storybook is a review surface, not just dev documentation','Components and Storybook stories move together','Humans define states; AI handles implementation']}
@@ -1307,7 +1408,7 @@ Definition of Done:
             {title:{th:'เลือกเฉพาะไฟล์ของงานนี้',en:'Stage only this task’s files'},what:{th:'ไฟล์ test อยู่ข้าง ๆ component เดียวกัน การ add ทั้งโฟลเดอร์จึงพอ แต่ให้ดู `git status` ก่อนเสมอว่าไม่มีไฟล์แปลกปลอมปนอยู่ในโฟลเดอร์นั้น',en:'The test file sits next to its component, so staging the folder is enough — but always read `git status` first to be sure nothing foreign snuck into it.'},cmd:`git add src/features/opd-checkin`,expect:{th:'`git status` แสดงไฟล์ test และไฟล์ที่เกี่ยวข้องอยู่ใต้ `Changes to be committed`',en:'`git status` lists the test and its related files under `Changes to be committed`.'}},
             {title:{th:'บันทึกพร้อมเหตุผลและเลข Issue',en:'Record it with a reason and the issue number'},what:{th:'ใช้ `test` ไม่ใช่ `feat` เพราะงานรอบนี้ไม่ได้เพิ่มสิ่งที่ผู้ใช้มองเห็น แต่เพิ่มหลักฐานว่าพฤติกรรมเดิมยังถูกต้อง การแยกชนิดแบบนี้ทำให้อ่านประวัติแล้วรู้ว่ารอบไหนเพิ่มของ รอบไหนเพิ่มความมั่นใจ',en:'Use `test`, not `feat`: this round adds no user-visible thing, it adds evidence that the behaviour still holds. Separating the types lets anyone read the history and see which rounds added features and which added confidence.'},cmd:`git commit -m "test(us001): cover patient search happy path with an interaction test" -m "Refs #1"`,expect:{th:'สรุปจำนวนไฟล์และบรรทัดที่ถูกบันทึก และ `git status` สะอาดขึ้นกว่าเดิม',en:'A summary of files and lines recorded, and a cleaner `git status` than before.'}}
           ],
-          outro:{th:'ตอนนี้ประวัติของ branch คุณเริ่มเล่าเรื่องได้แล้ว ลอง `git log --oneline` ดู จะเห็นสองบรรทัดที่บอกได้ว่าทำอะไรไปบ้างโดยไม่ต้องเปิดโค้ด',en:'Your branch history now tells a coherent narrative. Run `git log --oneline` and you get two lines that explain the work without opening any code.'}},
+          outro:{th:'ตอนนี้ประวัติของ branch คุณเริ่มเล่าเรื่องได้แล้ว ลอง `git log --oneline` ดู จะเห็นสามบรรทัดที่บอกได้ว่าทำอะไรไปบ้างโดยไม่ต้องเปิดโค้ด',en:'Your branch history now tells a coherent narrative. Run `git log --oneline` and you get three lines that explain the work without opening any code.'}},
         {type:'practice',title:{th:'ลงมือทำ: AC coverage matrix',en:'Practice: AC coverage matrix'},steps:{th:['เปิด requirement US-001','แยก AC ออกเป็นสองกอง: สถานะ กับ พฤติกรรม','จับคู่ AC ที่เป็นสถานะกับ Storybook story ที่มีอยู่ และหาว่าข้อไหนยังไม่มี Storybook story','เลือก 1 behavior flow แล้วเขียน Given/When/Then','ส่ง Prompt ให้ Agent implement แล้วเปิดดูใน Storybook ทีละขั้น'],en:['Open requirement US-001','Sort the ACs into two piles: states and behaviours','Match state ACs to existing Storybook stories and find which have none','Choose one behaviour flow and write Given/When/Then','Send the prompt, then watch it run step by step in Storybook']},expected:{th:'มีหลักฐานชัดว่า AC สำคัญถูก represent ด้วย Storybook story หรือ interaction และผู้เรียนอธิบาย coverage ได้',en:'There is clear evidence that key ACs are represented by Storybook stories or interactions, and you can explain the coverage.'}}
       ],
       quiz:{q:{th:'Given/When/Then มีประโยชน์หลักกับกลุ่มนี้เพราะอะไร?',en:'Why is Given/When/Then especially useful for this audience?'},options:{th:['ทำให้ไม่ต้องมี requirement','เป็นภาษากลางระหว่าง business behavior กับ test implementation','ทำให้ Git เร็วขึ้น'],en:['It eliminates requirements','It is a shared language between business behavior and test implementation','It makes Git faster']},answer:1,why:{th:'BA/PM สามารถนิยาม behavior โดยไม่ต้องรู้ test syntax แล้วให้ Agent แปลงเป็น implementation',en:'PM/BA can define behavior without test syntax, then let the agent implement it.'}},
@@ -1417,7 +1518,7 @@ Propose a plan first. Wait for my approval before implementing.`},
           diagram:`flowchart TD\nA[Search HN / Name] --> B{Result}\nB -->|loading| L[Loading]\nB -->|empty| E[Empty]\nB -->|error| X[Error]\nB -->|found| R[Select Patient]\nR --> F[Choose Clinic + Chief Complaint]\nF --> V{Valid?}\nV -->|No| VE[Validation message]\nV -->|Yes| P[Preview]\nP --> C[Confirm]\nC --> S[Check-in Success + Queue No.]`,
           notes:{th:['กล่องสี่เหลี่ยมขนมเปียกปูนคือจุดตัดสินใจ ซึ่งเป็นจุดที่มักมี bug มากที่สุด','เส้นทางจาก B ไป Empty/Error ต้องทดสอบด้วย mock scenario ไม่ใช่รอให้เกิดเอง','Preview ก่อน Confirm มีไว้เพื่อให้ผู้ใช้ย้อนกลับไปแก้ได้ — ต้องทดสอบการย้อนกลับด้วย','ทดสอบด้วยว่าเมื่อจบ flow แล้วเริ่มใหม่ ข้อมูลเก่าไม่ค้าง'],en:['Diamonds are decision points, and decision points hold most of the bugs','The paths from B to Empty/Error must be forced with mock scenarios rather than waited for','Preview before Confirm exists so users can go back and edit — test going back','Also test that starting over after a completed flow leaves no stale data']}},
         {type:'prompt',title:{th:'Prompt: ประกอบ component เข้าเป็นหน้าจริง',en:'Prompt: assemble the components into the real page'},
-          when:{th:'ใช้เมื่อ component ทุกตัวที่เกี่ยวข้องผ่าน Storybook review แล้วเท่านั้น แนบภาพ `docs/design/opd-check-in-reference.png` เข้าไปกับ prompt นี้ด้วย — ภาพนี้ใช้บอกแค่ layout ไม่ใช่พฤติกรรม และย้ำว่าให้ใช้ของเดิมที่ตรวจแล้ว ไม่ใช่สร้างใหม่ทับ',en:'Use it only after every relevant component has passed Storybook review. Attach the image `docs/design/opd-check-in-reference.png` along with this prompt — it only describes layout, not behavior. The key point is to insist on reusing what was reviewed rather than rebuilding on top of it.'},
+          when:{th:'ใช้เมื่อ component ทั้งสี่ตัว — PatientSearch, CheckInForm, CheckInPreview และ CheckInSuccess — ผ่าน Storybook review และอยู่ใน commit checkpoint 1 กับ 1b แล้วเท่านั้น ถ้ายังขาดตัวไหน ให้ย้อนกลับไปทำรอบที่สองในบทที่ 09 ก่อน แนบภาพ `docs/design/opd-check-in-reference.png` เข้าไปกับ prompt นี้ด้วย — ภาพนี้ใช้บอกแค่ layout ไม่ใช่พฤติกรรม และย้ำว่าให้ใช้ของเดิมที่ตรวจแล้ว ไม่ใช่สร้างใหม่ทับ',en:'Use it only once all four components — PatientSearch, CheckInForm, CheckInPreview, and CheckInSuccess — have passed Storybook review and are in commit checkpoints 1 and 1b. If any is missing, go back to round two of lesson 09 first. Attach the image `docs/design/opd-check-in-reference.png` along with this prompt — it only describes layout, not behavior. The key point is to insist on reusing what was reviewed rather than rebuilding on top of it.'},
           prompt:{th:`อ่านภาพ docs/design/opd-check-in-reference.png ที่แนบมา ใช้เฉพาะสำหรับ "การจัดวางหน้า"
 (layout 2 คอลัมน์, ระยะห่างระหว่างการ์ด, โครงหัวเรื่องหน้า) เท่านั้น
 ไม่ใช่แหล่งอ้างอิงพฤติกรรม — พฤติกรรมให้ยึดตาม requirement
@@ -1425,7 +1526,8 @@ Propose a plan first. Wait for my approval before implementing.`},
 นำ component ที่ผ่านการ review แล้วมาประกอบเป็นหน้า /opd/check-in
 
 ข้อกำหนดด้านการทำงาน
-- ต้องใช้ component และ mock service ที่มีอยู่แล้ว ห้ามสร้างใหม่ซ้ำซ้อน
+- ต้องใช้ PatientSearch, CheckInForm, CheckInPreview, CheckInSuccess และ mock service ที่มีอยู่แล้ว
+  ห้ามสร้าง component ใหม่ซ้ำซ้อน — ถ้าพบว่าขาด component ที่จำเป็น ให้หยุดและรายงานก่อน
 - สถานะที่ review ไว้ใน Storybook ต้องยังทำงานเหมือนเดิม
 - ต้องเลือก Clinic ก่อนจึงจะ check-in ได้
 - Chief Complaint กรอกหรือไม่กรอกก็ได้
@@ -1451,7 +1553,8 @@ structure) — it is not a source of behavior; behavior follows the requirement.
 Assemble the reviewed components into the /opd/check-in page.
 
 Behaviour requirements:
-- Reuse the existing components and mock service; do not create duplicates
+- Reuse PatientSearch, CheckInForm, CheckInPreview, CheckInSuccess, and the existing mock service;
+  do not create duplicate components — if a component you need is missing, stop and report it first
 - Every state reviewed in Storybook must still work
 - A clinic must be selected before check-in is allowed
 - Chief Complaint is optional
@@ -1487,7 +1590,7 @@ When finished:
           lead:{th:'สามคำสั่งนี้ **คุณเป็นคนรันเอง** ไม่ใช่ Agent (prompt ทุกอันในคอร์สห้าม Agent commit) และรันจากในโฟลเดอร์ worktree `wt-us001-patient-checkin` ทำหลังจากเดินครบทั้ง 6 รอบในหัวข้อก่อนหน้าแล้ว และ Storybook เดิมยังไม่พัง',en:'You run these three yourself — not the agent (every prompt in this course forbids the agent from committing) — from inside the `wt-us001-patient-checkin` worktree, after all six rounds above pass and the existing Storybook stories still work.'},
           steps:[
             {title:{th:'ดูว่ามีอะไรเปลี่ยนไปบ้าง และอยู่ branch ถูกหรือเปล่า',en:'See what changed, and confirm the branch'},what:{th:'บรรทัดแรกต้องเป็น `On branch feature/1-us001-patient-checkin` ถ้าไม่ใช่ ให้หยุดแล้วย้อนไปดูบทที่ 04 ก่อน จากนั้นอ่านรายชื่อไฟล์ว่าตรงกับงานที่เพิ่ง review หรือไม่',en:'The first line must read `On branch feature/1-us001-patient-checkin`. If not, stop and revisit lesson 04. Then read the file list and check it matches the work you just reviewed.'},cmd:`git status`,expect:{th:'ชื่อ branch ถูกต้อง และรายชื่อไฟล์ไม่มีอะไรที่คุณอธิบายไม่ได้',en:'The right branch name, and no file you cannot explain.'}},
-            {title:{th:'เลือกเฉพาะไฟล์ของงานนี้',en:'Stage only this task’s files'},what:{th:'รอบนี้มีสองที่ที่เปลี่ยน คือหน้าเว็บที่ `src/app/opd/check-in` และ component ที่ถูกปรับระหว่างประกอบ ระบุทั้งสอง path แล้วอ่าน `git status` ซ้ำ ถ้ามีไฟล์นอกสองที่นี้โผล่มา ให้ถาม Agent ก่อนว่าจำเป็นเพราะอะไร',en:'Two places changed this round: the page at `src/app/opd/check-in` and the components adjusted during assembly. Name both paths, then re-read `git status` — if anything outside them appears, ask the agent why it was necessary before staging it.'},cmd:`git add src/app/opd/check-in src/features`,expect:{th:'เห็นทั้งไฟล์หน้าเว็บและ component อยู่ใต้ `Changes to be committed`',en:'Both the page file and the components appear under `Changes to be committed`.'}},
+            {title:{th:'เลือกเฉพาะไฟล์ของงานนี้',en:'Stage only this task’s files'},what:{th:'รอบนี้มีสองที่ที่เปลี่ยน คือหน้าเว็บที่ `src/app/opd/check-in` เป็นหลัก และการปรับเล็กน้อยใน `src/features` ตอนต่อ component เข้าด้วยกัน เช่น เพิ่ม prop ระบุทั้งสอง path แล้วอ่าน `git status` ซ้ำ ถ้าเห็นไฟล์ component ใหม่ทั้งไฟล์ แปลว่ามีชิ้นที่ข้ามรอบ review ในบทที่ 09 และถ้ามีไฟล์นอกสองที่นี้โผล่มา ให้ถาม Agent ก่อนว่าจำเป็นเพราะอะไร',en:'Two places changed this round: mainly the page at `src/app/opd/check-in`, plus small wiring adjustments under `src/features` such as an added prop. Name both paths, then re-read `git status` — a brand-new component file means a piece skipped the lesson 09 review round, and if anything outside these two places appears, ask the agent why it was necessary before staging it.'},cmd:`git add src/app/opd/check-in src/features`,expect:{th:'เห็นทั้งไฟล์หน้าเว็บและ component อยู่ใต้ `Changes to be committed`',en:'Both the page file and the components appear under `Changes to be committed`.'}},
             {title:{th:'บันทึกพร้อมเหตุผลและเลข Issue',en:'Record it with a reason and the issue number'},what:{th:'ย่อหน้าที่สองคือที่ที่ใส่ **หลักฐาน** ว่าคุณเดินอะไรมาบ้าง ประโยคนี้จะถูกนำไปใช้ซ้ำตอนเขียน Merge Request ในบทที่ 15 ดังนั้นเขียนตอนที่ยังจำได้จะง่ายกว่ามาก',en:'The second paragraph is where the **evidence** goes — what you actually walked. You will reuse this sentence when writing the Merge Request in lesson 15, and writing it while you still remember is far easier.'},cmd:`git commit -m "feat(us001): assemble OPD check-in page from reviewed components" -m "Walked happy path, missing clinic, empty, error, restart and same-patient restart. Refs #1"`,expect:{th:'สรุปจำนวนไฟล์และบรรทัดที่ถูกบันทึก และ `git status` สะอาดขึ้นกว่าเดิม',en:'A summary of files and lines recorded, and a cleaner `git status` than before.'}}
           ],
           outro:{th:'ถ้าหลังจากนี้ integration พังระหว่าง debug คุณมีจุดถอยกลับที่ “หน้าเว็บเคยเดินได้” แล้ว',en:'If integration breaks later while debugging, you now have a fallback point where the page demonstrably worked.'}},

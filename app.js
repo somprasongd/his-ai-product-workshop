@@ -19,7 +19,7 @@
     th: {
       start: 'เริ่มเรียน', continue: 'เรียนต่อจากที่ค้าง', curriculum: 'ดูหลักสูตร',
       duration: 'ระยะเวลา', audience: 'กลุ่มผู้เรียน', format: 'รูปแบบ',
-      audienceValue: 'PM · BA · Product Design', formatValue: '3 วัน + Capstone · Hands-on', durationValue: '≈ 20 ชั่วโมง',
+      audienceValue: 'PM · BA · Product Design', formatValue: '3 วัน + Capstone · Hands-on', durationValue: '≈ 20.5 ชั่วโมง',
       progress: 'ความคืบหน้า', complete: 'เรียนจบบทนี้', completed: 'เรียนจบแล้ว',
       next: 'บทถัดไป', previous: 'บทก่อนหน้า', copy: 'คัดลอก', copied: 'คัดลอกแล้ว',
       shareLink: 'แชร์บทเรียนนี้', linkCopied: 'คัดลอกลิงก์แล้ว',
@@ -60,7 +60,7 @@
     en: {
       start: 'Start learning', continue: 'Continue where you left off', curriculum: 'View curriculum',
       duration: 'Duration', audience: 'Audience', format: 'Format',
-      audienceValue: 'PM · BA · Product Design', formatValue: '3 days + Capstone · Hands-on', durationValue: '≈ 20 hours',
+      audienceValue: 'PM · BA · Product Design', formatValue: '3 days + Capstone · Hands-on', durationValue: '≈ 20.5 hours',
       progress: 'Progress', complete: 'Mark lesson complete', completed: 'Completed',
       next: 'Next lesson', previous: 'Previous lesson', copy: 'Copy', copied: 'Copied',
       shareLink: 'Share this lesson', linkCopied: 'Link copied',

@@ -64,7 +64,7 @@ Commit คือจุดบันทึกที่เราตรวจแล�
 
 ## สไลด์ 11 · บท 08: Component & State
 
-“หน้า check-in หนึ่งหน้าใหญ่เกินไปสำหรับการ review รอบเดียว ลองแตกเป็น PatientSearch, ผลการค้นหา, ฟอร์ม, หน้า preview และ success แต่ละส่วนควรมี state ที่ผู้ใช้เห็นจริง เช่น default, loading, empty, results และ error
+“หน้า check-in หนึ่งหน้าใหญ่เกินไปสำหรับการ review รอบเดียว ลองแตกเป็น PatientSearch (รวมรายการผลการค้นหาไว้ในตัวเดียว เพราะผลลัพธ์เปลี่ยนตาม state ของการค้นหา), CheckInForm, CheckInPreview และ CheckInSuccess แต่ละส่วนควรมี state ที่ผู้ใช้เห็นจริง เช่น default, loading, empty, results และ error
 
 เริ่มด้วยการเขียนรายการของตัวเองก่อน แล้วค่อยให้ Agent วิจารณ์ช่องว่างที่อาจพลาด ทุก state ควรโยงกลับไปหา AC ได้ ถ้าไม่มีเกณฑ์หรือผลต่อผู้ใช้ ก็ไม่ต้องสร้าง story เพิ่มเพื่อให้จำนวนดูเยอะ PM และ BA จะตรวจ business rule ส่วน Product Design จะตรวจข้อความ การมองเห็น focus และจอแคบ ผลลัพธ์ของบทนี้คือแผน component/state ที่คนอ่านและตรวจได้”
 
@@ -72,7 +72,9 @@ Commit คือจุดบันทึกที่เราตรวจแล�
 
 “Storybook เป็นหน้าเว็บอีกชุดสำหรับเปิด component ทีละ state โดยไม่ต้องทำให้ระบบจริงเกิดเหตุการณ์นั้นก่อน เราจะเริ่มจาก PatientSearch ให้ Agent สร้าง component พร้อม stories แล้วเปิดดู Default, Loading, Empty, WithResults และ Error ด้วยตาของเรา
 
-เวลาส่ง feedback ให้พูดเป็นภาษาผลิตภัณฑ์ เช่น ‘ข้อความ Empty ยังไม่บอกว่าควรทำอะไรต่อ’ หรือ ‘ชื่อยาวทำให้ปุ่มหายบนจอแคบ’ ไม่ต้องสั่งว่าจะเขียน CSS บรรทัดไหน ตรวจ keyboard และ focus ด้วย เมื่อ stories ผ่านการ review แล้วจึงบันทึก commit checkpoint แรกพร้อม `DESIGN.md` และหน้า `/design` ที่ตรวจแล้ว”
+เวลาส่ง feedback ให้พูดเป็นภาษาผลิตภัณฑ์ เช่น ‘ข้อความ Empty ยังไม่บอกว่าควรทำอะไรต่อ’ หรือ ‘ชื่อยาวทำให้ปุ่มหายบนจอแคบ’ ไม่ต้องสั่งว่าจะเขียน CSS บรรทัดไหน ตรวจ keyboard และ focus ด้วย เมื่อ stories ผ่านการ review แล้วจึงบันทึก commit checkpoint แรกพร้อม `DESIGN.md` และหน้า `/design` ที่ตรวจแล้ว
+
+จากนั้นวน loop เดิมกับ CheckInForm, CheckInPreview และ CheckInSuccess ทีละตัว ให้ Agent หยุดรอหลังเสร็จแต่ละตัว เราเปิดตรวจให้จบก่อนค่อยให้ทำตัวถัดไป แล้วบันทึก checkpoint 1b ก่อนออกจากบทนี้ บทที่ 12 จะประกอบเฉพาะชิ้นที่ผ่าน review แล้วเท่านั้น”
 
 ## สไลด์ 13 · บท 10: Acceptance & Interaction
 
