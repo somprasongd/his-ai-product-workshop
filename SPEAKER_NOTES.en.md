@@ -30,7 +30,7 @@ The agent can move quickly, but it cannot decide what the requirement means on o
 
 “US-001 is the source requirement. The agent needs an issue that someone can act on. Open the requirement document in the starter, read all its acceptance criteria, then write an issue with context, in-scope and out-of-scope work, and a clear Definition of Done. The work should fit on one branch.
 
-We separate two kinds of acceptance criteria. A **state** criterion describes something visible, such as Loading or Empty; review it in Storybook. A **behavior** criterion describes an action and response, such as confirming without a clinic and seeing validation; check it with an interaction test or the running page. Use fixed mock values so others can repeat the check. Before filing the issue, ask whether each criterion has a clear pass or fail. Record the issue number; it must appear again in the branch, commit footer, and MR.”
+We sort acceptance criteria into three groups. A **state** criterion describes something visible, such as Loading or Empty; review it in Storybook. A **behavior** criterion describes an action and response, such as continuing without a clinic and seeing validation; check it with an interaction test or the running page. A **quality** criterion, such as keyboard use or a narrow mobile screen, is checked by a person walking the real flow. Use fixed mock values so others can repeat the check. Before filing the issue, ask whether each criterion has a clear pass or fail. Record the issue number; it must appear again in the branch, commit footer, and MR.”
 
 ## Slide 06 · Lesson 03: Git Basics
 

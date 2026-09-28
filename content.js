@@ -233,35 +233,69 @@ Cite real file names for every point.`},
       id:'requirement-issue', group:'day1', no:'02', duration:'45 min',
       title:{th:'จาก Requirement สู่ Issue ที่ AI ทำงานต่อได้',en:'From Requirement to an Agent-Ready Issue'},
       intro:{th:'ก่อนจะเปิด branch หรือสั่ง Agent ต้องมี Issue หนึ่งใบที่บอกได้ว่างานนี้คืออะไร แค่ไหนถึงพอ และจะรู้ได้อย่างไรว่าเสร็จ',en:'Before any branch or any agent, one issue must say what the work is, where it stops, and how you will know it is done.'},
-      outcomes:{th:['แยกให้ออกระหว่าง Requirement, Issue และ Acceptance Criteria','เขียน Issue ที่มี Context, In/Out of scope, AC และ Definition of Done','เขียน AC สองแบบ คือ AC ที่เป็นสถานะ และ AC ที่เป็นพฤติกรรม','ตัดงานที่ใหญ่เกินให้เหลือขนาดที่ 1 branch จบได้'],en:['Tell requirement, issue, and acceptance criteria apart','Write an issue with context, in/out of scope, ACs, and a definition of done','Write both kinds of AC: state ACs and behaviour ACs','Cut oversized work down to something one branch can finish']},
+      outcomes:{th:['แยกให้ออกระหว่าง Requirement, Issue และ Acceptance Criteria','เขียน Issue ที่มี Context, In/Out of scope, AC และ Definition of Done','จัด AC เป็นสามกลุ่ม คือ สถานะ (state), พฤติกรรม (behaviour) และ quality','ตัดงานที่ใหญ่เกินให้เหลือขนาดที่ 1 branch จบได้'],en:['Tell requirement, issue, and acceptance criteria apart','Write an issue with context, in/out of scope, ACs, and a definition of done','Group ACs three ways: state, behaviour, and quality','Cut oversized work down to something one branch can finish']},
       blocks:[
-        {type:'prose',title:{th:'กล่องเดียวใน “เส้นทางของงาน” ที่ AI ทำแทนคุณไม่ได้',en:'The one box in the work journey the AI cannot fill for you'},body:{th:[
-          'ภาพ **เส้นทางของงาน** ในบทที่ 01 วาดการเดินทางของงานทั้งเส้น กล่องแรกสุดคือ **Requirement → Issue** และนี่คือกล่องเดียวในภาพนั้นที่เป็นการตัดสินใจว่า “อะไรคือสิ่งที่ถูกต้อง” ไม่ใช่ “ทำอย่างไร” — ซึ่งเป็นงานของคุณ ไม่ใช่ของ Agent',
+        {type:'prose',title:{th:'จุดเริ่มของ “เส้นทางของงาน” ที่ AI ทำแทนคุณไม่ได้',en:'The start of the work journey the AI cannot do for you'},body:{th:[
+          'ภาพ **เส้นทางของงาน** ในบทที่ 01 เริ่มที่ **Requirement → Issue + AC** ช่วงนี้ต่างจากกล่องอื่นทั้งหมด เพราะเป็นจุดเดียวที่ *กำหนด* ว่า “อะไรคือสิ่งที่ถูกต้อง” ไม่ใช่ “ทำอย่างไร” ส่วนกล่องหกเหลี่ยมถัด ๆ ไปเป็นการตรวจเทียบกับสิ่งที่ Issue กำหนดไว้ — การกำหนดนี้จึงเป็นงานของคุณ ไม่ใช่ของ Agent',
           'Requirement เขียนไว้ให้คนอ่านแล้วเข้าใจภาพรวม ส่วน Issue เขียนไว้ให้คนลงมือทำได้ทันที ความต่างอยู่ตรงที่ Issue ต้องตอบสามคำถามให้ครบ คือ **ทำอะไร**, **แค่ไหนถึงพอ** และ **จะรู้ได้อย่างไรว่าเสร็จ**',
-          'เมื่อผู้ลงมือคือ AI Agent ความต่างนี้ยิ่งสำคัญ เพราะ Agent ไม่ถามกลับเวลาไม่แน่ใจ มันจะเดาแล้วเขียนโค้ดต่อทันที ทุกช่องว่างใน Issue จึงเท่ากับการตัดสินใจทางธุรกิจที่ถูกยกให้ Agent ทำแทนคุณโดยที่คุณไม่รู้ตัว และคุณจะเพิ่งมาเห็นตอน review',
+          'เมื่อผู้ลงมือคือ AI Agent ความต่างนี้ยิ่งสำคัญ เพราะ Agent มักไม่ถามกลับเวลาไม่แน่ใจ แต่จะเดาแล้วเขียนโค้ดต่อทันที ทุกช่องว่างใน Issue จึงเท่ากับการตัดสินใจทางธุรกิจที่ถูกยกให้ Agent ทำแทนคุณโดยที่คุณไม่รู้ตัว และคุณจะเพิ่งมาเห็นตอน review',
           'ข่าวดีคือ Issue ที่ดีไม่จำเป็นต้องยาว มันแค่ต้องคมในสี่จุด คือ **บริบท**, **ขอบเขต**, **เงื่อนไขการยอมรับ (AC)** และ **นิยามว่าเสร็จ (Definition of Done)** ที่เหลือปล่อยให้เป็นเรื่องของแผนที่ Agent จะเสนอมาให้คุณตรวจในบทที่ 05'
         ],en:[
-          'The **work journey** diagram in lesson 01 showed the whole path. Its very first box is **Requirement → Issue**, and it is the only box in that diagram that decides “what is correct” rather than “how to build it” — which makes it your job, not the agent’s.',
+          'The **work journey** diagram in lesson 01 starts at **Requirement → Issue + AC**. That step differs from every other box: it is the only place that *defines* “what is correct” rather than “how to build it”, and the hexagon gates later on check the work against what the issue defined — so defining it is your job, not the agent’s.',
           'A requirement is written so people understand the big picture. An issue is written so someone can start working immediately. The difference is that an issue must answer three questions: **what are we building**, **where does it stop**, and **how will we know it is done**.',
-          'When the builder is an AI agent, that difference matters even more, because the agent never asks you back when it is unsure. It guesses and keeps writing code. Every gap in the issue is therefore a business decision handed to the agent without you noticing — and you only see it at review time.',
+          'When the builder is an AI agent, that difference matters even more, because the agent usually does not ask you back when it is unsure. It guesses and keeps writing code. Every gap in the issue is therefore a business decision handed to the agent without you noticing — and you only see it at review time.',
           'The good news is that a good issue is not a long one. It only has to be sharp on four things: **context**, **scope**, **acceptance criteria**, and **definition of done**. Everything else belongs in the plan the agent proposes for your review in lesson 05.'
         ]}},
         {type:'diagram',title:{th:'US-001 จาก requirement ไปสู่งานที่ตรวจได้',en:'US-001 from requirement to reviewable work'},
           lead:{th:'ภาพนี้คือ “เส้นทางของงาน” จากบทที่ 01 เมื่อเจาะเฉพาะ US-001 — ไฟล์ใน starter เป็น requirement ของ US-001 อยู่แล้ว งานในบทนี้คือแปลงเป็น Issue จริงหนึ่งใบโดยรักษา AC ครบ แล้วใช้เลข Issue เดียวจนส่งมอบ',en:'This picture is the lesson 01 work journey zoomed into US-001 — the starter already contains the US-001 requirement. Turn it into one real issue while preserving its ACs, then carry that issue number through delivery.'},
           diagram:`flowchart LR
-R[US-001 requirement] --> I[Issue + AC]
-I --> B[Branch + worktree]
-B --> P[AI plan]
-P --> V[Storybook + app checks]
-V --> M[MR + handoff]`,
-          notes:{th:['Requirement ระบุพฤติกรรมที่ต้องได้','Issue ทำให้มีเจ้าของ เลขอ้างอิง และเกณฑ์ตรวจที่ลงมือได้','ถ้างานใหม่เกิดขึ้นภายหลัง ให้เปิด Issue ใหม่ ไม่ขยาย US-001 โดยไม่ตัดสินใจ'],en:['The requirement defines the behavior','The issue adds ownership, a traceable number, and actionable checks','For later new behavior, file a new issue rather than silently expanding US-001']}},
+R[US-001 requirement\\ndocs/requirements] --> I["Issue #1\\nAC1–AC14"]
+I --> B[Branch\\nfeature/1-us001-...]
+B --> P[AI plan\\nhuman-approved]
+P --> V[Storybook + app\\nchecked against ACs]
+V --> M["MR + handoff\\nCloses #1"]`,
+          notes:{th:['Requirement ระบุพฤติกรรมที่ต้องได้','Issue ทำให้มีเจ้าของ เลขอ้างอิง และเกณฑ์ตรวจที่ลงมือได้','`#1` เป็นเลขตัวอย่าง — ใช้เลข Issue จริงของคุณแทนทุกตำแหน่ง ตั้งแต่ชื่อ branch จนถึง `Closes` ใน MR','ถ้างานใหม่เกิดขึ้นภายหลัง ให้เปิด Issue ใหม่ ไม่ขยาย US-001 โดยไม่ตัดสินใจ'],en:['The requirement defines the behavior','The issue adds ownership, a traceable number, and actionable checks','`#1` is an example — use your real issue number everywhere, from the branch name to `Closes` in the MR','For later new behavior, file a new issue rather than silently expanding US-001']}},
         {type:'two',title:{th:'Requirement กับ Issue ต่างกันตรงไหน',en:'Requirement vs. issue'},left:{title:{th:'Requirement',en:'Requirement'},items:{th:['ระบุผู้ใช้ เป้าหมาย และพฤติกรรมที่ต้องได้','ใน starter คือ US-001 พร้อม AC 14 ข้อ','เป็นแหล่งอ้างอิงเมื่อมีข้อสงสัยเรื่อง behavior'],en:['Defines the user, goal, and required behavior','In the starter: US-001 with 14 ACs','Source of truth for behavior questions']}},right:{title:{th:'Issue',en:'Issue'},items:{th:['แปลง requirement เป็นงานที่มีเลขและเจ้าของ','จัด AC ให้ตรวจได้ด้วย mock, Storybook และ flow จริง','เลข Issue เชื่อม branch, commit และ MR'],en:['Turns the requirement into numbered, owned work','Makes ACs checkable with mocks, Storybook, and the running flow','Its number links branch, commits, and MR']}}},
+        {type:'two',title:{th:'AC สองแบบ: แบบสถานะ กับ แบบพฤติกรรม',en:'Two kinds of AC: state and behaviour'},left:{title:{th:'AC แบบสถานะ (state)',en:'State ACs'},items:{th:[
+          'อธิบายว่า **หน้าจอต้องหน้าตาแบบไหน** ในแต่ละสถานการณ์ เช่น กำลังโหลด ไม่พบข้อมูล เกิดข้อผิดพลาด',
+          'ตัวอย่างจาก US-001: “ระหว่างกำลังค้นหา ต้องขึ้น loading state”',
+          'เขียนสั้น ๆ หนึ่งข้อต่อหนึ่ง state',
+          'ตรวจด้วยการเปิด **Storybook** ไล่ดูทีละ state'
+        ],en:[
+          'Describe **what the screen must look like** in each situation — loading, nothing found, error',
+          'US-001 example: “while a search runs, a loading state is shown”',
+          'Short, one item per state',
+          'Verified by opening **Storybook** and checking state by state'
+        ]}},right:{title:{th:'AC แบบพฤติกรรม (behaviour)',en:'Behaviour ACs'},items:{th:[
+          'อธิบาย **ลำดับเหตุการณ์** ว่าผู้ใช้ทำอะไร แล้วระบบต้องตอบสนองอย่างไร',
+          'ตัวอย่างจาก US-001: “given เลือกผู้ป่วยแล้ว, when กดไปต่อโดยไม่เลือก clinic, then ต้องขึ้น validation message และยังไม่ไปหน้า Preview”',
+          'เขียนด้วยรูปแบบ **Given / When / Then**',
+          'ตรวจด้วย **interaction test** หรือเดิน flow จริงในแอป'
+        ],en:[
+          'Describe a **sequence**: when the user does this, the system must respond like that',
+          'US-001 example: “given a patient is selected, when the user continues without a clinic, then a validation message appears and Preview does not open”',
+          'Written in the **Given / When / Then** format',
+          'Verified with an **interaction test** or by walking the real flow in the app'
+        ]}}},
+        {type:'callout',title:{th:'แล้ว AC ที่ไม่เข้าทั้งสองกองล่ะ: กลุ่ม quality',en:'What about ACs that fit neither pile: the quality group'},text:{th:'บาง AC จาก requirement ไม่ใช่สถานะและไม่ใช่พฤติกรรม เช่น AC13 ที่ว่าด้วย keyboard/focus และ AC14 ที่ว่าด้วยจอมือถือ ให้ยกไปไว้กลุ่ม “Acceptance Criteria - quality” ตามตัวอย่างและแบบฟอร์มด้านล่าง กลุ่มนี้เก็บเงื่อนไขคุณภาพที่คร่อมทั้งหน้า ซึ่งตรวจด้วยวิธีที่สาม คือให้คนเดิน flow จริงกดด้วย keyboard และย่อจอมือถือ ไม่ใช่ Storybook หรือ interaction test',en:'A few requirement ACs are neither a state nor a behaviour — in US-001, AC13 (keyboard/focus) and AC14 (narrow mobile width). Put them in the “Acceptance Criteria - quality” group, as the example and the blank form below do. That group holds cross-cutting quality conditions, verified a third way: a human walks the real flow with a keyboard and at a narrow width, not in Storybook or an interaction test.'}},
+        {type:'list',title:{th:'ทำไมต้องแยกสองแบบนี้ออกจากกัน',en:'Why the two kinds are kept apart'},items:{th:[
+          'เพราะ **สองแบบนี้ตรวจด้วยเครื่องมือคนละตัว** — AC สถานะไปดูที่ Storybook ส่วน AC พฤติกรรมไปดูที่ interaction test หรือ flow จริง',
+          'ถ้าเขียนปนกัน เวลา review คุณจะไม่รู้ว่าข้อไหนต้องไปดูที่ไหน และมักจบด้วยการเชื่อคำสรุปของ Agent แทนการดูของจริง',
+          'เรื่องนี้ไม่ใช่ความสวยงามของเอกสาร แต่คือเงื่อนไขที่ทำให้คุณตรวจงานของ Agent ได้ด้วยตัวเอง',
+          'เคล็ดลับที่ทำให้ AC ตรวจได้จริงคือ **ใช้ค่าตายตัวจาก mock data** เช่น HN `65000123` แทนคำว่า “ผู้ป่วยคนหนึ่ง” เพราะค่าตายตัวทดสอบซ้ำแล้วได้ผลเดิมทุกครั้ง'
+        ],en:[
+          'Because **the two kinds are verified with different tools** — state ACs are checked in Storybook, behaviour ACs in an interaction test or the real flow',
+          'Mix them together and, at review time, you will not know where to look for each one — which usually ends with trusting the agent’s summary instead of looking at the real thing',
+          'This is not documentation tidiness; it is what lets you verify the agent’s work yourself',
+          'The trick that makes ACs truly checkable is **using fixed values from the mock data**, such as HN `65000123` instead of “a patient”, because a fixed value reproduces the same result every time'
+        ]}},
+        {type:'callout',tone:'danger',title:{th:'Red flag',en:'Red flag'},text:{th:'AC ที่เขียนว่า “ระบบต้องค้นหาผู้ป่วยได้อย่างรวดเร็วและใช้งานง่าย” ตรวจไม่ได้ว่าผ่านหรือไม่ผ่าน Agent จะตีความเอง และตอน review คุณจะเถียงไม่ได้ เพราะไม่เคยมีเกณฑ์ตั้งแต่แรก',en:'An AC that reads “patient search must be fast and easy to use” cannot be judged pass or fail. The agent will interpret it for you, and at review time you have no ground to disagree because no criterion ever existed.'}},
         {type:'callout',title:{th:'เอกสารต้นทางที่ต้องเปิด',en:'Open the source document'},
-          text:{th:'อ่าน `docs/requirements/US-001-opd-checkin-th.md` ใน starter ให้จบก่อนเขียน Issue อย่าตัด AC ข้อใดทิ้ง: จัดกลุ่มเป็น state / behaviour หรือ quality และใช้ค่าจาก mock เพื่อทำให้ตรวจซ้ำได้',en:'Read `docs/requirements/US-001-opd-checkin.md` in the starter before filing the issue. Preserve all ACs, group them as states, behaviours, or quality, and use mock values for repeatable checks.'}},
+          text:{th:'อ่าน `docs/requirements/US-001-opd-checkin-th.md` ใน starter ให้จบก่อนเขียน Issue (ถ้าสองภาษาขัดกัน ฉบับอังกฤษ `US-001-opd-checkin.md` เป็นฉบับหลัก) อย่าตัด AC ข้อใดทิ้ง: จัดกลุ่มเป็น state / behaviour หรือ quality และใช้ค่าจาก mock เพื่อทำให้ตรวจซ้ำได้',en:'Read `docs/requirements/US-001-opd-checkin.md` in the starter before filing the issue. Preserve all ACs, group them as states, behaviours, or quality, and use mock values for repeatable checks.'}},
         {type:'code',title:{th:'ตัวอย่าง Issue พร้อมเปิดจริง',en:'A ready-to-file example issue'},
           lead:{th:'คัดลอกไปวางใน GitLab หรือ GitHub ได้เลย เลือกภาษาของตัวอย่างได้จากปุ่มบนการ์ด — หัวข้อ (header) และ Title คงภาษาอังกฤษไว้เพราะเป็นรูปแบบมาตรฐานของ Issue ส่วนคำบรรยายปรับตามภาษา โดยศัพท์เทคนิคทับศัพท์อังกฤษไว้ ตัวอย่างนี้กรอกด้วย US-001 ซึ่งเป็นโจทย์ที่เราจะใช้ต่อกันทั้งคอร์ส',en:'Copy it straight into GitLab or GitHub. Pick the example language on the card — headers and the title stay in English because that is the issue convention, descriptions follow your language, and technical terms stay as English loanwords. This one is filled in with US-001, the scenario we carry through the whole course.'},
           label:'Issue · US-001',code:{
-th:`Title: US-001 OPD Patient Check-in (Lite)
+th:`Title: US-001 OPD staff can check in an existing patient to a clinic
 
 ## Context
 เจ้าหน้าที่ OPD ต้องค้นหาผู้ป่วยเดิมและ check-in เข้าคิวคลินิก
@@ -283,9 +317,9 @@ Requirement: docs/requirements/US-001-opd-checkin-th.md
 ## Acceptance Criteria - behaviour
 - AC1 ค้นหาได้ด้วย HN หรือชื่อ; HN 65000123 พบ Somchai Jaidee; คำค้นว่างไม่ถือเป็นการค้นหา ต้องแจ้งผู้ใช้ก่อน
 - AC5 ค้นหา Jaidee พบหลายคนให้เลือก; AC6 เลือกได้หนึ่งคน
-- AC8 เลือก clinic จากรายการ mock ที่กำหนดตายตัว: เวชกรรมทั่วไป (\`gen-med\`), กุมารเวชกรรม (\`peds\`); ไม่เลือกไปต่อไม่ได้; AC9 chief complaint เว้นว่างได้
+- AC8 เลือก clinic จากรายการ mock ที่กำหนดตายตัว: เวชกรรมทั่วไป (\`gen-med\`), กุมารเวชกรรม (\`peds\`); ไม่เลือกแล้วกดไปต่อ ต้องแสดง validation message และยังไม่ไปหน้า Preview; AC9 chief complaint เว้นว่างได้
 - AC10 มี Preview ก่อนยืนยัน; AC11 Back กลับแก้ได้โดยค่าที่กรอกยังอยู่
-- AC12 ยืนยันแล้วแสดง Success และเลขคิวจำลอง A012
+- AC12 ยืนยันแล้วแสดง Success และเลขคิวจำลอง A012; เริ่ม check-in ใหม่แล้วค่าเดิมในฟอร์มถูกล้าง
 
 ## Acceptance Criteria - quality
 - AC13 ค้นหา เลือกผู้ป่วย/clinic, Back และ Confirm มี label/focus และใช้ keyboard ได้
@@ -299,7 +333,7 @@ Requirement: docs/requirements/US-001-opd-checkin-th.md
 ## Data
 ใช้ synthetic/mock data เท่านั้น ห้ามใช้ข้อมูลผู้ป่วยจริง
 mock ต้องบังคับ state พิเศษได้ซ้ำ ๆ: normal / slow (หน่วงราว 2 วินาทีเพื่อเห็น Loading) / empty / error โดยสาธิตผ่าน Storybook เท่านั้น ห้ามมีปุ่มสลับ scenario บนหน้าผู้ใช้`,
-en:`Title: US-001 OPD Patient Check-in (Lite)
+en:`Title: US-001 OPD staff can check in an existing patient to a clinic
 
 ## Context
 OPD staff need to find an existing patient and check them in to a clinic queue.
@@ -321,9 +355,9 @@ Requirement: docs/requirements/US-001-opd-checkin.md
 ## Acceptance Criteria - behaviour
 - AC1 Search by HN or name; HN 65000123 finds Somchai Jaidee; an empty query is not a search and must prompt the user first
 - AC5 Jaidee returns multiple matches; AC6 select one patient
-- AC8 Select a clinic from a fixed mock list: General Medicine (\`gen-med\`), Pediatrics (\`peds\`); clinic is required; AC9 chief complaint may be blank
+- AC8 Select a clinic from a fixed mock list: General Medicine (\`gen-med\`), Pediatrics (\`peds\`); continuing without a clinic shows a validation message and stays off Preview; AC9 chief complaint may be blank
 - AC10 Preview precedes confirmation; AC11 Back preserves entered values
-- AC12 Confirm shows Success with synthetic queue A012
+- AC12 Confirm shows Success with synthetic queue A012; starting another check-in resets the form
 
 ## Acceptance Criteria - quality
 - AC13 Search, selection, clinic, Back, Confirm have labels/focus and work by keyboard
@@ -400,65 +434,7 @@ Requirement: docs/requirements/<filename>
 ## Data
 Synthetic/mock data only. No production data, no real patient records.`},
           note:{th:'แบบฟอร์มเปล่าเก็บเฉพาะหัวข้อกับกติกาที่ใช้กับทุก Issue เช่น Definition of Done — เนื้อหาของ US-001 ไม่ต้องใส่ลงไป เพราะ template ต้องใช้กับงานถัดไปได้ด้วย',en:'The blank form keeps only the headings and the rules that apply to every issue, such as the Definition of Done — no US-001 content goes into it, because a template has to fit the next task too.'}},
-        {type:'two',title:{th:'AC สองแบบ: แบบสถานะ กับ แบบพฤติกรรม',en:'Two kinds of AC: state and behaviour'},left:{title:{th:'AC แบบสถานะ (state)',en:'State ACs'},items:{th:[
-          'อธิบายว่า **หน้าจอต้องหน้าตาแบบไหน** ในแต่ละสถานการณ์ เช่น กำลังโหลด ไม่พบข้อมูล เกิดข้อผิดพลาด',
-          'ตัวอย่างจาก US-001: “ระหว่างกำลังค้นหา ต้องขึ้น loading state”',
-          'เขียนสั้น ๆ หนึ่งข้อต่อหนึ่ง state',
-          'ตรวจด้วยการเปิด **Storybook** ไล่ดูทีละ state'
-        ],en:[
-          'Describe **what the screen must look like** in each situation — loading, nothing found, error',
-          'US-001 example: “while a search runs, a loading state is shown”',
-          'Short, one item per state',
-          'Verified by opening **Storybook** and checking state by state'
-        ]}},right:{title:{th:'AC แบบพฤติกรรม (behaviour)',en:'Behaviour ACs'},items:{th:[
-          'อธิบาย **ลำดับเหตุการณ์** ว่าผู้ใช้ทำอะไร แล้วระบบต้องตอบสนองอย่างไร',
-          'ตัวอย่างจาก US-001: “when กด Confirm โดยไม่เลือก clinic, then ต้องขึ้น validation message”',
-          'เขียนด้วยรูปแบบ **Given / When / Then**',
-          'ตรวจด้วย **interaction test** หรือเดิน flow จริงในแอป'
-        ],en:[
-          'Describe a **sequence**: when the user does this, the system must respond like that',
-          'US-001 example: “when Confirm is clicked with no clinic, then a validation message appears”',
-          'Written in the **Given / When / Then** format',
-          'Verified with an **interaction test** or by walking the real flow in the app'
-        ]}}},
-        {type:'callout',title:{th:'แล้ว AC ที่ไม่เข้าทั้งสองกองล่ะ: กลุ่ม quality',en:'What about ACs that fit neither pile: the quality group'},text:{th:'บาง AC จาก requirement ไม่ใช่สถานะและไม่ใช่พฤติกรรม เช่น AC13 ที่ว่าด้วย keyboard/focus และ AC14 ที่ว่าด้วยจอมือถือ ให้ยกไปไว้กลุ่ม “Acceptance Criteria - quality” ตามตัวอย่างและแบบฟอร์มด้านบน กลุ่มนี้เก็บเงื่อนไขคุณภาพที่คร่อมทั้งหน้า ซึ่งตรวจด้วยวิธีที่สาม คือให้คนเดิน flow จริงกดด้วย keyboard และย่อจอมือถือ ไม่ใช่ Storybook หรือ interaction test',en:'A few requirement ACs are neither a state nor a behaviour — in US-001, AC13 (keyboard/focus) and AC14 (narrow mobile width). Put them in the “Acceptance Criteria - quality” group from the example and the blank form above. That group holds cross-cutting quality conditions, verified a third way: a human walks the real flow with a keyboard and at a narrow width, not in Storybook or an interaction test.'}},
-        {type:'list',title:{th:'ทำไมต้องแยกสองแบบนี้ออกจากกัน',en:'Why the two kinds are kept apart'},items:{th:[
-          'เพราะ **สองแบบนี้ตรวจด้วยเครื่องมือคนละตัว** — AC สถานะไปดูที่ Storybook ส่วน AC พฤติกรรมไปดูที่ interaction test หรือ flow จริง',
-          'ถ้าเขียนปนกัน เวลา review คุณจะไม่รู้ว่าข้อไหนต้องไปดูที่ไหน และมักจบด้วยการเชื่อคำสรุปของ Agent แทนการดูของจริง',
-          'เรื่องนี้ไม่ใช่ความสวยงามของเอกสาร แต่คือเงื่อนไขที่ทำให้คุณตรวจงานของ Agent ได้ด้วยตัวเอง',
-          'เคล็ดลับที่ทำให้ AC ตรวจได้จริงคือ **ใช้ค่าตายตัวจาก mock data** เช่น HN `65000123` แทนคำว่า “ผู้ป่วยคนหนึ่ง” เพราะค่าตายตัวทดสอบซ้ำแล้วได้ผลเดิมทุกครั้ง'
-        ],en:[
-          'Because **the two kinds are verified with different tools** — state ACs are checked in Storybook, behaviour ACs in an interaction test or the real flow',
-          'Mix them together and, at review time, you will not know where to look for each one — which usually ends with trusting the agent’s summary instead of looking at the real thing',
-          'This is not documentation tidiness; it is what lets you verify the agent’s work yourself',
-          'The trick that makes ACs truly checkable is **using fixed values from the mock data**, such as HN `65000123` instead of “a patient”, because a fixed value reproduces the same result every time'
-        ]}},
         {type:'list',title:{th:'เช็กลิสต์ก่อนกด Create Issue',en:'Checklist before you click Create Issue'},items:{th:['หัวข้อบอกผลลัพธ์ต่อผู้ใช้ ไม่ใช่แค่ชื่อหน้าจอ','มีลิงก์กลับไปยัง requirement ต้นทาง','ระบุ Out of scope อย่างน้อย 2 ข้อ','AC ทุกข้อตอบได้ว่า ผ่าน หรือ ไม่ผ่าน โดยไม่ต้องตีความ','AC ที่เป็นพฤติกรรมใช้ค่าตายตัวจาก mock data','AC จาก requirement ถูกยกมาครบทุกข้อ รวมกลุ่ม keyboard และ responsive','ไม่มีคำว่า “ใช้งานง่าย” หรือ “สวยงาม” ลอย ๆ โดยไม่มีเกณฑ์','งานจบได้ใน 1 branch ถ้าไม่จบ ให้ตัดเป็นสองใบ','ระบุชัดว่าใช้ข้อมูลสมมติเท่านั้น'],en:['The title states a user outcome, not just a screen name','It links back to the source requirement','It names at least two out-of-scope items','Every AC answers pass or fail with no interpretation','Behaviour ACs use fixed values from the mock data','Every AC from the requirement appears in the issue, including the keyboard and responsive ones','No floating “easy to use” or “looks nice” without a criterion','The work fits in one branch — if not, split it into two issues','It states explicitly that only synthetic data is used']}},
-        {type:'callout',tone:'danger',title:{th:'Red flag',en:'Red flag'},text:{th:'AC ที่เขียนว่า “ระบบต้องค้นหาผู้ป่วยได้อย่างรวดเร็วและใช้งานง่าย” ตรวจไม่ได้ว่าผ่านหรือไม่ผ่าน Agent จะตีความเอง และตอน review คุณจะเถียงไม่ได้ เพราะไม่เคยมีเกณฑ์ตั้งแต่แรก',en:'An AC that reads “patient search must be fast and easy to use” cannot be judged pass or fail. The agent will interpret it for you, and at review time you have no ground to disagree because no criterion ever existed.'}},
-        {type:'agent-setup',store:'repoHost',title:{th:'เปิด Issue จริงบน GitHub หรือ GitLab',en:'File the real issue on GitHub or GitLab'},
-          lead:{th:'เลือกแท็บให้ตรงกับ repository ที่คุณสร้างไว้ในบทที่ 00 — ระบบจำแท็บที่เคยเลือกไว้ทั้งเว็บ ถ้าเคยเลือกแล้วแท็บจะถูกเลือกให้เอง',en:'Pick the tab that matches the repository you created in lesson 00 — the site remembers your tab choice across pages, so it is usually already selected.'},
-          tools:[
-            {id:'github',name:{th:'GitHub',en:'GitHub'},steps:[
-              {title:{th:'เปิดแท็บ Issues',en:'Open the Issues tab'},what:{th:'เปิด repository ของคุณ (fork จากบทที่ 00) แล้วไปที่แท็บ **Issues**',en:'Open your repository (the fork from lesson 00) and go to the **Issues** tab.'}},
-              {title:{th:'เริ่ม Issue ใหม่',en:'Start a new issue'},what:{th:'กด **New issue** แล้ววาง Title จาก Issue ที่ร่างไว้ลงช่อง title',en:'Click **New issue** and paste the title from your drafted issue into the title field.'}},
-              {title:{th:'วางเนื้อหา Issue',en:'Paste the issue body'},what:{th:'วางเนื้อ Issue ฉบับที่แก้แล้วลงช่อง description — Markdown ใช้ได้ทุกรูปแบบ',en:'Paste your revised issue body into the description — full Markdown works.'}},
-              {title:{th:'Submit แล้วจดเลข Issue',en:'Submit and note the issue number'},what:{th:'กด **Submit new issue** แล้วจดเลข Issue ที่ขึ้นมา เช่น `#1`',en:'Click **Submit new issue**, then note the issue number, e.g. `#1`.'},expect:{th:'ลิงก์แบบ `github.com/<ชื่อคุณ>/<repo>/issues/1` และเลข `1` ถูกจดไว้ — บทที่ 05 จะให้ Agent อ่าน Issue นี้ด้วย `gh issue view 1`',en:'A link like `github.com/<you>/<repo>/issues/1` with the number `1` written down — lesson 05 has the agent read this issue with `gh issue view 1`.'}}
-            ]},
-            {id:'gitlab',name:{th:'GitLab',en:'GitLab'},steps:[
-              {title:{th:'เปิดเมนู Plan → Work items',en:'Open Plan → Work items'},what:{th:'เปิด project ของคุณ (จากบทที่ 00) แล้วไปที่เมนู **Plan → Work items** — GitLab รุ่นล่าสุดรวม Issue, Task, Incident ให้เป็น “work item” ที่ต่างกันแค่ชนิด Issue จึงย้ายมาอยู่ในเมนูนี้ (GitLab รุ่นเก่ายังใช้ชื่อเมนู **Plan → Issues** — ใช้แทนกันได้)',en:'Open your project (from lesson 00) and go to **Plan → Work items** — the latest GitLab unifies issues, tasks, and incidents into “work items” that differ only by type, so issues now live here (older GitLab still names this menu **Plan → Issues**; either entry works).'}},
-              {title:{th:'เริ่ม Issue ใหม่',en:'Start a new issue'},what:{th:'กดปุ่ม **New item** ที่มุมขวาบน แล้วตั้ง **Type = Issue** (รุ่นเก่าปุ่มจะชื่อ **New issue** และไม่มีช่อง Type) จากนั้นวาง Title จาก Issue ที่ร่างไว้ลงช่อง Title',en:'Click **New item** in the upper-right corner and set **Type = Issue** (older versions name this button **New issue** and have no Type field), then paste the title from your drafted issue into the Title field.'}},
-              {title:{th:'วางเนื้อหา Issue',en:'Paste the issue body'},what:{th:'วางเนื้อ Issue ฉบับที่แก้แล้วลงช่อง Description',en:'Paste your revised issue body into the Description field.'}},
-              {title:{th:'Create แล้วจดเลข Issue',en:'Create and note the issue number'},what:{th:'กด **Create issue** แล้วจดเลข Issue ที่ขึ้นมา เช่น `#1`',en:'Click **Create issue**, then note the issue number, e.g. `#1`.'},expect:{th:'ลิงก์แบบ `gitlab.com/<ชื่อคุณ>/<repo>/-/issues/1` และเลข `1` ถูกจดไว้ — บทที่ 05 จะให้ Agent อ่าน Issue นี้ด้วย `glab issue view 1`',en:'A link like `gitlab.com/<you>/<repo>/-/issues/1` with the number `1` written down — lesson 05 has the agent read this issue with `glab issue view 1`.'}}
-            ]}
-          ]},
-        {type:'code',title:{th:'เลข Issue ต้องตามไปได้ทั้งสาย',en:'The issue number has to survive the whole trip'},
-          lead:{th:'เลข Issue ไม่ได้มีไว้สวย ๆ มันคือด้ายที่ร้อยงานทั้งเส้นเข้าด้วยกัน สมมติ Issue ของคุณคือ #1 นี่คือที่ที่เลขนี้จะโผล่อีกสี่ครั้ง',en:'The issue number is not decoration; it is the thread that ties the whole journey together. If your issue is #1, here is where that number shows up four more times.'},
-          label:'traceability',code:`Issue    #1  US-001 OPD Patient Check-in (Lite)
-Branch   feature/1-us001-patient-checkin        <- lesson 04
-Commit   feat(us001): add PatientSearch ...
-         Refs #1                             <- lessons 09-13
-MR       Closes #1                           <- lesson 15`,
-          note:{th:'ประโยชน์จริงคือ หกเดือนต่อมามีคนถามว่า “ทำไมหน้านี้ต้องบังคับเลือกคลินิก” คุณเดินจากโค้ดย้อนกลับไปหา commit → MR → Issue → requirement ได้ใน 30 วินาที บทที่ 16 จะรวบรวมหลักฐานนี้เป็น handoff ให้ Developer',en:'The real payoff: six months later someone asks “why is clinic required here?” and you can walk from the code back to the commit, the MR, the issue, and the requirement in thirty seconds. Lesson 16 gathers this trace into the developer handoff.'}},
         {type:'prompt',title:{th:'Prompt: ให้ Agent หาช่องว่างใน Issue ก่อนเริ่มงาน',en:'Prompt: have the agent find the gaps in your issue'},
           when:{th:'ใช้หลังร่าง Issue เสร็จ แต่ยังไม่เปิด branch จุดสำคัญคือให้มันบอก “สิ่งที่มันจะต้องเดา” ไม่ใช่ให้มันเติมช่องว่างแทนคุณ เพราะการเติมช่องว่างคือการตัดสินใจทางธุรกิจ',en:'Use it once your issue draft is ready but before any branch exists. The point is to make it list what it would have to guess — not to let it fill the gaps, because filling them is a business decision.'},
           prompt:{th:`นี่คือร่าง Issue ของฉัน ห้ามแก้ไขไฟล์ใด ๆ และห้ามเขียน Issue ฉบับใหม่ให้
@@ -509,11 +485,35 @@ Check four things:
 4. Is this too large for one branch? If so, where would you split it?
 
 Answer as questions back to me. Do not answer them on my behalf.`},
-          after:{th:['ทุกข้อที่ Agent ตอบว่า “จะเดา” คือช่องว่างที่คุณต้องกลับไปเขียนเพิ่มใน Issue ไม่ใช่ปล่อยให้มันเดา','ถ้าข้อ 4 บอกว่าใหญ่เกิน ให้ตัด Issue ก่อนเปิด branch ดีกว่าไปตัดตอนทำไปครึ่งทาง','บันทึกคำตอบของมันไว้เทียบกับแผนในบทที่ 05 — ถ้าแผนยังมีเรื่องที่มันเคยบอกว่า “ต้องเดา” แปลว่า Issue ยังไม่ถูกแก้','อัปเดต Issue ให้เป็นฉบับล่าสุดเสมอ เพราะบทถัดไปจะใช้เลข Issue ตั้งชื่อ branch และใช้ AC ตรวจงาน'],en:['Everything it says it would guess is a gap you go back and write into the issue, not something to leave to it','If answer 4 says it is too large, split the issue before opening a branch rather than halfway through','Keep its answers to compare against the plan in lesson 05 — if the plan still contains something it once had to guess, the issue was never fixed','Keep the issue up to date: the next lesson names the branch after the issue and reviews work against these ACs']}},
-        {type:'practice',title:{th:'ลงมือทำ: เขียน Issue ของ US-001 ด้วยตัวเอง',en:'Practice: write the US-001 issue yourself'},steps:{th:['เปิด `docs/requirements/US-001-opd-checkin-th.md` ใน starter repo แล้วอ่านให้จบก่อน','ร่าง Issue ตามตัวอย่างด้านบน โดยยังไม่เปิดกลับมาดูตัวอย่างระหว่างเขียน','แยก AC ออกเป็นสองกอง คือสถานะ และพฤติกรรม แล้วนับว่าแต่ละกองมีกี่ข้อ','ส่ง Prompt ด้านบนให้ Agent แล้วจดรายการ “สิ่งที่มันจะเดา” ไว้ทุกข้อ','แก้ Issue จนรายการนั้นเหลือเฉพาะเรื่องที่คุณตั้งใจให้เป็นอิสระของ Agent เช่น ชื่อไฟล์หรือโครงสร้างโฟลเดอร์','เปิด Issue จริงตามบล็อกด้านบน แล้วจดเลข Issue ไว้','ใช้แบบฟอร์มด้านบนเป็นตัวอย่าง โดยไม่สร้างไฟล์ใหม่บน main','ทดลองพิมพ์ gh issue view <เลข> หรือ glab issue view <เลข> ใน terminal จนอ่าน Issue นี้ออก เพราะบทที่ 05 จะให้ Agent รันคำสั่งนี้เอง','ยังไม่ต้องเปิด branch และยังไม่ต้องเรียก Agent ให้ลงมือ — บทที่ 03 และ 04 จะพาไปเปิดพื้นที่ทำงานเอง'],en:['Open `docs/requirements/US-001-opd-checkin.md` in the starter repo and read it through first','Draft the issue using the example above, without looking back at it while you write','Sort your ACs into two piles — states and behaviours — and count each pile','Send the prompt above and write down every item the agent says it would guess','Revise the issue until that list contains only what you deliberately leave to the agent, such as file names or folder structure','File the real issue using the block above and note its number','Use the blank issue form as a reference without creating a new file on main','Try gh issue view <number> or glab issue view <number> in a terminal until it prints the issue — lesson 05 has the agent run this exact command','Do not open a branch or call the agent yet — lessons 03 and 04 set up the workspace']},expected:{th:'ได้ Issue หนึ่งใบที่มี Context, In/Out of scope, AC แยกสถานะกับพฤติกรรม และ Definition of Done โดยไม่มีข้อใดที่ต้องตีความ และคุณอธิบายได้ว่าทำไมแต่ละข้อใน Out of scope ถึงถูกตัดออก รวมถึงมีเลข Issue จริงที่อ่านกลับได้ด้วย gh issue view หรือ glab issue view โดยไม่มีไฟล์ค้างบน main',en:'One issue with context, in/out of scope, ACs split into states and behaviours, and a definition of done — with nothing left to interpretation, and you can explain why each out-of-scope item was cut, plus a real issue number you can read back with gh issue view or glab issue view, with no untracked template left on main.'}}
+          after:{th:['ทุกข้อที่ Agent ตอบว่า “จะเดา” คือช่องว่างที่คุณต้องกลับไปเขียนเพิ่มใน Issue ไม่ใช่ปล่อยให้มันเดา','ถ้าข้อ 4 บอกว่าใหญ่เกิน ให้ตัด Issue ก่อนเปิด branch ดีกว่าไปตัดตอนทำไปครึ่งทาง','บันทึกคำตอบของมันไว้นอก repo เพื่อเทียบกับแผนในบทที่ 05 — ถ้าแผนยังมีเรื่องที่มันเคยบอกว่า “ต้องเดา” แปลว่า Issue ยังไม่ถูกแก้','อัปเดต Issue ให้เป็นฉบับล่าสุดเสมอ เพราะบทที่ 04 จะใช้เลข Issue ตั้งชื่อ branch และทุกบทหลังจากนั้นใช้ AC ตรวจงาน'],en:['Everything it says it would guess is a gap you go back and write into the issue, not something to leave to it','If answer 4 says it is too large, split the issue before opening a branch rather than halfway through','Keep its answers outside the repo to compare against the plan in lesson 05 — if the plan still contains something it once had to guess, the issue was never fixed','Keep the issue up to date: lesson 04 names the branch after the issue, and every later lesson reviews work against these ACs']}},
+        {type:'agent-setup',store:'repoHost',title:{th:'เปิด Issue จริงบน GitHub หรือ GitLab',en:'File the real issue on GitHub or GitLab'},
+          lead:{th:'เลือกแท็บให้ตรงกับ repository ที่คุณสร้างไว้ในบทที่ 00 — ระบบจำแท็บที่เคยเลือกไว้ทั้งเว็บ ถ้าเคยเลือกแล้วแท็บจะถูกเลือกให้เอง',en:'Pick the tab that matches the repository you created in lesson 00 — the site remembers your tab choice across pages, so it is usually already selected.'},
+          tools:[
+            {id:'github',name:{th:'GitHub',en:'GitHub'},steps:[
+              {title:{th:'เปิดแท็บ Issues',en:'Open the Issues tab'},what:{th:'เปิด repository ของคุณ (fork จากบทที่ 00) แล้วไปที่แท็บ **Issues**',en:'Open your repository (the fork from lesson 00) and go to the **Issues** tab.'}},
+              {title:{th:'เริ่ม Issue ใหม่',en:'Start a new issue'},what:{th:'กด **New issue** แล้ววาง Title จาก Issue ที่ร่างไว้ลงช่อง title',en:'Click **New issue** and paste the title from your drafted issue into the title field.'}},
+              {title:{th:'วางเนื้อหา Issue',en:'Paste the issue body'},what:{th:'วางเนื้อ Issue ฉบับที่แก้แล้วลงช่อง description — Markdown ใช้ได้ทุกรูปแบบ',en:'Paste your revised issue body into the description — full Markdown works.'}},
+              {title:{th:'Submit แล้วจดเลข Issue',en:'Submit and note the issue number'},what:{th:'กด **Submit new issue** แล้วจดเลข Issue ที่ขึ้นมา เช่น `#1`',en:'Click **Submit new issue**, then note the issue number, e.g. `#1`.'},expect:{th:'ลิงก์แบบ `github.com/<ชื่อคุณ>/<repo>/issues/1` และเลข `1` ถูกจดไว้ — บทที่ 05 จะให้ Agent อ่าน Issue นี้ด้วย `gh issue view 1`',en:'A link like `github.com/<you>/<repo>/issues/1` with the number `1` written down — lesson 05 has the agent read this issue with `gh issue view 1`.'}}
+            ]},
+            {id:'gitlab',name:{th:'GitLab',en:'GitLab'},steps:[
+              {title:{th:'เปิดเมนู Plan → Work items',en:'Open Plan → Work items'},what:{th:'เปิด project ของคุณ (จากบทที่ 00) แล้วไปที่เมนู **Plan → Work items** — GitLab รุ่นล่าสุดรวม Issue, Task, Incident ให้เป็น “work item” ที่ต่างกันแค่ชนิด Issue จึงย้ายมาอยู่ในเมนูนี้ (GitLab รุ่นเก่ายังใช้ชื่อเมนู **Plan → Issues** — ใช้แทนกันได้)',en:'Open your project (from lesson 00) and go to **Plan → Work items** — the latest GitLab unifies issues, tasks, and incidents into “work items” that differ only by type, so issues now live here (older GitLab still names this menu **Plan → Issues**; either entry works).'}},
+              {title:{th:'เริ่ม Issue ใหม่',en:'Start a new issue'},what:{th:'กดปุ่ม **New item** ที่มุมขวาบน แล้วตั้ง **Type = Issue** (รุ่นเก่าปุ่มจะชื่อ **New issue** และไม่มีช่อง Type) จากนั้นวาง Title จาก Issue ที่ร่างไว้ลงช่อง Title',en:'Click **New item** in the upper-right corner and set **Type = Issue** (older versions name this button **New issue** and have no Type field), then paste the title from your drafted issue into the Title field.'}},
+              {title:{th:'วางเนื้อหา Issue',en:'Paste the issue body'},what:{th:'วางเนื้อ Issue ฉบับที่แก้แล้วลงช่อง Description',en:'Paste your revised issue body into the Description field.'}},
+              {title:{th:'Create แล้วจดเลข Issue',en:'Create and note the issue number'},what:{th:'กด **Create issue** แล้วจดเลข Issue ที่ขึ้นมา เช่น `#1`',en:'Click **Create issue**, then note the issue number, e.g. `#1`.'},expect:{th:'ลิงก์แบบ `gitlab.com/<ชื่อคุณ>/<repo>/-/issues/1` และเลข `1` ถูกจดไว้ — บทที่ 05 จะให้ Agent อ่าน Issue นี้ด้วย `glab issue view 1`',en:'A link like `gitlab.com/<you>/<repo>/-/issues/1` with the number `1` written down — lesson 05 has the agent read this issue with `glab issue view 1`.'}}
+            ]}
+          ]},
+        {type:'code',title:{th:'เลข Issue ต้องตามไปได้ทั้งสาย',en:'The issue number has to survive the whole trip'},
+          lead:{th:'เลข Issue ไม่ได้มีไว้สวย ๆ มันคือด้ายที่ร้อยงานทั้งเส้นเข้าด้วยกัน สมมติ Issue ของคุณคือ #1 นี่คือที่ที่เลขนี้จะโผล่อีกสี่ครั้ง',en:'The issue number is not decoration; it is the thread that ties the whole journey together. If your issue is #1, here is where that number shows up four more times.'},
+          label:'traceability',code:`Issue    #1  US-001 OPD staff can check in an existing patient to a clinic
+Branch   feature/1-us001-patient-checkin     <- lesson 04
+Commit   feat(us001): add PatientSearch ...
+         Refs #1                             <- lessons 09-13
+MR       Closes #1                           <- lesson 15`,
+          note:{th:'ประโยชน์จริงคือ หกเดือนต่อมามีคนถามว่า “ทำไมหน้านี้ต้องบังคับเลือกคลินิก” คุณเดินจากโค้ดย้อนกลับไปหา commit → MR → Issue → requirement ได้ใน 30 วินาที บทที่ 16 จะรวบรวมหลักฐานนี้เป็น handoff ให้ Developer',en:'The real payoff: six months later someone asks “why is clinic required here?” and you can walk from the code back to the commit, the MR, the issue, and the requirement in thirty seconds. Lesson 16 gathers this trace into the developer handoff.'}},
+        {type:'practice',title:{th:'ลงมือทำ: เขียน Issue ของ US-001 ด้วยตัวเอง',en:'Practice: write the US-001 issue yourself'},steps:{th:['เปิด `docs/requirements/US-001-opd-checkin-th.md` ใน starter repo แล้วอ่านให้จบก่อน','ร่าง Issue ตามตัวอย่างด้านบน โดยยังไม่เปิดกลับมาดูตัวอย่างระหว่างเขียน','แยก AC ออกเป็นสามกอง คือ สถานะ พฤติกรรม และ quality แล้วตรวจว่ารวมกันครบ AC1–AC14','ส่ง Prompt ด้านบนให้ Agent แล้วจดรายการ “สิ่งที่มันจะเดา” ไว้ทุกข้อนอก repo — บทที่ 05 จะใช้เทียบกับแผน','แก้ Issue จนรายการนั้นเหลือเฉพาะเรื่องที่คุณตั้งใจให้เป็นอิสระของ Agent เช่น ชื่อไฟล์หรือโครงสร้างโฟลเดอร์','เปิด Issue จริงตามบล็อกด้านบน แล้วจดเลข Issue ไว้','ใช้แบบฟอร์มด้านบนเป็นตัวอย่าง โดยไม่สร้างไฟล์ใหม่บน main','ทดลองพิมพ์ gh issue view <เลข> หรือ glab issue view <เลข> ใน terminal จนอ่าน Issue นี้ออก เพราะบทที่ 05 จะให้ Agent รันคำสั่งนี้เอง','ยังไม่ต้องเปิด branch และยังไม่ต้องเรียก Agent ให้ลงมือ — บทที่ 03 และ 04 จะพาไปเปิดพื้นที่ทำงานเอง'],en:['Open `docs/requirements/US-001-opd-checkin.md` in the starter repo and read it through first','Draft the issue using the example above, without looking back at it while you write','Sort your ACs into three piles — states, behaviours, and quality — and check that together they cover AC1–AC14','Send the prompt above and write down, outside the repo, every item the agent says it would guess — lesson 05 compares the plan against it','Revise the issue until that list contains only what you deliberately leave to the agent, such as file names or folder structure','File the real issue using the block above and note its number','Use the blank issue form as a reference without creating a new file on main','Try gh issue view <number> or glab issue view <number> in a terminal until it prints the issue — lesson 05 has the agent run this exact command','Do not open a branch or call the agent yet — lessons 03 and 04 set up the workspace']},expected:{th:'ได้ Issue หนึ่งใบที่มี Context, In/Out of scope, AC แยกเป็นสถานะ พฤติกรรม และ quality ครบ AC1–AC14 และ Definition of Done โดยไม่มีข้อใดที่ต้องตีความ และคุณอธิบายได้ว่าทำไมแต่ละข้อใน Out of scope ถึงถูกตัดออก รวมถึงมีเลข Issue จริงที่อ่านกลับได้ด้วย gh issue view หรือ glab issue view โดยไม่มีไฟล์ค้างบน main',en:'One issue with context, in/out of scope, ACs split into states, behaviours, and quality covering AC1–AC14, and a definition of done — with nothing left to interpretation, and you can explain why each out-of-scope item was cut, plus a real issue number you can read back with gh issue view or glab issue view, with no untracked template left on main.'}}
       ],
       quiz:{q:{th:'AC ข้อใดพร้อมให้ AI Agent ทำงานต่อมากที่สุด?',en:'Which AC is most ready for an AI agent to work from?'},options:{th:['ระบบต้องค้นหาผู้ป่วยได้อย่างรวดเร็วและใช้งานง่าย','เมื่อค้นหาด้วย HN 65000123 ต้องแสดงผู้ป่วยชื่อ Somchai Jaidee','หน้าจอ check-in ต้องออกแบบให้ตรงกับ design system'],en:['Patient search must be fast and easy to use','Searching HN 65000123 must list the patient Somchai Jaidee','The check-in screen must match the design system']},answer:1,why:{th:'AC ที่ดีต้องตรวจได้ว่าผ่านหรือไม่ผ่านโดยไม่ต้องตีความ และใช้ค่าตายตัวที่ทดสอบซ้ำแล้วได้ผลเดิม',en:'A good AC is judged pass or fail with no interpretation, and uses a fixed value that reproduces the same result every time.'}},
-      wrap:{th:['เขียน Issue ที่ลงมือทำต่อได้ทันที ไม่ใช่เอกสารเล่าเรื่อง','AC ทุกข้อตรวจได้ว่าผ่านหรือไม่ผ่าน และรู้ว่าจะไปตรวจที่ไหน','Issue หนึ่งใบมีขนาดพอดีกับ 1 branch และ 1 Agent session'],en:['Write issues that can be acted on, not narratives','Every AC is pass/fail, and you know where to verify it','One issue is sized to fit one branch and one agent session']}
+      wrap:{th:['เขียน Issue ที่ลงมือทำต่อได้ทันที ไม่ใช่เอกสารเล่าเรื่อง','AC ทุกข้อตรวจได้ว่าผ่านหรือไม่ผ่าน และรู้ว่าจะไปตรวจที่ไหน','Issue หนึ่งใบมีขนาดพอดีกับ 1 branch และ 1 MR — ทำต่อข้ามหลาย Agent session บน worktree เดิมได้'],en:['Write issues that can be acted on, not narratives','Every AC is pass/fail, and you know where to verify it','One issue is sized to fit one branch and one MR — work on it across several agent sessions in the same worktree']}
     },
     {
       id:'git-basics', group:'day1', no:'03', duration:'75 min',
