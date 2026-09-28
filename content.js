@@ -277,7 +277,7 @@ Requirement: docs/requirements/US-001-opd-checkin-th.md
 ## Acceptance Criteria - behaviour
 - AC1 ค้นหาได้ด้วย HN หรือชื่อ; HN 65000123 พบ Somchai Jaidee; คำค้นว่างไม่ถือเป็นการค้นหา ต้องแจ้งผู้ใช้ก่อน
 - AC5 ค้นหา Jaidee พบหลายคนให้เลือก; AC6 เลือกได้หนึ่งคน
-- AC8 ไม่เลือก clinic ไปต่อไม่ได้; AC9 chief complaint เว้นว่างได้
+- AC8 เลือก clinic จากรายการ mock ที่กำหนดตายตัว: เวชกรรมทั่วไป (\`gen-med\`), กุมารเวชกรรม (\`peds\`); ไม่เลือกไปต่อไม่ได้; AC9 chief complaint เว้นว่างได้
 - AC10 มี Preview ก่อนยืนยัน; AC11 Back กลับแก้ได้โดยค่าที่กรอกยังอยู่
 - AC12 ยืนยันแล้วแสดง Success และเลขคิวจำลอง A012
 
@@ -315,7 +315,7 @@ Requirement: docs/requirements/US-001-opd-checkin.md
 ## Acceptance Criteria - behaviour
 - AC1 Search by HN or name; HN 65000123 finds Somchai Jaidee; an empty query is not a search and must prompt the user first
 - AC5 Jaidee returns multiple matches; AC6 select one patient
-- AC8 Clinic is required; AC9 chief complaint may be blank
+- AC8 Select a clinic from a fixed mock list: General Medicine (\`gen-med\`), Pediatrics (\`peds\`); clinic is required; AC9 chief complaint may be blank
 - AC10 Preview precedes confirmation; AC11 Back preserves entered values
 - AC12 Confirm shows Success with synthetic queue A012
 
