@@ -94,7 +94,7 @@ Good review mocks are deterministic: the same input produces the same result. Th
 
 “Components that look right in isolation may still produce a broken flow. Now ask the agent to assemble `/opd/check-in`. Walk the user's path: search, select a patient, choose a clinic, enter an optional chief complaint, preview, go back to edit, confirm, and inspect success.
 
-Try cases that reveal problems between states. After selecting a patient, does a new search leave stale information? Does confirming without a clinic show validation in the right place? Does returning from preview preserve the form? What happens if Confirm is clicked twice quickly? Check keyboard use and a viewport about 375 pixels wide. Reopen Storybook to confirm earlier stories still work. Make the third commit checkpoint only after the integrated flow passes.”
+Try cases that reveal problems between states. After selecting a patient, does a new search leave stale information? Does continuing to Preview without a clinic show validation in the right place? Does returning from preview preserve the form? What happens if Confirm is clicked twice quickly? Check keyboard use and a viewport about 375 pixels wide. The real page always uses the normal scenario, so check the Error state in Storybook beside it. Reopen Storybook to confirm earlier stories still work. Make the third commit checkpoint only after the integrated flow passes.”
 
 ## Slide 16 · Lesson 13: Debug with Evidence
 
