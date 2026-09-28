@@ -84,13 +84,13 @@
 
   const SLIDES = [
     { kicker: S('เปิดคอร์ส', 'Workshop'), title: S('AI Product Workshop', 'AI Product Workshop'), sub: S('PM · BA · Product Design ใช้ AI Agent สร้าง prototype ที่กดได้ ตรวจได้ และส่งต่อให้ Developer ทำต่อ', 'PM · BA · Product Design use AI agents to build a working, verifiable prototype for developer handoff'), shot: 'landing-hero' },
-    { kicker: S('แผนที่การเรียน', 'Course map'), title: S('3 วัน + Capstone', '3 days + Capstone'), sub: S('US-001 → Merge → Issue ใหม่ + Regression', 'US-001 → Merge → new issue + regression'), map: {
+    { kicker: S('แผนที่การเรียน', 'Course map'), title: S('3 วัน + Capstone ทำต่อเอง', '3 days + self-paced Capstone'), sub: S('US-001 → Review/Merge → follow-up issue → Capstone', 'US-001 → Review/Merge → follow-up issue → Capstone'), map: {
       days: [
         { label: S('วันที่ 1', 'Day 1'), chain: S('Requirement → Issue → Git → Worktree → Agent Plan', 'Requirement → Issue → Git → Worktree → Agent Plan'), meta: S('5 ชม.', '5 h') },
-        { label: S('วันที่ 2', 'Day 2'), chain: S('Next.js → Design → Component/State → Storybook', 'Next.js → Design → Component/State → Storybook'), meta: S('5.5 ชม.', '5.5 h') },
-        { label: S('วันที่ 3', 'Day 3'), chain: S('Mock → Flow → Debug → MR → Handoff', 'Mocks → Flow → Debug → MR → Handoff'), meta: S('5.5 ชม.', '5.5 h') }
+        { label: S('วันที่ 2', 'Day 2'), chain: S('Next.js → Design → Component/State → Storybook', 'Next.js → Design → Component/State → Storybook'), meta: S('6 ชม.', '6 h') },
+        { label: S('วันที่ 3', 'Day 3'), chain: S('Mock → Flow → Debug → MR → Handoff → Review/Merge', 'Mocks → Flow → Debug → MR → Handoff → Review/Merge'), meta: S('6 ชม.', '6 h') }
       ],
-      capstone: { label: S('Capstone', 'Capstone'), chain: S('งานต่อยอด: คลินิกไม่พร้อมรับ Check-in', 'Follow-up: unavailable clinic'), meta: S('3 ชม.', '3 h') }
+      capstone: { label: S('Capstone · ทำต่อเอง', 'Capstone · self-paced'), chain: S('follow-up issue จากบทที่ 17: คลินิกไม่พร้อมรับ Check-in', 'Follow-up issue from lesson 17: unavailable clinic'), meta: S('≈ 3 ชม. หลังคอร์ส', '≈ 3 h after the course') }
     } },
     ...LESSON_IDS.map(lessonSlide),
     { title: S('พร้อมลงมือแล้ว', 'Ready to build'), sub: S('เริ่มจากบทที่ 00 · Prerequisites', 'Start at lesson 00 · Prerequisites'), shot: 'lesson-prerequisites', scroll: '4/3', cta: 'prerequisites' }

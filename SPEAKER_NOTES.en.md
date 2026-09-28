@@ -8,11 +8,11 @@ These notes follow all 22 slides in `slides.html`. Slides 03–21 correspond to 
 
 You do not need to become a developer here. You do need to say what the product should do, check evidence that it does so, and explain the result to the next person. All patient examples use synthetic data. We will not connect to a real hospital system. When something fails during the workshop, keep the exact message and what you saw on screen. We will use that evidence in the debugging lesson.”
 
-## Slide 02 · Course map: 3 days + Capstone
+## Slide 02 · Course map: 3 days + self-paced Capstone
 
-“Read this map from left to right. On Day 1, we turn a requirement into a real issue, isolate the work in a branch and worktree, and review the agent's plan. On Day 2, we read the Next.js structure, establish design rules, break the page into components, and review states in Storybook. On Day 3, we add repeatable mocks, assemble the page, diagnose problems, inspect the diff, and prepare a Draft MR with a handoff.
+“Read this map from left to right. On Day 1, we turn a requirement into a real issue, isolate the work in a branch and worktree, and review the agent's plan. On Day 2, we read the Next.js structure, establish design rules, break the page into components, and review states in Storybook. On Day 3, we add repeatable mocks, assemble the page, diagnose problems, inspect the diff, prepare a Draft MR with a handoff, and then review each other in pairs until the work is merged.
 
-We work on the same US-001 story throughout. After a reviewer merges it, the Capstone opens a new issue for an unavailable clinic and checks that the original behavior still works. Keep this trace in mind: **issue number → branch name → commit footer → MR `Closes`**. We will check it again at delivery.”
+We work on the same US-001 story throughout, and the class ends on Day 3. When your partner merges the work, the review has also produced a follow-up issue for an unavailable clinic — the Capstone everyone takes home and works on alone, proving the original behavior still works. Keep this trace in mind: **issue number → branch name → commit footer → MR `Closes`**. We will check it again at delivery.”
 
 ## Slide 03 · Lesson 00: Prerequisites
 
@@ -128,9 +128,9 @@ Write three kinds of comment: must fix, with the AC and steps to reproduce; need
 
 ## Slide 21 · Lesson 18: Extend US-001 Capstone
 
-“The Capstone starts after a reviewer merges US-001. Open a **new issue** for an unavailable clinic. Give it its own acceptance criteria, branch, and worktree, then repeat Explore, Plan, Human Review, Implement, Verify, and Draft MR.
+“The Capstone is self-paced work after the course. It starts from the **follow-up issue** for an unavailable clinic that you filed during the lesson 17 review: first refine it with a clear scope and acceptance criteria, then give it its own branch and worktree, then repeat Explore, Plan, Human Review, Implement, Verify, and Draft MR.
 
-Show repeatable GEN, ENT, and Error cases with mocks. Review the messages and recovery path, keyboard use, and a narrow viewport. Also record regression evidence that the original US-001 Search, Select, Preview, and Confirm flow still works. Use the new issue number in the branch, commit footer, and MR `Closes`. If US-001 is still in review, finish that review and merge first so the Capstone starts from the verified `main`.”
+Show repeatable GEN, ENT, and Error cases with mocks. Review the messages and recovery path, keyboard use, and a narrow viewport. Also record regression evidence that the original US-001 Search, Select, Preview, and Confirm flow still works. Use the follow-up issue number in the branch, commit footer, and MR `Closes`, and ask the same partner to review asynchronously, as in real work. If US-001 is not merged yet, finish lesson 17 first.”
 
 ## Slide 22 · Ready to begin
 

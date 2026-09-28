@@ -19,7 +19,7 @@
     th: {
       start: 'เริ่มเรียน', continue: 'เรียนต่อจากที่ค้าง', curriculum: 'ดูหลักสูตร',
       duration: 'ระยะเวลา', audience: 'กลุ่มผู้เรียน', format: 'รูปแบบ',
-      audienceValue: 'PM · BA · Product Design', formatValue: '3 วัน + Capstone · Hands-on', durationValue: '≈ 20.5 ชั่วโมง',
+      audienceValue: 'PM · BA · Product Design', formatValue: '3 วัน + Capstone ทำต่อเอง · Hands-on', durationValue: '≈ 18 ชม. + Capstone ≈ 3 ชม.',
       progress: 'ความคืบหน้า', complete: 'เรียนจบบทนี้', completed: 'เรียนจบแล้ว',
       next: 'บทถัดไป', previous: 'บทก่อนหน้า', copy: 'คัดลอก', copied: 'คัดลอกแล้ว',
       shareLink: 'แชร์บทเรียนนี้', shareSite: 'แชร์เว็บนี้', linkCopied: 'คัดลอกลิงก์แล้ว',
@@ -32,15 +32,15 @@
       output: 'สิ่งที่จะส่งต่อจากบทนี้',
       practice: 'Practice', home: 'หน้าหลัก', allLessons: 'Learning Journey',
       heroTag: 'AI-assisted product development for non-developers',
-      heroLead: 'สร้างและส่งต่อ US-001 prototype ด้วย AI จากนั้นทำ Capstone เป็น Issue ใหม่เรื่องคลินิกไม่พร้อมรับ โดยพิสูจน์ว่า flow เดิมยังผ่าน',
+      heroLead: 'สร้าง ส่งต่อ และ merge US-001 prototype ด้วย AI ภายใน 3 วัน แล้วทำ Capstone ต่อเองจาก follow-up issue เรื่องคลินิกไม่พร้อมรับ โดยพิสูจน์ว่า flow เดิมยังผ่าน',
       whyTitle: 'ออกแบบมาเพื่อ “กำกับ AI ให้ทำงานได้” ไม่ใช่เปลี่ยนทุกคนให้เป็น Developer',
-      whyText: 'บท 00–16 ใช้ US-001 ต่อเนื่อง แล้ว Capstone ประยุกต์ทักษะกับ Issue ใหม่ใน flow เดิม ทุก exercise ซ่อนผลลัพธ์ที่คาดหวังจนกว่าจะกดดู',
+      whyText: 'บท 00–17 ใช้ US-001 ต่อเนื่องจนถูก merge แล้ว Capstone ประยุกต์ทักษะกับ follow-up issue ใน flow เดิม ทุก exercise ซ่อนผลลัพธ์ที่คาดหวังจนกว่าจะกดดู',
       cards: [
         ['หนึ่งโจทย์ต่อเนื่อง','ไม่เสียพลังกับการสลับบริบท ทุกบทต่อยอด US-001 เดิม'],
         ['Review ได้โดยไม่ต้องเขียนโค้ด','ใช้ Storybook, Browser, Error evidence และ git diff เป็นจุดตรวจ'],
         ['กลับมาเรียนต่อได้','บันทึก progress, ภาษา, theme และบทล่าสุดใน browser ของคุณ']
       ],
-      roadmapTitle: '3 วันหลัก + Capstone หลัง US-001 merge', roadmapText: 'US-001: Issue → Design → Flow → MR → Handoff · Capstone: Issue ใหม่ → ต่อเติม → ตรวจ regression → MR',
+      roadmapTitle: '3 วันในห้อง + Capstone ทำต่อเอง', roadmapText: 'US-001: Issue → Design → Flow → MR → Handoff → Review/Merge · Capstone (ทำต่อเอง): follow-up issue → ต่อเติม → ตรวจ regression → MR',
       prerequisites: 'Prerequisites', finalSummary: 'สรุปหลังเรียนครบ',
       guided: 'Guided Mode', hint: 'ดู Hint', guide: 'เปิด Step-by-step', closeMenu: 'ปิดเมนู',
       reset: 'รีเซ็ต Progress', resetConfirm: 'ต้องการลบสถานะการเรียนใน browser นี้หรือไม่?',
@@ -60,7 +60,7 @@
     en: {
       start: 'Start learning', continue: 'Continue where you left off', curriculum: 'View curriculum',
       duration: 'Duration', audience: 'Audience', format: 'Format',
-      audienceValue: 'PM · BA · Product Design', formatValue: '3 days + Capstone · Hands-on', durationValue: '≈ 20.5 hours',
+      audienceValue: 'PM · BA · Product Design', formatValue: '3 days + self-paced Capstone · Hands-on', durationValue: '≈ 18 h + Capstone ≈ 3 h',
       progress: 'Progress', complete: 'Mark lesson complete', completed: 'Completed',
       next: 'Next lesson', previous: 'Previous lesson', copy: 'Copy', copied: 'Copied',
       shareLink: 'Share this lesson', shareSite: 'Share this site', linkCopied: 'Link copied',
@@ -73,15 +73,15 @@
       output: 'Output to carry forward',
       practice: 'Practice', home: 'Home', allLessons: 'Learning Journey',
       heroTag: 'AI-assisted product development for non-developers',
-      heroLead: 'Build and hand off the US-001 prototype with AI, then take on a new clinic-unavailability issue and prove the original flow still works.',
+      heroLead: 'Build, hand off, and merge the US-001 prototype with AI in three days, then take the clinic-unavailability follow-up issue on your own as the capstone and prove the original flow still works.',
       whyTitle: 'Designed to help you supervise AI work — not turn everyone into a developer',
-      whyText: 'Lessons 00–16 build US-001; the capstone applies the same skills to a new issue in that flow. Exercise results stay hidden until you reveal them.',
+      whyText: 'Lessons 00–17 take US-001 all the way to merge; the capstone applies the same skills to a follow-up issue in that flow. Exercise results stay hidden until you reveal them.',
       cards: [
         ['One continuous scenario','No context switching. Every lesson extends the same US-001.'],
         ['Review without deep coding','Use Storybook, browser evidence, errors, and git diff as review surfaces.'],
         ['Resume anytime','Progress, language, theme, and last lesson are stored in your browser.']
       ],
-      roadmapTitle: '3 core days + Capstone after US-001 merges', roadmapText: 'US-001: Issue → Design → Flow → MR → Handoff · Capstone: new issue → change → regression → MR',
+      roadmapTitle: '3 days in class + self-paced Capstone', roadmapText: 'US-001: Issue → Design → Flow → MR → Handoff → Review/Merge · Capstone (self-paced): follow-up issue → change → regression → MR',
       prerequisites: 'Prerequisites', finalSummary: 'Final learning summary',
       guided: 'Guided Mode', hint: 'Reveal hint', guide: 'Show step-by-step', closeMenu: 'Close menu',
       reset: 'Reset progress', resetConfirm: 'Clear learning progress stored in this browser?',
@@ -268,12 +268,12 @@
     const cards = U('cards').map((c,i) => `<article class="card"><div class="card-icon">${['01','02','03'][i]}</div><h3>${esc(c[0])}</h3><p>${esc(c[1])}</p></article>`).join('');
     const dayCards = (state.lang==='th' ? [
       ['วันที่ 1','Requirement → Issue → Git → Worktree → Agent Plan','5 ชม.'],
-      ['วันที่ 2','Next.js → Design → Component/State → Storybook','5.5 ชม.'],
-      ['วันที่ 3','Mock → Flow → Debug → MR → Handoff','5.5 ชม.']
+      ['วันที่ 2','Next.js → Design → Component/State → Storybook','6 ชม.'],
+      ['วันที่ 3','Mock → Flow → Debug → MR → Handoff → Review/Merge','6 ชม.']
     ] : [
       ['Day 1','Requirement → Issue → Git → Worktree → Agent Plan','5 h'],
-      ['Day 2','Next.js → Design → Component/State → Storybook','5.5 h'],
-      ['Day 3','Mocks → Flow → Debug → MR → Handoff','5.5 h']
+      ['Day 2','Next.js → Design → Component/State → Storybook','6 h'],
+      ['Day 3','Mocks → Flow → Debug → MR → Handoff → Review/Merge','6 h']
     ]).map(d => `<article class="card track-card"><span class="day">${d[0]}</span><h3>${d[1]}</h3><p>${d[2]}</p></article>`).join('');
     const journey = state.lang==='th' ? [
       ['Requirement & Git','ระบุผลลัพธ์ก่อนสร้าง'],['Component & Storybook','ตรวจ state ที่มีความหมาย'],
@@ -306,7 +306,7 @@
     <div class="content">
       <section class="section"><div class="section-head"><span class="eyebrow">Learning design</span><h2>${U('whyTitle')}</h2><p>${U('whyText')}</p></div><div class="grid-3">${cards}</div></section>
       <section class="section" id="curriculum"><div class="section-head"><span class="eyebrow">Course map</span><h2>${U('roadmapTitle')}</h2><p>${U('roadmapText')}</p></div><div class="grid-3">${dayCards}</div></section>
-      <section class="section"><div class="final-summary"><span class="eyebrow">Capstone · 3 h</span><h2>${state.lang==='th'?'งานต่อยอด: คลินิกไม่พร้อมรับ Check-in':'Follow-up: unavailable clinic'}</h2><p>${state.lang==='th'?'เปิด Issue ใหม่บน US-001 ที่ merge แล้ว เพิ่ม mock state และ UX สำหรับคลินิกไม่พร้อมรับ พร้อมหลักฐานว่า flow เดิมไม่เสีย':'File a new issue on merged US-001, add mock states and UX for an unavailable clinic, and prove the original flow still works.'}</p><div class="hero-actions"><a class="btn btn-primary" href="#/lesson/capstone">${state.lang==='th'?'ดู Capstone':'View Capstone'} ${icon('arrow',17)}</a></div></div></section>
+      <section class="section"><div class="final-summary"><span class="eyebrow">${state.lang==='th'?'Capstone · ทำต่อเองหลังคอร์ส ≈ 3 ชม.':'Capstone · self-paced after the course ≈ 3 h'}</span><h2>${state.lang==='th'?'งานต่อยอด: คลินิกไม่พร้อมรับ Check-in':'Follow-up: unavailable clinic'}</h2><p>${state.lang==='th'?'หยิบ follow-up issue ที่เปิดไว้ตอน review ในบทที่ 17 มาขยายให้มี AC ครบ เพิ่ม mock state และ UX สำหรับคลินิกไม่พร้อมรับ พร้อมหลักฐานว่า flow เดิมไม่เสีย':'Take the follow-up issue filed during the lesson 17 review, refine its ACs, add mock states and UX for an unavailable clinic, and prove the original flow still works.'}</p><div class="hero-actions"><a class="btn btn-primary" href="#/lesson/capstone">${state.lang==='th'?'ดู Capstone':'View Capstone'} ${icon('arrow',17)}</a></div></div></section>
     </div>`;
     return shell(html, '');
   }
