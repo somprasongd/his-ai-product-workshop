@@ -1521,7 +1521,7 @@ Definition of Done:
         {type:'callout',title:{th:'ในระบบจริงมี Backend แต่คอร์สนี้ไม่จำเป็นต้องรู้ implementation',en:'A real system has a backend, but this course does not need its implementation'},text:{th:'สิ่งที่ Product role ต้องคิดคือ UI ทำอะไรเมื่อ response ช้า, ว่าง, ผิดพลาด หรือสำเร็จ ไม่ใช่ว่า database query เขียนอย่างไร',en:'The product role needs to decide what UI does when responses are slow, empty, erroneous, or successful — not how database queries are written.'}},
         {type:'code',title:{th:'ข้อมูลสมมติที่ใช้ตลอดคอร์ส',en:'The synthetic data we use all course'},
           lead:{th:'ค่าเหล่านี้เป็นค่าตายตัวจาก `src/mocks/patients.ts` และ `src/services/patient-service.ts` จำไว้ได้เลย เพราะเราจะใช้ซ้ำในทุกแบบฝึกหัด สังเกตว่า scenario ไม่ได้เลือกด้วยการพิมพ์คำค้น แต่เป็นค่าที่ส่งให้ฟังก์ชัน `searchPatients` (ปกติคือ `normal`) — ใน Storybook story เป็นคนกำหนดค่านี้',en:'These values are fixed, from `src/mocks/patients.ts` and `src/services/patient-service.ts` — worth memorizing, since we reuse them in every exercise. Note the scenario is not chosen by what you type: it is a value passed to `searchPatients` (normally `normal`), which Storybook stories set.'},
-          label:'Synthetic examples',code:`# scenario: normal (ค่าปกติ / default)\n65000123 -> Somchai Jaidee      # พบข้อมูล / found (AC1)\nJaidee   -> Somchai + Somying   # หลายคน / multiple (AC5)\n99999999 -> []                  # ไม่พบ / no match (AC3)\n\n# scenario อื่น / other scenarios (ตั้งจาก Storybook)\nslow     -> ~1800ms แล้วตอบแบบ normal / then normal results (AC2)\nempty    -> [] ทุกคำค้น / for any query (AC3)\nerror    -> throw "Synthetic patient search error" (AC4)`,
+          label:'Synthetic examples',code:{th:`# scenario: normal (ค่าปกติ)\n65000123 -> Somchai Jaidee      # พบข้อมูล (AC1)\nJaidee   -> Somchai + Somying   # พบหลายคน (AC5)\n99999999 -> []                  # ไม่พบ (AC3)\n\n# scenario อื่น (ตั้งจาก Storybook เท่านั้น)\nslow     -> หน่วง ~1800ms แล้วตอบแบบ normal (AC2)\nempty    -> [] ไม่ว่าจะค้นอะไร (AC3)\nerror    -> throw "Synthetic patient search error" (AC4)`,en:`# scenario: normal (the default)\n65000123 -> Somchai Jaidee      # found (AC1)\nJaidee   -> Somchai + Somying   # multiple matches (AC5)\n99999999 -> []                  # no match (AC3)\n\n# other scenarios (set from Storybook only)\nslow     -> ~1800ms delay, then normal results (AC2)\nempty    -> [] for any query (AC3)\nerror    -> throw "Synthetic patient search error" (AC4)`},
           note:{th:'ทั้งหมดนี้เป็นข้อมูลที่แต่งขึ้นเพื่อการเรียนเท่านั้น ห้ามแทนที่ด้วย HN หรือชื่อผู้ป่วยจริงเด็ดขาด แม้จะทดสอบในเครื่องตัวเองก็ตาม',en:'All of this is invented for training only. Never replace it with a real HN or patient name, not even on your own machine.'}},
         {type:'prompt',title:{th:'Prompt: เพิ่ม scenario ให้ครบทุก state',en:'Prompt: add scenarios covering every state'},
           when:{th:'ใช้เมื่อพบว่า mock ที่มีอยู่ยังบังคับให้เกิดบาง state ไม่ได้ เช่น เห็น Loading ไม่ทันเพราะเร็วเกินไป',en:'Use it when the existing mocks cannot force a state — for example when Loading flashes by too fast to review.'},
@@ -2271,19 +2271,31 @@ Return a short plan with regression risks and wait for my review.`},after:{th:['
           outro:{th:'งานที่เหลือในบทนี้เกิดบน branch นี้ทั้งหมด และจะจบด้วย MR เล็ก ๆ หนึ่งใบเหมือนงานปกติ',en:'Everything else in this lesson happens on this branch and ends with one small MR, like any other work.'}},
         {type:'code',title:{th:'ไฟล์ที่จะได้เมื่อจบบทนี้',en:'The files you will have by the end'},
           lead:{th:'ทั้ง template และ skill เก็บไว้ในโปรเจกต์และ commit เข้า Git ทั้งคู่ เพราะเป็นมาตรฐานของทีม ไม่ใช่การตั้งค่าส่วนตัว จุดที่ต้องเข้าใจคือ skill อยู่ที่ `.agents/skills/` ที่เดียว ส่วน `.claude/skills` เป็นแค่ทางลัด (symlink) ที่ชี้กลับมาที่นั่น',en:'Both the templates and the skills live in the project and go into Git, because they are a team standard rather than personal configuration. The key point: the skills live in exactly one place, `.agents/skills/`, and `.claude/skills` is only a shortcut (a symlink) pointing back at it.'},
-          label:'project layout',code:`docs/
+          label:'project layout',code:{th:`docs/
   templates/
-    issue-template.md      <- สร้างในบทนี้จากแบบฟอร์มบทที่ 02 / created in this lesson from the lesson 02 form
-    mr-template.md         <- สร้างในบทนี้จากแบบฟอร์มบทที่ 15 / created in this lesson from the lesson 15 form
+    issue-template.md      <- สร้างในบทนี้จากแบบฟอร์มบทที่ 02
+    mr-template.md         <- สร้างในบทนี้จากแบบฟอร์มบทที่ 15
 .agents/
-  skills/                  <- ของจริง อยู่ใน Git / the real files, tracked in Git
+  skills/                  <- ของจริง อยู่ใน Git
     create-issue/SKILL.md
     create-mr/SKILL.md
-    review-diff/SKILL.md     <- ห่อ prompt จากบทที่ 14 / wraps the lesson 14 prompt
+    review-diff/SKILL.md     <- ห่อ prompt จากบทที่ 14
 .claude/
-  skills -> ../.agents/skills   <- symlink ต่อเครื่อง / per-checkout link
-AGENTS.md                  <- กติกาที่ใช้ร่วมกันทุกเครื่องมือ / shared rules
-.gitignore                 <- .tmp/ และ .claude/`,
+  skills -> ../.agents/skills   <- symlink ต่อเครื่อง
+AGENTS.md                  <- กติกาที่ใช้ร่วมกันทุกเครื่องมือ
+.gitignore                 <- .tmp/ และ .claude/`,en:`docs/
+  templates/
+    issue-template.md      <- created in this lesson from the lesson 02 form
+    mr-template.md         <- created in this lesson from the lesson 15 form
+.agents/
+  skills/                  <- the real files, tracked in Git
+    create-issue/SKILL.md
+    create-mr/SKILL.md
+    review-diff/SKILL.md     <- wraps the lesson 14 prompt
+.claude/
+  skills -> ../.agents/skills   <- per-checkout link
+AGENTS.md                  <- shared rules
+.gitignore                 <- .tmp/ and .claude/`},
           note:{th:'เหตุผลที่แยกสองที่: `.agents/skills/` เป็นกลางและใช้ได้กับทุกเครื่องมือ ส่วนโฟลเดอร์ `.claude/` เป็นตำแหน่งเฉพาะของ Claude Code ซึ่งเป็นของแต่ละเครื่อง จึง ignore ทั้งโฟลเดอร์ ไม่ commit ขึ้นไป เพราะ symlink ที่สร้างบน mac กับบน Windows ไม่เหมือนกัน และไฟล์ตั้งค่ารายเครื่องอย่าง `.claude/settings.local.json` ก็ไม่ควรขึ้น Git ส่วน `.tmp/` คือที่พักของเนื้อหาที่ Agent ร่างก่อนส่ง เป็นไฟล์ชั่วคราวจึง ignore เช่นกัน',en:'Why two places: `.agents/skills/` is tool-neutral and works for everyone, while the `.claude/` folder is Claude Code’s own location and belongs to each checkout — so the whole folder goes into `.gitignore` rather than into Git, because the link is created differently on macOS and on Windows, and per-machine settings such as `.claude/settings.local.json` do not belong in Git either. `.tmp/` is scratch space for bodies the agent drafts before sending, temporary and likewise ignored.'}},
         {type:'code',title:{th:'ตัวอย่าง SKILL.md สำหรับสร้าง Issue',en:'Example SKILL.md for filing an issue'},
           lead:{th:'อ่านให้ออกว่าทุกบรรทัดกำลังทำอะไร: ส่วนหัวบอกว่า skill นี้ชื่ออะไรและใช้ตอนไหน ส่วนเนื้อหาคือขั้นตอนที่ Agent ต้องเดินตาม และท้ายสุดคือข้อห้าม ตัวอย่างทั้งสามมีทั้งสองภาษาให้สลับ — เลือกภาษาเดียวสำหรับไฟล์จริงและใช้เวอร์ชันนั้นตลอดทีม และเขียน description เป็นบรรทัดเดียวสั้น ๆ (ไม่เกินราว 250 ตัวอักษร) เพราะบางเครื่องมืออ่าน description ที่ตัดบรรทัดไม่ได้ และตัดคำอธิบายให้สั้นลงตอนเลือก skill',en:'Read what each part does: the header says what this skill is and when to use it, the body is the sequence the agent must follow, and the end is the list of prohibitions. All three examples come in both Thai and English — pick one language for the real files and keep the whole team on it. Keep the description on one short line, roughly under 250 characters: some tools cannot read a wrapped description, and tools truncate it when matching.'},
