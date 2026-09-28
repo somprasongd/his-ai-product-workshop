@@ -903,27 +903,41 @@ save. Used scarcely, so it never competes with clinical data.
           when:{th:'ใช้ภาพอ้างอิง `docs/design/opd-check-in-reference.png` ใน starter แนบภาพเข้าแชทพร้อม prompt ภาพนี้บอกภาพลักษณ์ แต่ไม่ได้บอกพฤติกรรมทั้งหมด — preview/confirmation ต้องอ่านจาก requirement',en:'Attach the starter image `docs/design/opd-check-in-reference.png` with this prompt. It shows visual language, not the whole behavior — read the requirement for preview/confirmation.'},
           prompt:{th:`อ่าน AGENTS.md, docs/requirements/US-001-opd-checkin-th.md และภาพ docs/design/opd-check-in-reference.png ที่แนบมา ก่อนแก้ไฟล์
 
+ก่อนเขียน DESIGN.md ให้รัน \`npx @google/design.md spec\` เพื่อดู schema ปัจจุบันจริง ๆ (ชื่อ section, ลำดับ section, property ที่ component รองรับ เช่น backgroundColor/textColor/typography/rounded/padding/size/height/width — ไม่มี borderColor) แล้วใช้ schema นั้นเป็นหลัก ห้ามเดา schema เอง
+
 สร้าง DESIGN.md ที่ root สำหรับ US-001 โดยมี:
-- YAML front matter ภายใน --- สองบรรทัด: name, colors, typography, spacing และ component token เท่าที่ภาพรองรับ
-- ข้อความสั้น ๆ อธิบายหน้าที่ของ token และเหตุผลที่ใช้
-- Known Gaps สำหรับค่า/สถานะที่ภาพบอกไม่ได้ รวมถึง Preview, Error, Loading และ responsive behavior
-- คำแนะนำเรื่อง contrast, focus และข้อความ error ที่ทีม Design ต้องตรวจ
+- YAML front matter ภายใน --- สองบรรทัด: name, colors, typography, spacing, rounded (border-radius scale ถ้าภาพมีให้เห็นชัด) และ component token เท่าที่ภาพรองรับ
+  - สี border/outline ที่ไม่มี property รองรับใน component schema ให้อธิบายเป็นข้อความ (prose) แทนการฝืนใส่ token
+  - color token ทุกตัวที่ define ต้องถูกอ้างอิงจากอย่างน้อยหนึ่ง component เพื่อไม่ให้เกิด orphaned-token warning ถ้า token ไหนยังไม่มี component ให้ใช้ ให้เพิ่ม component ที่ใช้จริง (เช่น page background, divider, label text) แทนการปล่อยลอย
+  - \`omitted\` ใช้ได้เฉพาะ section ที่มี token schema เท่านั้น (colors/typography/spacing/rounded/components) ห้ามใช้กับ prose-only section เช่น Elevation & Depth
+- ข้อความสั้น ๆ อธิบายหน้าที่ของ token และเหตุผลที่ใช้ พร้อมระบุว่า sample มาจากภาพจริง (พิกเซล) หรือมาจากไฟล์ในโค้ดที่มีอยู่แล้ว (เช่น font-family ใน globals.css) จุดไหนเป็นการวัดค่าประมาณ ให้บอกไว้ตรง ๆ
+- Known Gaps สำหรับค่า/สถานะที่ภาพบอกไม่ได้ รวมถึง Preview, Error, Loading, Validation, Success และ responsive behavior
+- คำแนะนำเรื่อง contrast, focus และข้อความ error ที่ทีม Design ต้องตรวจ — ให้คำนวณ contrast ratio จริงตามสูตร WCAG (ไม่ใช่แค่กะว่าน่าจะผ่าน) แล้วรายงานตัวเลขที่ได้ พร้อมเทียบกับเกณฑ์ AA (4.5:1 สำหรับ text ปกติ, 3:1 สำหรับ UI component/focus indicator)
 
 ภาพเป็น visual reference เท่านั้น ให้ requirement ตัดสินพฤติกรรม และใช้ mock data จาก src/mocks/patients.ts สำหรับตัวอย่างที่ตรวจซ้ำได้ ห้ามเดาเลข HN/อายุจากภาพ
 ห้ามแก้หน้าเว็บหรือ component และห้าม commit
-รัน npx @google/design.md lint DESIGN.md แล้วรายงาน error/warning จริง แก้ error; ถ้า warning ต้องตัดสินใจด้าน design ให้ระบุคำถามที่ต้องให้คนตอบ อย่าแก้ด้วยการเดา
-สรุป token ที่มั่นใจ, สิ่งที่ต้องยืนยัน และ path ที่เปลี่ยน`,en:`Read AGENTS.md, docs/requirements/US-001-opd-checkin.md, and the attached docs/design/opd-check-in-reference.png before editing.
+
+รัน npx @google/design.md lint DESIGN.md แล้วรายงาน error/warning จริง แก้ error และ warning ที่เป็นเรื่องกลไก (เช่น orphaned-tokens, unknown-omission) ให้เรียบร้อยจนเหลือ 0 error / 0 warning; ถ้า warning ไหนต้องใช้การตัดสินใจด้าน design (เช่น เลือกสี error, breakpoint, ข้อความ validation) ให้ระบุเป็นคำถามที่ต้องให้คนตอบ อย่าแก้ด้วยการเดา
+
+สรุป token ที่มั่นใจ (พร้อมที่มา), สิ่งที่ต้องยืนยัน, ผลลัพธ์ lint (error/warning count), และ path ที่เปลี่ยน`,en:`Read AGENTS.md, docs/requirements/US-001-opd-checkin.md, and the attached docs/design/opd-check-in-reference.png before editing.
+
+Before writing DESIGN.md, run \`npx @google/design.md spec\` to see the actual current schema (section names, section order, and the properties each component accepts — backgroundColor/textColor/typography/rounded/padding/size/height/width — note there is no borderColor). Treat that schema as authoritative; do not guess the schema yourself.
 
 Create a root DESIGN.md for US-001 with:
-- YAML front matter between two --- lines: name, colors, typography, spacing, and component tokens supported by the image
-- Brief prose explaining each token's job and rationale
-- Known Gaps for values or states the image cannot specify, including Preview, Error, Loading, and responsive behavior
-- Notes for design review on contrast, focus, and error copy
+- YAML front matter between two --- lines: name, colors, typography, spacing, rounded (a border-radius scale, if the image shows one clearly), and component tokens supported by the image
+  - For border/outline colors with no matching property in the component schema, describe them in prose instead of forcing them into a token
+  - Every defined color token must be referenced by at least one component, to avoid an orphaned-token warning. If a token has no component to use it yet, add a component that genuinely uses it (e.g. page background, divider, label text) rather than leaving it unreferenced
+  - \`omitted\` may only be used on sections that have a token schema (colors/typography/spacing/rounded/components); never on prose-only sections such as Elevation & Depth
+- Brief prose explaining each token's job and rationale, noting whether the sample value comes from the actual image (measured in pixels) or from an existing file in the code (e.g. font-family in globals.css). Flag any value that is an approximation, plainly
+- Known Gaps for values or states the image cannot specify, including Preview, Error, Loading, Validation, Success, and responsive behavior
+- Notes for design review on contrast, focus, and error copy — calculate the actual contrast ratio using the WCAG formula (not just a guess that it probably passes), report the resulting numbers, and compare them against the AA threshold (4.5:1 for normal text, 3:1 for UI components/focus indicators)
 
 The image is only a visual reference. The requirement decides behavior; src/mocks/patients.ts supplies repeatable example data. Do not infer HN or age from pixels.
 Do not change pages or components. Do not commit.
-Run npx @google/design.md lint DESIGN.md and report the actual errors and warnings. Fix errors; if a warning requires a design decision, ask the human rather than guessing.
-Summarize confirmed tokens, open decisions, and changed paths.`},
+
+Run npx @google/design.md lint DESIGN.md and report the actual errors and warnings. Fix errors and any mechanical warnings (such as orphaned-tokens, unknown-omission) until you reach 0 errors / 0 warnings; if a warning requires a design decision (such as picking an error color, a breakpoint, or validation copy), raise it as a question for a human rather than guessing.
+
+Summarize the confirmed tokens (with their source), what still needs confirmation, the lint result (error/warning count), and the changed paths.`},
           after:{th:['เปิด DESIGN.md แล้วเทียบกับภาพและ requirement แยกกัน','ตรวจว่า YAML front matter ครอบ token ทั้งหมด ไม่จบก่อน token','อ่าน lint output จริง: error ต้องแก้ ส่วน warning ที่เป็น design decision ให้จดไว้','ตรวจว่าไม่มี HTML ทดลองหรือไฟล์อื่นหลุดเข้ามา'],en:['Compare DESIGN.md separately against the image and the requirement','Ensure the YAML front matter includes every token and does not close early','Read the real lint output: fix errors and record design-decision warnings','Confirm no scratch HTML or unrelated files were added']}},
         {type:'callout',tone:'info',title:{th:'design.md lint: key และชื่อที่ระบบรู้จัก',en:'design.md lint: the keys and names the tool accepts'},text:{th:'ตัว lint ของ `@google/design.md` รับ group หลัก 5 ตัวคือ `colors`, `typography`, `spacing`, `rounded` และ `components` — ตั้งชื่อ group อื่น เช่น `radius` จะขึ้น error ทันที ส่วน sub-token ใน `components` ที่รับได้คือ `backgroundColor`, `textColor`, `typography`, `rounded`, `padding`, `size`, `height`, `width` กฎอย่าง border ให้เขียนเป็นข้อความ prose ใต้ front matter แทน ถ้าเจอ warning `orphaned-tokens` (token ที่ยังไม่มี component ไหนอ้างถึง) ไม่ต้องรีบแก้ จดไว้เป็นคำถามให้ Design ตัดสินตามที่ prompt ข้างบนบอก',en:'The `@google/design.md` linter accepts five top-level groups: `colors`, `typography`, `spacing`, `rounded`, and `components` — any other group name such as `radius` fails immediately. Inside `components`, the accepted sub-tokens are `backgroundColor`, `textColor`, `typography`, `rounded`, `padding`, `size`, `height`, and `width`; rules like border belong in prose below the front matter instead. An `orphaned-tokens` warning (a token no component references yet) is not urgent — record it as a design question for the human, as the prompt above says.'}},
         {type:'list',title:{th:'Human ต้องตรวจอะไรก่อนอนุมัติ DESIGN.md',en:'What a human checks before approving DESIGN.md'},items:{th:['ค่า design ที่ภาพยืนยันได้สอดคล้องกับภาพ; ค่าที่ภาพบอกไม่ได้อยู่ใน Known Gaps','ชื่อ token สื่อหน้าที่ (เช่น primary, danger) ไม่ใช่ชื่อดิบ (blue1)','ทุก token มีคำอธิบายเหตุผลอย่างน้อยหนึ่งประโยค','Known Gaps เขียนตรงไปตรงมา ไม่ปิดบังว่ามีอะไรยังไม่ครอบคลุม','ไม่มีการเดาสีหรือแบรนด์ใหม่ที่ไม่มีในภาพต้นฉบับ','ผล lint ไม่มี error และ warning ที่ต้องตัดสินใจถูกบันทึกไว้ให้คนตรวจ'],en:['Values visible in the image are consistent with it; uncertain values are listed in Known Gaps','Token names describe a job (primary, danger), not a raw label (blue1)','Every token has at least one sentence of reasoning attached','Known Gaps is written honestly, not hiding what is uncovered','Nothing invents a color or brand element absent from the source image','The final lint run has no errors; any warnings needing a design decision are recorded for human review']}},
