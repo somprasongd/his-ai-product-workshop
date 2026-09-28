@@ -124,7 +124,7 @@ Mock ที่ดีต้องทำซ้ำได้: input เดิมใ�
 
 “handoff จะดีจริงหรือไม่ รู้ได้ตอนคนอื่นเปิดงานบนเครื่องของเขาเอง บทนี้เราจับคู่ ทุกคนเป็นเจ้าของ MR ของตัวเอง และเป็น Developer ของ MR เพื่อน ในบทบาท Developer ให้ clone repo เพื่อนลงโฟลเดอร์ใหม่ `review-<ชื่อเพื่อน>` ใช้ `gh pr checkout` หรือ `glab mr checkout` แล้วเปิดงานตาม handoff อย่างเดียว ห้ามถามเจ้าของงาน จากนั้นไล่ AC → หลักฐานทีละข้อ
 
-comment ให้ครบสามแบบ: ต้องแก้ พร้อม AC และขั้นทำซ้ำ, ต้องตอบ, และนอก scope เช่น “ถ้าคลินิกปิดรับ check-in ชั่วคราวล่ะ” เจ้าของงานตอบทุกข้อ แก้บน branch เดิมแล้ว push ส่วนเรื่องนอก scope ไม่ขยาย MR นี้ แต่เปิดเป็น follow-up issue ซึ่งจะเป็นโจทย์ Capstone ที่ทุกคนทำต่อเองหลังคอร์ส เมื่อแก้ครบ Developer approve แล้ว merge ด้วย merge commit Issue #1 จะปิดเองจาก `Closes #1` แล้วเจ้าของงานเก็บกวาด worktree กับ branch ถือว่าวงจรของ US-001 จบครบในวันนี้”
+comment ให้ครบสามแบบ: ต้องแก้ พร้อม AC และขั้นทำซ้ำ, ต้องตอบ, และนอก scope เช่น “ถ้าคลินิกปิดรับ check-in ชั่วคราวล่ะ” เจ้าของงานตอบทุกข้อ แก้บน branch เดิมแล้ว push ส่วนเรื่องนอก scope ไม่ขยาย MR นี้ แต่เปิดเป็น follow-up issue ซึ่งจะเป็นโจทย์ Capstone ที่ทุกคนทำต่อเองหลังคอร์ส เมื่อแก้ครบ Developer approve แล้ว merge ด้วย merge commit Issue #1 จะปิดเองจาก `Closes #1` แล้วเจ้าของงานเก็บกวาด worktree กับ branch ถือว่าวงจรของ US-001 จบครบในวันนี้ ถ้าใครไม่มีคู่ ให้เปิด Agent session ใหม่ในโฟลเดอร์ `review-self` เล่นบท Developer ตาม handoff แล้ว merge เองพร้อม comment ว่า Self-merged เพราะ approve งานตัวเองไม่ได้ทั้ง GitHub และ GitLab และห้ามสร้างบัญชี GitHub ที่สองมาเป็น reviewer”
 
 ## สไลด์ 21 · บท 18: Capstone ต่อยอด US-001
 
