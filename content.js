@@ -1262,38 +1262,44 @@ Summarize how you addressed each point.`},
           note:{th:'สังเกตว่าไม่มีคำว่า component, props, หรือชื่อฟังก์ชันเลย — นี่คือสิ่งที่ทำให้ BA เขียนเองได้',en:'Notice there is no mention of components, props, or function names — that is what makes it writable by a BA.'}},
         {type:'prompt',title:{th:'Prompt: แปลง Scenario เป็น Interaction Test',en:'Prompt: turn a scenario into an interaction test'},
           when:{th:'ใช้เมื่อคุณเขียน Given/When/Then เสร็จแล้ว และ component ตัวนั้นผ่าน review สถานะพื้นฐานมาแล้ว อย่าเพิ่งทำ interaction ตั้งแต่ component ยังไม่นิ่ง เพราะจะต้องแก้ test ซ้ำหลายรอบ',en:'Use it once your Given/When/Then is written and the component has already passed basic state review. Do not add interactions while the component is still shifting — you will rewrite the test repeatedly.'},
-          prompt:{th:`เพิ่ม interaction test ให้ component PatientSearch ใน Storybook
+          prompt:{th:`เพิ่ม interaction test ให้ component PatientSearch (standalone ไม่ใช่ทั้งหน้า check-in flow) ใน Storybook สำหรับ AC1 — Search patient ในเอกสาร docs/requirements/US-001-opd-checkin.md
 
-Business scenario ที่ต้องทดสอบ
-Given หน้าค้นหาผู้ป่วยแสดงอยู่
+Business scenario ที่ต้องทดสอบ (อ้างอิง AC1)
+Given PatientSearch component แสดงอยู่แบบ standalone
 When ผู้ใช้กรอก HN "65000123"
 And กดปุ่มค้นหา
 Then ต้องแสดงผู้ป่วยชื่อ "Somchai Jaidee"
 
 ข้อกำหนด
-- ใช้ mock service และข้อมูลตายตัวที่มีอยู่แล้วในโปรเจกต์
-- เขียนให้อ่านแล้วเทียบกับ acceptance criteria ได้ง่าย
-- ห้ามแก้ logic ของ component เพื่อให้ test ผ่าน ถ้า test ไม่ผ่านให้รายงานกลับมาก่อน
+- ใช้ mock service และข้อมูลตายตัวที่มีอยู่แล้วในโปรเจกต์: ห้าม override prop \`searchPatients\` ของ component ด้วย fake function ให้ story นี้ปล่อยให้ component เรียก service จริง (src/services/patient-service.ts) กับ mock data จริง (src/mocks/patients.ts)
+- เพิ่มเป็น story ใหม่เท่านั้น ห้ามแก้ไข/ลบ story เดิมที่มีอยู่ (Default, Loading, Empty, WithResults, Error) และห้ามแก้ logic ของ component เพื่อให้ test ผ่าน — ถ้า test ไม่ผ่าน ให้รายงานกลับมาก่อน อย่าแก้เอง
+- ตั้งชื่อ/คอมเมนต์ story ให้อ่านแล้วเทียบกับ AC1 ได้ทันที (เช่น ใส่ Given/When/Then เป็นคอมเมนต์ และอ้างอิงเลข AC ในชื่อ story)
 - ห้าม commit
-- ถ้า userEvent.type เติมช่องแล้ว step ขึ้นเขียวแต่ React ไม่รับค่า (ช่องยังว่าง) ให้ใช้ fireEvent.change(input, { target: { value: "65000123" } }) เติมค่าแทน
+- ถ้า userEvent.type เติมช่องแล้ว step ขึ้นเขียวแต่ React ไม่รับค่า (ช่องยังว่างจริงเวลาดูผลลัพธ์) ให้ลองใช้ fireEvent.change(input, { target: { value: "65000123" } }) แทน — ใช้เป็นทางเลือกสำรองเท่านั้น ไม่ต้องใช้ถ้า userEvent.type ทำงานถูกต้อง
 
-บอกด้วยว่าจะเปิดดูผลการทดสอบนี้ใน Storybook ได้อย่างไร`,en:`Add an interaction test for the PatientSearch component in Storybook.
+Definition of Done
+- เปิด Storybook แล้ว Interactions panel ของ story นี้ต้องขึ้นสถานะ PASS ก่อนถึงจะถือว่าเสร็จ
+- story เดิมทั้งหมดต้องยัง PASS เหมือนเดิม (ไม่มี regression)
+- บอกด้วยว่าจะเปิดดูผลการทดสอบนี้ใน Storybook ได้อย่างไร (path ที่ต้องคลิกใน sidebar)`,en:`Add an interaction test for the PatientSearch component (standalone, not the whole check-in flow page) in Storybook for AC1 — Search patient, from docs/requirements/US-001-opd-checkin.md.
 
-Business scenario to verify:
-Given the patient search screen is displayed
+Business scenario to verify (per AC1):
+Given the PatientSearch component is displayed standalone
 When the user enters HN "65000123"
 And clicks the search button
-Then the patient "Somchai Jaidee" must be displayed
+Then a patient named "Somchai Jaidee" must be displayed
 
 Constraints:
-- Use the mock service and fixed data already present in the project
-- Keep it readable enough to compare against the acceptance criteria
-- Do not change component logic to make the test pass; if it fails, report back first
+- Use the existing mock service and fixed data already in the project: do not override the component's \`searchPatients\` prop with a fake function — let this story call the real service (src/services/patient-service.ts) against the real mock data (src/mocks/patients.ts)
+- Add this as a new story only. Do not modify or remove the existing stories (Default, Loading, Empty, WithResults, Error), and do not change component logic to make the test pass — if it fails, report back first; do not fix it yourself
+- Name and comment the story so it maps directly back to AC1 (e.g. include the Given/When/Then as a comment and reference the AC number in the story name)
 - Do not commit
-- If userEvent.type reports a passing step but React never receives the value (the field stays empty), fill the field with fireEvent.change(input, { target: { value: "65000123" } }) instead
+- If userEvent.type reports a passing step but React never receives the value (the field is still empty when you check the result), try fireEvent.change(input, { target: { value: "65000123" } }) instead — use this only as a fallback; skip it if userEvent.type already works correctly
 
-Also tell me how to view this test running inside Storybook.`},
-          after:{th:['เปิด Storybook แล้วดู panel ที่แสดงขั้นตอน interaction ทีละขั้น ว่าตรงกับ Given/When/Then ที่เขียนไว้','ถ้า test ผ่านตั้งแต่ครั้งแรกโดยที่ component ยังไม่มีพฤติกรรมนั้นจริง ให้สงสัยไว้ก่อนและตรวจซ้ำ','ลองแก้ค่า HN ใน scenario เป็นค่าที่ไม่มีในระบบ แล้วดูว่า test fail อย่างที่ควรเป็นหรือไม่'],en:['Open Storybook and read the interactions panel step by step against your Given/When/Then','If it passes on the first try while the component does not really have that behaviour, be suspicious and re-check','Change the HN to a value that does not exist and confirm the test fails as it should']}},
+Definition of Done:
+- Open Storybook and confirm this story's Interactions panel shows PASS before considering it done
+- All existing stories must still PASS (no regressions)
+- Also tell me how to view this test's result in Storybook (the sidebar path to click)`},
+          after:{th:['เปิด Storybook แล้วดู panel ที่แสดงขั้นตอน interaction ทีละขั้น ว่าตรงกับ Given/When/Then ที่เขียนไว้','ตรวจว่า story เดิมทั้งหมด (Default, Loading, Empty, WithResults, Error) ยัง PASS เหมือนเดิม ไม่มี regression','ถ้า test ผ่านตั้งแต่ครั้งแรกโดยที่ component ยังไม่มีพฤติกรรมนั้นจริง ให้สงสัยไว้ก่อนและตรวจซ้ำ','ลองแก้ค่า HN ใน scenario เป็นค่าที่ไม่มีในระบบ แล้วดูว่า test fail อย่างที่ควรเป็นหรือไม่'],en:['Open Storybook and read the interactions panel step by step against your Given/When/Then','Confirm all existing stories (Default, Loading, Empty, WithResults, Error) still PASS with no regressions','If it passes on the first try while the component does not really have that behaviour, be suspicious and re-check','Change the HN to a value that does not exist and confirm the test fails as it should']}},
         {type:'commands',title:{th:'Commit checkpoint 2 · interaction test ที่ผ่านแล้ว',en:'Commit checkpoint 2 · the passing interaction test'},
           lead:{th:'สามคำสั่งนี้ **คุณเป็นคนรันเอง** ไม่ใช่ Agent (prompt ทุกอันในคอร์สห้าม Agent commit) และรันจากในโฟลเดอร์ worktree `wt-us001-patient-checkin` ทำหลังจากเห็น interaction วิ่งจบเป็นสีเขียวใน Storybook ด้วยตาตัวเองแล้ว',en:'You run these three yourself — not the agent (every prompt in this course forbids the agent from committing) — from inside the `wt-us001-patient-checkin` worktree, once you have watched the interaction run green in Storybook with your own eyes.'},
           steps:[
