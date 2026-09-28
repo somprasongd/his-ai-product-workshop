@@ -22,9 +22,9 @@ The diagram shows the job of each tool. The agent explores and edits files; Git 
 
 ## Slide 04 · Lesson 01: Mental Model
 
-“Here is the path for one piece of work. A requirement becomes an issue with checkable criteria. We then work on its branch and worktree. The agent helps create a component and its Storybook story, assembles the page, and runs checks. A person inspects the UI and the diff before the work goes into an MR.
+“Here is the path for one piece of work. A requirement becomes an issue with checkable criteria. We then work on its branch and worktree. The agent helps create a component and its Storybook story, assembles the page, and runs checks. A person inspects the UI and the diff before the work goes into an MR, which a developer reviews before merge.
 
-The agent can move quickly, but it cannot decide what the requirement means on our behalf. People define the outcome, keep the scope clear, and approve a plan before files change. ‘The agent says it is done’ is not completion. We still need to see the actual UI and compare it with the acceptance criteria. Point to the diagram and ask: which steps need human judgment, and which steps can we delegate to the agent?”
+The agent can move quickly, but it cannot decide what the requirement means on our behalf. People define the outcome, keep the scope clear, and approve a plan before files change. ‘The agent says it is done’ is not completion. We still need to see the actual UI and compare it with the acceptance criteria. Point to the diagram and ask: which steps need human judgment (the hexagons), and which steps can we delegate to the agent?”
 
 ## Slide 05 · Lesson 02: Requirement → Issue
 
