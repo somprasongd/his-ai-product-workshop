@@ -68,7 +68,7 @@ Then use that same file to build a `/design` page where the values can be inspec
 
 “The whole check-in page is too large to review as one unit. Break it into PatientSearch (keeping the result list inside it, because results change with the search state), CheckInForm, CheckInPreview, and CheckInSuccess. Give each part the user-visible states it needs, such as default, loading, empty, results, and error.
 
-Write your own first draft before asking the agent to critique it. Every state should trace to an acceptance criterion. If a state has no user impact or criterion, we do not need another story just to increase the count. PM and BA inspect the business rules. Product Design inspects copy, hierarchy, focus, and narrow screens. The output of this lesson is a component and state map that another person can review.”
+Write your own first draft before asking the agent to critique it. Every state should trace to an acceptance criterion. If a state has no user impact or criterion, we do not need another story just to increase the count. PM and BA inspect the business rules. Product Design inspects copy, hierarchy, focus, and narrow screens. The output of this lesson is a component and state map, every state tagged with its AC, posted on the issue so the next lesson can compare against it.”
 
 ## Slide 12 · Lesson 09: Storybook Review
 
