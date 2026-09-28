@@ -110,9 +110,9 @@ Mock ที่ดีต้องทำซ้ำได้: input เดิมใ�
 
 ## สไลด์ 18 · บท 15: ส่งมอบผ่าน Draft MR
 
-“MR คือคำอธิบายงานให้คนที่ไม่ได้อยู่ในห้องนี้ตรวจต่อได้ เริ่มจากเก็บงานค้าง ตรวจ quality gates แล้ว sync branch กับ `main` เมื่อพร้อมจึง push feature branch และเปิด **Draft MR** ที่อธิบายเป้าหมาย, scope, states, ผลตรวจ, ขอบเขตของ mock และวิธีรัน
+“MR คือคำอธิบายงานให้คนที่ไม่ได้อยู่ในห้องนี้ตรวจต่อได้ เริ่มจากเก็บงานค้าง ตรวจ quality gates แล้ว sync branch กับ `main` เมื่อพร้อมจึง push feature branch และเปิด **Draft MR** ด้วย `gh pr create --draft` หรือ `glab mr create --draft` ที่อธิบายเป้าหมาย, scope, states, ผลตรวจ, ขอบเขตของ mock และวิธีรัน ถ้าเปิด PR จากหน้าเว็บของ fork ให้ตรวจว่า base repository เป็น repo ของตัวเอง ไม่ใช่ของผู้สอน
 
-ให้ใส่ `Closes #<เลข Issue>` ที่ตรงกับ branch และ commit footer เสมอ Agent ช่วยร่าง MR จาก diff จริงได้ แต่คนต้องแก้ให้ตรงกับสิ่งที่ทดสอบจริง หาก reviewer ขอแก้ ให้แก้, ตรวจซ้ำ, commit และ push บน branch เดิม การ merge เข้าสู่ `main` เป็นการตัดสินใจของผู้ตรวจ หลัง merge จึงค่อยทำ cleanup ของ branch และ worktree”
+ให้ใส่ `Closes #<เลข Issue>` ที่ตรงกับ branch และ commit footer เสมอ Agent ช่วยร่าง MR จาก diff จริงได้ แต่คนต้องแก้ให้ตรงกับสิ่งที่ทดสอบจริง หาก reviewer ขอแก้ ให้แก้, ตรวจซ้ำ, commit และ push บน branch เดิม การ merge เข้าสู่ `main` เป็นการตัดสินใจของผู้ตรวจ MR ยังเป็น Draft จนกว่าจะเติม Handoff ในบทถัดไป หลัง merge จึงค่อยทำ cleanup ของ branch และ worktree”
 
 ## สไลด์ 19 · บท 16: ส่งต่อ Developer
 

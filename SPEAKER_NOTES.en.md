@@ -110,9 +110,9 @@ Then run lint, test, and build using this project's commands; `npm run test` cov
 
 ## Slide 18 · Lesson 15: Deliver through a Draft MR
 
-“An MR tells a reviewer who was not in this room what changed and how to inspect it. Finish any remaining work, pass the quality checks, and sync the feature branch with `main`. Then push that branch and open a **Draft MR** describing the goal, scope, states, checks performed, mock boundary, and run steps.
+“An MR tells a reviewer who was not in this room what changed and how to inspect it. Finish any remaining work, pass the quality checks, and sync the feature branch with `main`. Then push that branch and open a **Draft MR** with `gh pr create --draft` or `glab mr create --draft`, describing the goal, scope, states, checks performed, mock boundary, and run steps. If you open the PR from a fork’s web page, make sure the base repository is your own, not the instructor’s.
 
-Add `Closes #<your issue number>` and verify that the same number appears in the branch and commit footers. The agent can draft MR text from the real diff, but a person must correct it to match what was actually verified. If review requests changes, fix them on the same branch, check again, commit, and push. The reviewer decides when to merge into `main`. Clean up the branch and worktree after the merge.”
+Add `Closes #<your issue number>` and verify that the same number appears in the branch and commit footers. The agent can draft MR text from the real diff, but a person must correct it to match what was actually verified. If review requests changes, fix them on the same branch, check again, commit, and push. The MR stays a Draft until the next lesson adds the handoff. The reviewer decides when to merge into `main`. Clean up the branch and worktree after the merge.”
 
 ## Slide 19 · Lesson 16: Developer Handoff
 
