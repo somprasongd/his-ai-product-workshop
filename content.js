@@ -929,23 +929,25 @@ Summarize confirmed tokens, open decisions, and changed paths.`},
         {type:'list',title:{th:'Human ต้องตรวจอะไรก่อนอนุมัติ DESIGN.md',en:'What a human checks before approving DESIGN.md'},items:{th:['ค่า design ที่ภาพยืนยันได้สอดคล้องกับภาพ; ค่าที่ภาพบอกไม่ได้อยู่ใน Known Gaps','ชื่อ token สื่อหน้าที่ (เช่น primary, danger) ไม่ใช่ชื่อดิบ (blue1)','ทุก token มีคำอธิบายเหตุผลอย่างน้อยหนึ่งประโยค','Known Gaps เขียนตรงไปตรงมา ไม่ปิดบังว่ามีอะไรยังไม่ครอบคลุม','ไม่มีการเดาสีหรือแบรนด์ใหม่ที่ไม่มีในภาพต้นฉบับ','ผล lint ไม่มี error และ warning ที่ต้องตัดสินใจถูกบันทึกไว้ให้คนตรวจ'],en:['Values visible in the image are consistent with it; uncertain values are listed in Known Gaps','Token names describe a job (primary, danger), not a raw label (blue1)','Every token has at least one sentence of reasoning attached','Known Gaps is written honestly, not hiding what is uncovered','Nothing invents a color or brand element absent from the source image','The final lint run has no errors; any warnings needing a design decision are recorded for human review']}},
         {type:'prompt',title:{th:'Prompt: สร้างหน้า Style Guide ที่ /design จาก DESIGN.md',en:'Prompt: build the /design style guide page from DESIGN.md'},
           when:{th:'ใช้หลังจาก DESIGN.md ผ่านการตรวจข้างบนแล้วเท่านั้น ถ้า DESIGN.md ยังไม่นิ่ง หน้า Style Guide ที่สร้างจะต้องมาแก้ซ้ำตามไปด้วย',en:'Use it only after DESIGN.md has passed the checklist above. If DESIGN.md is still shifting, the style guide page will just have to be redone along with it.'},
-          prompt:{th:`อ่าน DESIGN.md ที่ root ของโปรเจกต์ แล้วสร้างหน้า Style Guide ใหม่ที่ route /design
+          prompt:{th:`อ่าน DESIGN.md ที่ root ของโปรเจกต์ แล้วสร้างหน้า Style Guide ใหม่ที่ route /design (src/app/design/page.tsx ตาม Next.js App Router ที่โปรเจกต์นี้ใช้)
 
 ข้อกำหนด
 - ดึงค่าสี ตัวอักษร ระยะห่าง และ component ทุกอย่างจาก DESIGN.md เท่านั้น ห้าม hardcode ค่าใหม่ที่ไม่มีในไฟล์
 - หน้าต้องแสดง: สีทุกตัวพร้อมชื่อและ hex, ตัวอย่างตัวอักษรแต่ละระดับ, สเกล spacing เป็นภาพเทียบขนาด, ตัวอย่าง component ที่ประกาศไว้ (เช่น button-primary) ในสถานะปกติ
 - แสดงหัวข้อ Known Gaps จาก DESIGN.md ไว้ท้ายหน้าด้วย ไม่ต้องซ่อน
-- ห้ามแก้ไฟล์อื่นนอกจากหน้านี้ (และไฟล์ token/style ที่จำเป็นเพื่อให้ token ใช้ซ้ำได้จริงในโค้ด)
-- ห้าม commit
+- ห้ามแก้ไฟล์อื่นนอกจากหน้านี้ (และไฟล์ token/style ที่จำเป็นเพื่อให้ token ใช้ซ้ำได้จริงในโค้ด เช่น globals.css)
+- หน้านี้เป็น living style guide ไม่ใช่ product component จึงไม่ต้องสร้าง Storybook story คู่ให้
+- ห้ามเพิ่ม backend/database และห้าม commit
 
-บอกด้วยว่าเปิดดูผลลัพธ์ที่ URL ไหน`,en:`Read DESIGN.md at the project root and build a new style guide page at the route /design.
+บอกด้วยว่าเปิดดูผลลัพธ์ที่ URL ไหน`,en:`Read DESIGN.md at the project root and build a new style guide page at the route /design (src/app/design/page.tsx, following this project's Next.js App Router).
 
 Constraints:
 - Pull every color, type style, spacing value, and component shown from DESIGN.md only; never hardcode a value that is not in the file
 - The page must show: every color with its name and hex, a sample of each type level, a visual spacing scale, and a live example of each declared component (e.g. button-primary) in its normal state
 - Include the Known Gaps section from DESIGN.md at the bottom of the page, visible, not hidden
-- Do not modify any file other than this page (plus whatever token/style file is genuinely needed to make the tokens reusable in code)
-- Do not commit
+- Do not modify any file other than this page (plus whatever token/style file is genuinely needed to make the tokens reusable in code, e.g. globals.css)
+- This page is a living style guide, not a product component, so it does not need a matching Storybook story
+- Do not add backend/database, and do not commit
 
 Tell me which URL to open to see the result.`},
           after:{th:['เปิด `http://localhost:3000/design` แล้วเทียบกับ DESIGN.md ทีละหมวด','ให้ Agent ชี้ว่า token ที่ใช้บนหน้า /design มาจากไฟล์ไหน แล้วตรวจหนึ่งตัวอย่างเทียบกับ DESIGN.md','ยังไม่ต้อง commit — DESIGN.md และหน้า /design จะรวมใน checkpoint แรกหลัง component ผ่าน review'],en:['Open `http://localhost:3000/design` and compare it against DESIGN.md section by section','Ask the agent to identify where /design reads its tokens, then verify one example against DESIGN.md','Do not commit yet — DESIGN.md and /design join the first checkpoint after a component passes review']}},
