@@ -229,6 +229,7 @@
     return out;
   };
   const rich = (s = '') => linkify(s)
+    .replace(/!!([\s\S]+?)!!/g, (_, c) => `<strong class="text-danger">${c}</strong>`)
     .replace(/`([^`]+)`/g, (_, c) => `<code class="inline-code">${c}</code>`)
     .replace(/\*\*([^*]+)\*\*/g, (_, c) => `<strong>${c}</strong>`)
     .replace(/(?<!\/)\blocalhost:(\d{2,5})\b/g, (m, port) => `<a href="http://localhost:${port}" target="_blank" rel="noreferrer noopener">localhost:${port}</a>`);
