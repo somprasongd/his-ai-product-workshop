@@ -86,7 +86,7 @@ We are not adding tests to raise a count. We want a person to open the evidence 
 
 ## Slide 14 · Lesson 11: Mock Data
 
-“In a real system, the UI asks a backend for information. In this course, our product question is what users see while waiting and when the answer is empty or fails. We use a mock service with synthetic data so we can select normal, slow, empty, and error scenarios without building a backend or connecting to a real system.
+“In a real system, the UI asks a backend for information. In this course, our product question is what users see while waiting and when the answer is empty or fails. We use a mock service with synthetic data so we can select normal, slow, empty, and error scenarios without building a backend or connecting to a real system. Switching happens in Storybook only; the real page always uses normal, and users never see a scenario switch.
 
 Good review mocks are deterministic: the same input produces the same result. That lets two people reproduce the same case and compare notes. Switch through each scenario. Is Loading visible long enough to understand? Does Empty suggest a next step? Does Error explain recovery or retry? Run each case again and confirm the result stays the same.”
 
