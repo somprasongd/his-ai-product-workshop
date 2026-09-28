@@ -50,7 +50,7 @@ After creating the US-001 worktree, open a new editor and agent session from tha
 
 “We now have an issue and a safe workspace. Do not start with a broad instruction like ‘build the check-in page’. The agent would fill any gap in the requirement with a guess. First ask it to read `AGENTS.md`, explore the repository, and propose a plan covering files, states, scope, and verification without editing files.
 
-Our job is to compare that plan with every acceptance criterion. Does it cover Loading, Empty, Error, validation, and success? Does it add unrelated files or dependencies? How will we inspect the result in Storybook and the app? Send it back for revision when needed. This lesson ends with a human-approved plan and a clean `git status`. We will implement the page in small, reviewable steps in later lessons.”
+Our job is to compare that plan with every acceptance criterion. Does it cover Loading, Empty, Error, validation, and success? Does it add unrelated files or dependencies? How will we inspect the result in Storybook and the app? Send it back for revision when needed. This lesson ends with a human-approved plan and a clean `git status`; paste that plan into the issue as a comment so a new session can pick it up. We will implement the page in small, reviewable steps in later lessons.”
 
 ## Slide 09 · Lesson 06: Next.js Literacy
 
