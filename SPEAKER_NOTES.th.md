@@ -54,9 +54,9 @@ Commit คือจุดบันทึกที่เราตรวจแล�
 
 ## สไลด์ 09 · บท 06: Next.js Literacy
 
-“เราไม่ต้องอ่าน React ทุกบรรทัด แต่ควรอ่านแผนที่โปรเจกต์ออก ใน Next.js ตำแหน่ง `src/app/opd/check-in/page.tsx` บอก route `/opd/check-in` ส่วน feature เก็บ component และ logic ที่เกี่ยวข้อง และ mocks เก็บข้อมูลสมมติที่หน้าเว็บใช้
+“เราไม่ต้องอ่าน React ทุกบรรทัด แต่ควรอ่านแผนที่โปรเจกต์ออก ใน Next.js ตำแหน่ง `src/app/opd/check-in/page.tsx` บอก route `/opd/check-in` ส่วน feature เก็บ component ที่รับข้อมูลผ่าน props, services คือตัวกลางที่ page เรียกเพื่อดึงข้อมูล และ mocks เก็บข้อมูลสมมติที่ service อ่าน
 
-เวลา Agent เสนอแก้ไฟล์ ให้ถามสามข้อ: ไฟล์นี้อยู่ตรงไหน, เกี่ยวกับ Issue อย่างไร, และผู้ใช้จะเห็นผลอะไร ถ้าเห็น `<PatientCard />` ให้อ่านว่าเอา component มาใช้ ถ้าเห็น prop ให้อ่านว่าเป็นข้อมูลหรือ state ที่ส่งเข้าไป เปิด `package.json` เพื่อดูคำสั่ง dev, Storybook, lint, test และ build แล้วตรวจ path ที่ Agent อ้างว่ามีอยู่จริง”
+เวลา Agent เสนอแก้ไฟล์ ให้ถามสามข้อ: ไฟล์นี้อยู่ตรงไหน, เกี่ยวกับ Issue อย่างไร, และผู้ใช้จะเห็นผลอะไร ถ้าเห็น `<PatientSearch />` ให้อ่านว่าเอา component มาใช้ ถ้าเห็น prop ให้อ่านว่าเป็นข้อมูลหรือ state ที่ส่งเข้าไป เปิด `package.json` เพื่อดูคำสั่ง dev, Storybook, lint, test และ build แล้วตรวจ path ที่ Agent อ้างว่ามีอยู่จริง”
 
 ## สไลด์ 10 · บท 07: Design System
 

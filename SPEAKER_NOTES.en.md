@@ -54,9 +54,9 @@ Our job is to compare that plan with every acceptance criterion. Does it cover L
 
 ## Slide 09 · Lesson 06: Next.js Literacy
 
-“You do not need to read every line of React. You do need to read the project map. In Next.js, `src/app/opd/check-in/page.tsx` maps to `/opd/check-in`. Feature folders hold related components and logic, while mocks supply synthetic data for the page.
+“You do not need to read every line of React. You do need to read the project map. In Next.js, `src/app/opd/check-in/page.tsx` maps to `/opd/check-in`. Feature folders hold components that receive data through props, services are the go-between the page calls for data, and mocks supply the synthetic data those services read.
 
-When the agent proposes a file change, ask three questions: where is the file, how does it relate to the issue, and what will users see if it changes? Read `<PatientCard />` as a component being used and a prop as data or state passed into it. Open `package.json` to find the actual dev, Storybook, lint, test, and build commands. Verify that any path the agent names really exists.”
+When the agent proposes a file change, ask three questions: where is the file, how does it relate to the issue, and what will users see if it changes? Read `<PatientSearch />` as a component being used and a prop as data or state passed into it. Open `package.json` to find the actual dev, Storybook, lint, test, and build commands. Verify that any path the agent names really exists.”
 
 ## Slide 10 · Lesson 07: Design System
 
