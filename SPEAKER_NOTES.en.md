@@ -1,6 +1,6 @@
 # Slide speaker notes · AI Product Workshop (English)
 
-These notes follow all 21 slides in `slides.html`. Slides 03–20 correspond to lessons 00–17 in `content.js`. They are spoken guidance for a facilitator, not text to read verbatim from the slide. Open “Lesson content” on a slide when demonstrating the details or starting an exercise. Each lesson's listed duration covers content and practice, not a single slide monologue.
+These notes follow all 22 slides in `slides.html`. Slides 03–21 correspond to lessons 00–18 in `content.js`. They are spoken guidance for a facilitator, not text to read verbatim from the slide. Open “Lesson content” on a slide when demonstrating the details or starting an exercise. Each lesson's listed duration covers content and practice, not a single slide monologue.
 
 ## Slide 01 · Welcome
 
@@ -112,21 +112,27 @@ Then run lint, test, and build using this project's commands; `npm run test` cov
 
 “An MR tells a reviewer who was not in this room what changed and how to inspect it. Finish any remaining work, pass the quality checks, and sync the feature branch with `main`. Then push that branch and open a **Draft MR** with `gh pr create --draft` or `glab mr create --draft`, describing the goal, scope, states, checks performed, mock boundary, and run steps. If you open the PR from a fork’s web page, make sure the base repository is your own, not the instructor’s.
 
-Add `Closes #<your issue number>` and verify that the same number appears in the branch and commit footers. The agent can draft MR text from the real diff, but a person must correct it to match what was actually verified. If review requests changes, fix them on the same branch, check again, commit, and push. The MR stays a Draft until the next lesson adds the handoff. The reviewer decides when to merge into `main`. Clean up the branch and worktree after the merge.”
+Add `Closes #<your issue number>` and verify that the same number appears in the branch and commit footers. The agent can draft MR text from the real diff, but a person must correct it to match what was actually verified. This lesson stops at the Draft MR: the next lesson adds the handoff and sends it to a partner, and review, merge, and cleanup follow in lesson 17.”
 
 ## Slide 19 · Lesson 16: Developer Handoff
 
 “A clickable page alone is not a handoff. A developer needs to know which ACs have evidence in Storybook, an interaction test, or a manual flow. They need instructions to run the app and Storybook, and they need to know where mocks stand in for real systems and which product decisions still need an owner.
 
-Gather the evidence already present in the issue, MR, diff, and check results. State the limits plainly: there is no real backend, authentication, or queue integration here. Ask someone else to open the work using only the handoff steps. If they must guess, add the missing instruction or name the decision owner. Then paste the handoff into the MR’s Handoff section, mark the Draft ready for review, let the reviewer merge, and clean up the worktree after the merge. A template or agent skill may draft this later, but a person reviews and approves anything sent outside the machine.”
+Gather the evidence already present in the issue, MR, diff, and check results. State the limits plainly: there is no real backend, authentication, or queue integration here. Read the handoff as someone who has never seen the work; wherever they would have to guess, add the instruction or name the decision owner. Then paste the handoff into the MR’s Handoff section, invite your partner with merge rights (a collaborator on GitHub, a Maintainer on GitLab), request their review, and mark the MR ready. A template or agent skill may draft this later, but a person reviews and approves anything sent outside the machine.”
 
-## Slide 20 · Lesson 17: Extend US-001 Capstone
+## Slide 20 · Lesson 17: Review & Merge
+
+“A handoff only proves itself when someone else opens the work on their own machine. In this lesson we pair up: everyone is the author of their own MR and the developer for their partner’s. As the developer, clone your partner’s repository into a new `review-<partner>` folder, use `gh pr checkout` or `glab mr checkout`, and run the work from the handoff alone — no asking the author. Then walk the AC → evidence table one row at a time.
+
+Write three kinds of comment: must fix, with the AC and steps to reproduce; needs an answer; and out of scope, such as “what if a clinic temporarily stops taking check-ins?” The author answers every comment, fixes on the same branch, and pushes. The out-of-scope point does not grow this MR; it becomes a follow-up issue, which is the capstone everyone does on their own after the course. Once the fixes are in, the developer approves and merges with a merge commit, issue #1 closes through `Closes #1`, and the author cleans up the worktree and branch. The US-001 loop is complete today.”
+
+## Slide 21 · Lesson 18: Extend US-001 Capstone
 
 “The Capstone starts after a reviewer merges US-001. Open a **new issue** for an unavailable clinic. Give it its own acceptance criteria, branch, and worktree, then repeat Explore, Plan, Human Review, Implement, Verify, and Draft MR.
 
 Show repeatable GEN, ENT, and Error cases with mocks. Review the messages and recovery path, keyboard use, and a narrow viewport. Also record regression evidence that the original US-001 Search, Select, Preview, and Confirm flow still works. Use the new issue number in the branch, commit footer, and MR `Closes`. If US-001 is still in review, finish that review and merge first so the Capstone starts from the verified `main`.”
 
-## Slide 21 · Ready to begin
+## Slide 22 · Ready to begin
 
 “You have now seen the course journey. The first real step is Lesson 00: prepare your machine and your own repository. From there we will build evidence for US-001 one piece at a time. You do not need to memorize every command today. Remember the division of responsibility: **people define what is correct, the agent proposes and implements, and people inspect the actual evidence**.
 
