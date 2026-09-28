@@ -82,7 +82,7 @@ Then run the same loop on CheckInForm, CheckInPreview, and CheckInSuccess, one a
 
 “Return to the issue's acceptance criteria. For each state criterion, name the Storybook story a reviewer can open. ‘No patient found’ maps to Empty; ‘search service fails’ maps to Error. For a behavior criterion, write Given/When/Then and have the agent build an interaction test that performs the action and checks the response.
 
-We are not adding tests to raise a count. We want a person to open the evidence and see exactly where the requirement was checked. Make an AC-to-story-or-interaction map and find any gap. Choose one important flow, run its interaction, and watch each step. Once it passes, make the second commit checkpoint.”
+We are not adding tests to raise a count. We want a person to open the evidence and see exactly where the requirement was checked. Make an AC-to-story-or-interaction map and find any gap; keep it on the issue, because it becomes the AC → evidence table in the MR. Choose one important flow, run its interaction, and watch each step. Once it passes, make the second commit checkpoint.”
 
 ## Slide 14 · Lesson 11: Mock Data
 
