@@ -12,7 +12,8 @@
     agentTool: 'his-ai-course.agentTool',
     repoHost: 'his-ai-course.repoHost',
     practice: 'his-ai-course.practice',
-    speakRate: 'his-ai-course.speakRate'
+    speakRate: 'his-ai-course.speakRate',
+    certificate: 'his-ai-course.certificate'
   };
 
   const ui = {
@@ -55,7 +56,25 @@
       glossary: 'คลังคำศัพท์', glossaryTag: 'อ้างอิง', glossaryTitle: 'คลังคำศัพท์ที่ใช้ในเว็บนี้',
       glossaryIntro: 'คำศัพท์เทคนิคที่พบในบทเรียนทุกบท พร้อมคำอธิบายภาษาคน ถ้าเจอคำที่ไม่คุ้นระหว่างเรียน กลับมาค้นที่นี่ได้ตลอด',
       glossarySearchPh: 'พิมพ์คำศัพท์ที่อยากรู้ เช่น branch, mock, worktree',
-      glossaryEmpty: 'ไม่พบคำศัพท์ที่ตรงกับการค้นหา ลองพิมพ์คำอื่น เช่น diff, state หรือ prompt'
+      glossaryEmpty: 'ไม่พบคำศัพท์ที่ตรงกับการค้นหา ลองพิมพ์คำอื่น เช่น diff, state หรือ prompt',
+      certNav: 'Certificate', certTitle: 'Certificate of Completion',
+      certIntro: 'เรียนจบบทหลัก 00–17 ครบแล้วรับ certificate ได้ (Capstone และบทเสริมไม่นับ) ใบจะถูกสร้างใน browser ของคุณและบันทึกวันที่ออกครั้งแรกไว้',
+      certLocked: (done,total) => `เรียนจบแล้ว ${done} จาก ${total} บทหลัก เรียนบทที่เหลือให้ครบเพื่อรับ certificate`,
+      certRemaining: 'บทที่ยังไม่ได้กดเรียนจบ',
+      certNameLabel: 'ชื่อที่จะแสดงบน certificate', certNamePh: 'เช่น สมชาย ใจดี หรือ Somchai Jaidee',
+      certNameHint: 'ชื่อจะถูกเก็บใน browser นี้เท่านั้น ไม่ถูกส่งไปที่ไหน',
+      certNameError: 'กรอกชื่ออย่างน้อย 2 ตัวอักษร',
+      certIssue: 'ออก Certificate',
+      certConfirmTitle: 'ยืนยันชื่อบน certificate',
+      certConfirmText: 'หลังยืนยันแล้วจะแก้ชื่อไม่ได้ ถ้าต้องการแก้ ต้องกด “รีเซ็ต Progress” แล้วเรียนบทหลักให้ครบใหม่',
+      certConfirm: 'ยืนยันและออก Certificate', certEdit: 'กลับไปแก้ชื่อ',
+      certIssued: 'ออก certificate แล้ว', certReady: 'เรียนครบบทหลักแล้ว รับ Certificate ได้ที่เมนู Certificate',
+      certRendering: 'กำลังสร้าง certificate…', certRenderFailed: 'สร้างรูป certificate ไม่สำเร็จ ลองโหลดหน้านี้ใหม่',
+      certShare: 'แชร์ไฟล์', certDownload: 'ดาวน์โหลด PNG', certPrint: 'พิมพ์ / บันทึกเป็น PDF', certLinkedIn: 'เพิ่มใน LinkedIn',
+      certIssuedOn: 'ออกให้เมื่อ', certIdLabel: 'Certificate ID',
+      certLockedNote: 'ชื่อและวันที่บนใบถูกล็อกตั้งแต่ออกครั้งแรก เปิดดูหรือดาวน์โหลดกี่ครั้งก็ได้วันที่เดิม ถ้าต้องการแก้ชื่อ ต้องรีเซ็ต Progress แล้วเรียนใหม่',
+      certShareNote: 'แชร์เป็นไฟล์รูปเท่านั้น เว็บนี้ไม่มี server จึงไม่มีลิงก์ของ certificate ให้คนอื่นเปิดดู ปุ่ม “เพิ่มใน LinkedIn” กรอกชื่อคอร์ส วันที่ และ Certificate ID ให้ แล้วแนบไฟล์รูปเองได้',
+      resetConfirmCert: 'ต้องการลบสถานะการเรียนใน browser นี้หรือไม่? Certificate และชื่อที่บันทึกไว้จะถูกลบด้วย และต้องเรียนบทหลักให้ครบใหม่จึงจะออกใบได้อีกครั้ง'
     },
     en: {
       start: 'Start learning', continue: 'Continue where you left off', curriculum: 'View curriculum',
@@ -96,7 +115,25 @@
       glossary: 'Glossary', glossaryTag: 'Reference', glossaryTitle: 'Glossary of terms used on this site',
       glossaryIntro: 'The technical terms used across every lesson, explained in plain language. Come back and search here any time a word feels unfamiliar.',
       glossarySearchPh: 'Search a term, e.g. branch, mock, worktree',
-      glossaryEmpty: 'No terms match your search. Try another word, such as diff, state, or prompt'
+      glossaryEmpty: 'No terms match your search. Try another word, such as diff, state, or prompt',
+      certNav: 'Certificate', certTitle: 'Certificate of Completion',
+      certIntro: 'Complete core lessons 00–17 to get a certificate (the capstone and bonus lesson are not required). It is generated in your browser and keeps the date it was first issued.',
+      certLocked: (done,total) => `You have completed ${done} of ${total} core lessons. Finish the rest to get your certificate.`,
+      certRemaining: 'Lessons not yet marked complete',
+      certNameLabel: 'Name to show on the certificate', certNamePh: 'e.g. Somchai Jaidee',
+      certNameHint: 'Your name is stored in this browser only and is not sent anywhere.',
+      certNameError: 'Enter a name of at least 2 characters',
+      certIssue: 'Issue certificate',
+      certConfirmTitle: 'Confirm the name on your certificate',
+      certConfirmText: 'Once confirmed, the name cannot be changed. To change it, use “Reset progress” and complete the core lessons again.',
+      certConfirm: 'Confirm and issue', certEdit: 'Edit name',
+      certIssued: 'Certificate issued', certReady: 'Core lessons complete — get your certificate from the Certificate menu',
+      certRendering: 'Generating certificate…', certRenderFailed: 'Could not generate the certificate image. Reload this page and try again.',
+      certShare: 'Share file', certDownload: 'Download PNG', certPrint: 'Print / Save as PDF', certLinkedIn: 'Add to LinkedIn',
+      certIssuedOn: 'Issued on', certIdLabel: 'Certificate ID',
+      certLockedNote: 'The name and date are locked from the first issue. Viewing or downloading again always shows the original date. To change the name, reset progress and complete the lessons again.',
+      certShareNote: 'Share it as an image file. This site has no server, so there is no certificate link others can open. “Add to LinkedIn” fills in the course name, date, and certificate ID; you can attach the image yourself.',
+      resetConfirmCert: 'Clear learning progress stored in this browser? Your certificate and saved name will also be deleted, and you will need to complete the core lessons again to issue a new one.'
     }
   };
 
@@ -170,6 +207,19 @@
 
   const promptLang = () => state.promptLang || state.lang;
 
+  // Certificate counts the in-class path (setup + Day 1–3); the capstone and bonus lesson stay optional.
+  const CORE_GROUPS = ['start', 'day1', 'day2', 'day3'];
+  const coreLessons = course.lessons.filter(l => CORE_GROUPS.includes(l.group));
+  const coreDone = () => coreLessons.filter(l => state.completed.has(l.id)).length;
+  // Read the certificate straight from storage instead of keeping it in persist(), so a stale tab can never
+  // overwrite or drop a certificate issued in another tab. It is written once at issue and removed only by reset.
+  function loadCertificate() {
+    const c = storedObject(STORAGE.certificate);
+    const valid = typeof c.name === 'string' && c.name.trim() && typeof c.certId === 'string'
+      && typeof c.issuedAt === 'string' && !Number.isNaN(Date.parse(c.issuedAt));
+    return valid ? c : null;
+  }
+
   function showToast(message, duration = 1500) {
     toast.textContent = message;
     toast.classList.add('show');
@@ -210,7 +260,11 @@
       speaker:'<path d="M11 5 6 9H3a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9.5 9.5 0 0 1 0 13"/>',
       stop:'<rect x="6.5" y="6.5" width="11" height="11" rx="2"/>',
       pause:'<path d="M9 5v14M15 5v14"/>',
-      play:'<path d="M8 5.5v13l11-6.5Z"/>'
+      play:'<path d="M8 5.5v13l11-6.5Z"/>',
+      award:'<circle cx="12" cy="9" r="6"/><path d="m8.5 14-1.5 8 5-3 5 3-1.5-8"/>',
+      download:'<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>',
+      print:'<path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M6 14h12v7H6z"/>',
+      linkedin:'<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7"/>'
     };
     return `<svg ${common}>${p[name] || p.spark}</svg>`;
   }
@@ -252,6 +306,7 @@
           <div class="group-label">Links</div>
           <nav class="lesson-nav">
             <a class="lesson-link ${activeId==='glossary'?'active':''}" href="#/glossary"><span class="lesson-num">${icon('book',14)}</span><span>${U('glossary')}</span></a>
+            <a class="lesson-link ${activeId==='certificate'?'active':''}" href="#/certificate"><span class="lesson-num">${icon('award',14)}</span><span>${U('certNav')}</span></a>
             <a class="lesson-link" href="./slides.html" target="_blank" rel="noreferrer"><span class="lesson-num">${icon('spark',14)}</span><span>${U('slides')}</span></a>
             <a class="lesson-link" href="${course.meta.starterUrl}" target="_blank" rel="noreferrer"><span class="lesson-num">${icon('code',14)}</span><span>${U('starter')}</span></a>
             <a class="lesson-link" href="${course.meta.sourceUrl}" target="_blank" rel="noreferrer"><span class="lesson-num">${icon('github',14)}</span><span>${U('source')}</span></a>
@@ -588,7 +643,8 @@
   function summaryPage() {
     const f = course.final;
     const pct = Math.round(state.completed.size/course.lessons.length*100);
-    const html = `<div class="content"><section class="section"><div class="final-summary"><span class="eyebrow">${pct}% ${U('progress')}</span><h1 class="lesson-title">${esc(t(f.title))}</h1><p class="lesson-intro">${esc(t(f.intro))}</p><div class="skill-grid">${t(f.skills).map(s=>`<div class="skill">${icon('check',15)} ${esc(s)}</div>`).join('')}</div><div class="hero-actions"><a class="btn btn-primary" href="#/lesson/capstone">Capstone ${icon('arrow',16)}</a><a class="btn btn-secondary" href="${course.meta.starterUrl}" target="_blank" rel="noreferrer">${U('starter')}</a></div></div></section></div>`;
+    const certCta = coreDone() === coreLessons.length && !loadCertificate();
+    const html = `<div class="content"><section class="section"><div class="final-summary"><span class="eyebrow">${pct}% ${U('progress')}</span><h1 class="lesson-title">${esc(t(f.title))}</h1><p class="lesson-intro">${esc(t(f.intro))}</p><div class="skill-grid">${t(f.skills).map(s=>`<div class="skill">${icon('check',15)} ${esc(s)}</div>`).join('')}</div><div class="hero-actions"><a class="btn ${certCta?'btn-primary':'btn-secondary'}" href="#/certificate">${icon('award',16)} ${U('certNav')}</a><a class="btn ${certCta?'btn-secondary':'btn-primary'}" href="#/lesson/capstone">Capstone ${icon('arrow',16)}</a><a class="btn btn-secondary" href="${course.meta.starterUrl}" target="_blank" rel="noreferrer">${U('starter')}</a></div></div></section></div>`;
     return shell(html,'');
   }
 
@@ -645,6 +701,338 @@
     if (empty) empty.hidden = visible > 0;
   }
 
+  // ---- certificate ----
+  const CERT_W = 2000, CERT_H = 1414; // A4 landscape ratio, so print and PNG share one layout
+  const CERT_FONT = '"Noto Sans Thai", "Noto Sans", system-ui, sans-serif';
+  const CERT_FONT_CSS = 'https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700&display=swap';
+  const CERT_COLORS = { ink:'#17302b', muted:'#61756f', primary:'#0f766e', line:'#d7e2df', soft:'#eef5f3' };
+  const CERT_COPY = {
+    th: {
+      kicker: 'ประกาศนียบัตรการเรียนจบหลักสูตร', certifies: 'ขอมอบให้ไว้เพื่อแสดงว่า',
+      completed: n => `ได้เรียนจบบทเรียนหลักครบทั้ง ${n} บทของหลักสูตร`,
+      subtitle: 'สร้าง prototype ที่ส่งต่อได้ด้วย AI Agent ตั้งแต่ requirement และ Git ไปจนถึง Storybook, Merge Request และ developer handoff',
+      skills: 'ทักษะที่ฝึก', issued: 'ออกให้เมื่อ', id: 'Certificate ID', course: 'หลักสูตร',
+      band: ['ประกาศนียบัตร', 'หลักสูตร'], bandSub: n => `${n} บทเรียนหลัก`,
+      note: 'บันทึกการเรียนจบแบบเรียนด้วยตนเอง ออกจากเว็บไซต์บทเรียน ไม่ใช่วุฒิการศึกษาที่ได้รับการรับรอง'
+    },
+    en: {
+      kicker: 'CERTIFICATE OF COMPLETION', certifies: 'This certifies that',
+      completed: n => `has completed all ${n} core lessons of`,
+      subtitle: 'Build a handoff-ready prototype with AI agents — from requirement and Git to Storybook, merge request, and developer handoff.',
+      skills: 'SKILLS PRACTICED', issued: 'Issued on', id: 'Certificate ID', course: 'Course',
+      band: ['COURSE', 'CERTIFICATE'], bandSub: n => `${n} core lessons`,
+      note: 'Self-paced completion record issued by the learning site. Not an accredited qualification.'
+    }
+  };
+  const certAsset = { key: '', blob: null, url: '' };
+
+  const certDate = (iso, lang) => new Intl.DateTimeFormat(lang === 'th' ? 'th-TH-u-ca-gregory' : 'en-GB',
+    { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(iso));
+  const certFileName = cert => `ai-product-workshop-certificate-${cert.certId}.png`;
+  const normalizeName = raw => String(raw || '').normalize('NFC').replace(/\s+/g, ' ').trim();
+
+  function newCertId() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // 32 symbols without look-alikes, so % 32 stays unbiased
+    return 'AIPW-' + [...crypto.getRandomValues(new Uint8Array(8))].map(b => chars[b % 32]).join('');
+  }
+
+  function linkedInUrl(cert) {
+    const d = new Date(cert.issuedAt);
+    const params = new URLSearchParams({
+      startTask: 'CERTIFICATION_NAME', name: 'AI Product Workshop — Certificate of Completion',
+      organizationName: 'AI Product Workshop', issueYear: String(d.getFullYear()), issueMonth: String(d.getMonth() + 1),
+      certUrl: course.meta.pagesUrl, certId: cert.certId
+    });
+    return `https://www.linkedin.com/profile/add?${params}`;
+  }
+
+  function certificatePage() {
+    const cert = loadCertificate();
+    const total = coreLessons.length, done = coreDone();
+    let body;
+    if (cert) {
+      body = `<section class="block cert-view">
+        <div class="cert-frame" id="certFrame" aria-busy="true">
+          <img id="certImage" class="cert-image" alt="${esc(`${U('certTitle')} · ${cert.name}`)}" width="${CERT_W}" height="${CERT_H}" hidden />
+          <p class="cert-status" id="certStatus" role="status">${U('certRendering')}</p>
+        </div>
+        <div class="cert-actions">
+          <button class="btn btn-primary" type="button" data-cert-share hidden>${icon('share',16)} ${U('certShare')}</button>
+          <button class="btn btn-secondary" type="button" data-cert-download disabled>${icon('download',16)} ${U('certDownload')}</button>
+          <button class="btn btn-secondary" type="button" data-cert-print disabled>${icon('print',16)} ${U('certPrint')}</button>
+          <a class="btn btn-secondary" href="${esc(linkedInUrl(cert))}" target="_blank" rel="noreferrer noopener">${icon('linkedin',16)} ${U('certLinkedIn')}</a>
+        </div>
+        <dl class="cert-meta">
+          <div><dt>${U('certIssuedOn')}</dt><dd>${esc(certDate(cert.issuedAt, state.lang))}</dd></div>
+          <div><dt>${U('certIdLabel')}</dt><dd><code class="inline-code">${esc(cert.certId)}</code></dd></div>
+        </dl>
+        <p class="cert-note">${U('certLockedNote')}</p>
+        <p class="cert-note">${U('certShareNote')}</p>
+      </section>`;
+    } else if (done < total) {
+      const pct = Math.round(done / total * 100);
+      const remaining = coreLessons.filter(l => !state.completed.has(l.id));
+      body = `<section class="block cert-locked">
+        <p>${esc(U('certLocked')(done, total))}</p>
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${done}"><div class="progress-fill" style="width:${pct}%"></div></div>
+        <h2>${U('certRemaining')}</h2>
+        <nav class="lesson-nav">${remaining.map(l => `<a class="lesson-link" href="#/lesson/${l.id}"><span class="lesson-num">${esc(l.no)}</span><span>${esc(t(l.title))}</span><span class="lesson-duration">${esc(l.duration)}</span></a>`).join('')}</nav>
+      </section>`;
+    } else {
+      body = `<section class="block cert-form-block">
+        <form id="certForm" class="cert-form" novalidate>
+          <label for="certName">${U('certNameLabel')}</label>
+          <input id="certName" name="name" type="text" maxlength="80" autocomplete="name" placeholder="${esc(U('certNamePh'))}" aria-describedby="certNameHint certNameError" required />
+          <p class="cert-hint" id="certNameHint">${U('certNameHint')}</p>
+          <p class="cert-error" id="certNameError" role="alert" hidden>${U('certNameError')}</p>
+          <div><button class="btn btn-primary" type="submit">${icon('award',16)} ${U('certIssue')}</button></div>
+        </form>
+        <div class="cert-confirm" id="certConfirm" hidden>
+          <div class="block callout warning"><div class="callout-title">${U('certConfirmTitle')}</div>
+            <p class="cert-confirm-name" id="certConfirmName"></p>
+            <p>${U('certConfirmText')}</p></div>
+          <div class="cert-actions">
+            <button class="btn btn-primary" type="button" data-cert-confirm>${icon('check',16)} ${U('certConfirm')}</button>
+            <button class="btn btn-secondary" type="button" data-cert-edit>${U('certEdit')}</button>
+          </div>
+        </div>
+      </section>`;
+    }
+    const html = `<div class="content">
+      <header class="lesson-header">
+        <div class="lesson-kicker"><span class="pill">${icon('award',13)} ${U('certNav')}</span></div>
+        <h1 class="lesson-title">${U('certTitle')}</h1>
+        <p class="lesson-intro">${U('certIntro')}</p>
+      </header>
+      <div class="lesson-body">${body}</div>
+    </div>`;
+    return shell(html, 'certificate');
+  }
+
+  function bindCertificate() {
+    const form = document.getElementById('certForm');
+    if (!form) return;
+    const input = document.getElementById('certName');
+    const error = document.getElementById('certNameError');
+    const confirmBox = document.getElementById('certConfirm');
+    let pending = '';
+    input.addEventListener('input', () => { error.hidden = true; input.removeAttribute('aria-invalid'); });
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const name = normalizeName(input.value);
+      if ([...name].length < 2) { error.hidden = false; input.setAttribute('aria-invalid', 'true'); input.focus(); return; }
+      pending = name;
+      error.hidden = true; input.removeAttribute('aria-invalid');
+      document.getElementById('certConfirmName').textContent = name;
+      form.hidden = true; confirmBox.hidden = false;
+      confirmBox.querySelector('[data-cert-confirm]').focus();
+    });
+    confirmBox.querySelector('[data-cert-edit]').addEventListener('click', () => {
+      confirmBox.hidden = true; form.hidden = false; input.focus();
+    });
+    confirmBox.querySelector('[data-cert-confirm]').addEventListener('click', () => {
+      // Another tab may have issued first; keep that original rather than stamping a new date.
+      if (!loadCertificate() && pending && coreDone() === coreLessons.length) {
+        localStorage.setItem(STORAGE.certificate, JSON.stringify({ name: pending, issuedAt: new Date().toISOString(), certId: newCertId() }));
+        showToast(U('certIssued'));
+      }
+      route();
+    });
+  }
+
+  let certFontsReady;
+  function loadCertFonts(sample) {
+    if (!certFontsReady) certFontsReady = new Promise(resolve => {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet'; link.href = CERT_FONT_CSS;
+      link.onload = resolve; link.onerror = resolve;
+      document.head.appendChild(link);
+    });
+    // Google Fonts splits Thai and Latin by unicode-range, so load with the real text to fetch every subset needed.
+    const loaded = certFontsReady.then(() => Promise.all([400, 600, 700].map(w => document.fonts.load(`${w} 40px "Noto Sans Thai"`, sample))));
+    // Offline or blocked fonts: fall back to system fonts rather than leaving the certificate unrendered.
+    return Promise.race([loaded, new Promise(r => setTimeout(r, 4000))]).catch(() => {});
+  }
+
+  function loadImage(src) {
+    return new Promise(resolve => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => resolve(null);
+      img.src = src;
+    });
+  }
+
+  function wrapLines(ctx, text, maxWidth, lang) {
+    const parts = typeof Intl.Segmenter === 'function'
+      ? [...new Intl.Segmenter(lang, { granularity: 'word' }).segment(text)].map(s => s.segment) // Thai has no spaces between words
+      : text.split(/(\s+)/);
+    const lines = [];
+    let line = '';
+    for (const part of parts) {
+      if (line && ctx.measureText(line + part).width > maxWidth) { lines.push(line.trim()); line = part.trimStart(); }
+      else line += part;
+    }
+    if (line.trim()) lines.push(line.trim());
+    return lines;
+  }
+
+  function fitSize(ctx, text, weight, size, min, maxWidth) {
+    while (size > min) {
+      ctx.font = `${weight} ${size}px ${CERT_FONT}`;
+      if (ctx.measureText(text).width <= maxWidth) break;
+      size -= 2;
+    }
+    ctx.font = `${weight} ${size}px ${CERT_FONT}`;
+    return size;
+  }
+
+  function drawCertificate(cert, lang, logo) {
+    const c = CERT_COLORS, copy = CERT_COPY[lang], total = coreLessons.length;
+    const canvas = document.createElement('canvas');
+    canvas.width = CERT_W; canvas.height = CERT_H;
+    const ctx = canvas.getContext('2d');
+    const font = (weight, size) => { ctx.font = `${weight} ${size}px ${CERT_FONT}`; };
+    // Letter-spacing suits Latin caps only; it breaks Thai vowel and tone-mark stacking.
+    const spacing = px => { if ('letterSpacing' in ctx) ctx.letterSpacing = lang === 'th' ? '0px' : `${px}px`; };
+
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, CERT_W, CERT_H);
+    ctx.strokeStyle = c.primary; ctx.lineWidth = 6; ctx.strokeRect(36, 36, CERT_W - 72, CERT_H - 72);
+    ctx.strokeStyle = c.line; ctx.lineWidth = 2; ctx.strokeRect(56, 56, CERT_W - 112, CERT_H - 112);
+
+    // Right band with the seal, echoing the ribbon on course certificates.
+    const bandX = 1530, bandR = CERT_W - 57, bandW = bandR - bandX, bx = bandX + bandW / 2;
+    ctx.fillStyle = c.soft; ctx.fillRect(bandX, 57, bandW, CERT_H - 114);
+    ctx.fillStyle = c.primary; ctx.fillRect(bandX, 57, 8, CERT_H - 114);
+    const sy = 400;
+    ctx.beginPath(); ctx.arc(bx, sy, 160, 0, Math.PI * 2); ctx.fillStyle = '#fff'; ctx.fill();
+    ctx.lineWidth = 8; ctx.strokeStyle = c.primary; ctx.stroke();
+    ctx.beginPath(); ctx.arc(bx, sy, 136, 0, Math.PI * 2); ctx.lineWidth = 3; ctx.strokeStyle = c.line; ctx.stroke();
+    if (logo) ctx.drawImage(logo, bx - 84, sy - 84, 168, 168);
+    ctx.textAlign = 'center'; ctx.fillStyle = c.primary; font(700, 34); spacing(6);
+    copy.band.forEach((line, i) => ctx.fillText(line, bx, sy + 250 + i * 50));
+    spacing(0); font(600, 26); ctx.fillStyle = c.muted;
+    ctx.fillText(copy.bandSub(total), bx, sy + 380);
+    font(400, 21);
+    const noteLines = wrapLines(ctx, copy.note, bandW - 90, lang);
+    noteLines.forEach((line, i) => ctx.fillText(line, bx, CERT_H - 110 - (noteLines.length - 1 - i) * 32));
+
+    // Main column
+    const x = 150, maxW = bandX - x - 110;
+    ctx.textAlign = 'left';
+    if (logo) ctx.drawImage(logo, x, 118, 76, 76);
+    ctx.fillStyle = c.ink; font(700, 38); ctx.fillText('AI Product Workshop', x + (logo ? 96 : 0), 170);
+
+    ctx.fillStyle = c.primary; font(700, 30); spacing(6); ctx.fillText(copy.kicker, x, 300); spacing(0);
+    ctx.fillStyle = c.muted; font(400, 32); ctx.fillText(copy.certifies, x, 410);
+
+    let y = 525;
+    ctx.fillStyle = c.ink;
+    const nameSize = fitSize(ctx, cert.name, 700, 104, 60, maxW);
+    const nameLines = ctx.measureText(cert.name).width > maxW ? wrapLines(ctx, cert.name, maxW, lang).slice(0, 2) : [cert.name];
+    nameLines.forEach((line, i) => ctx.fillText(line, x, y + i * nameSize * 1.15));
+    y += (nameLines.length - 1) * nameSize * 1.15;
+    ctx.fillStyle = c.primary; ctx.fillRect(x, y + 36, 140, 6);
+
+    y += 120; ctx.fillStyle = c.muted; font(400, 32); ctx.fillText(copy.completed(total), x, y);
+    y += 82; ctx.fillStyle = c.ink; font(700, 60); ctx.fillText('AI Product Workshop', x, y);
+    font(400, 29); ctx.fillStyle = c.muted;
+    wrapLines(ctx, copy.subtitle, maxW, lang).slice(0, 2).forEach(line => { y += 46; ctx.fillText(line, x, y); });
+
+    // Skill chips; a very long wrapped name pushes them down, so drop rows that would reach the footer.
+    const footerY = 1215;
+    y += 68; ctx.fillStyle = c.primary; font(700, 24); spacing(3); ctx.fillText(copy.skills, x, y); spacing(0);
+    font(500, 23);
+    let cx = x, cy = y + 20;
+    const chipH = 46;
+    for (const skill of t(course.final.skills)) {
+      const w = ctx.measureText(skill).width + 36;
+      if (cx + w > x + maxW) { cx = x; cy += chipH + 10; }
+      if (cy + chipH > footerY - 24) break;
+      ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(cx, cy, w, chipH, 23); else ctx.rect(cx, cy, w, chipH);
+      ctx.fillStyle = c.soft; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = c.line; ctx.stroke();
+      ctx.fillStyle = c.ink; ctx.fillText(skill, cx + 18, cy + 31);
+      cx += w + 10;
+    }
+
+    // Footer: issued date, certificate ID, course URL.
+    ctx.fillStyle = c.line; ctx.fillRect(x, footerY, maxW, 2);
+    const url = course.meta.pagesUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
+    const cols = [[copy.issued, certDate(cert.issuedAt, lang), x], [copy.id, cert.certId, x + 430], [copy.course, url, x + 800]];
+    cols.forEach(([label, value, cxPos], i) => {
+      ctx.fillStyle = c.muted; font(600, 22); ctx.fillText(label, cxPos, footerY + 54);
+      ctx.fillStyle = c.ink;
+      const limit = i < cols.length - 1 ? cols[i + 1][2] - cxPos - 30 : x + maxW - cxPos;
+      fitSize(ctx, value, i === 2 ? 500 : 700, i === 2 ? 26 : 30, 18, limit);
+      ctx.fillText(value, cxPos, footerY + 96);
+    });
+    return canvas;
+  }
+
+  async function renderCertificateImage() {
+    const cert = loadCertificate();
+    const img = document.getElementById('certImage');
+    if (!cert || !img) return;
+    const lang = state.lang;
+    const key = [lang, cert.certId, cert.name, cert.issuedAt].join('|');
+    if (certAsset.key !== key) {
+      const copy = CERT_COPY[lang];
+      await loadCertFonts([cert.name, copy.kicker, copy.certifies, copy.subtitle, copy.note, ...t(course.final.skills), 'AI Product Workshop 0123456789'].join(' '));
+      const logo = await loadImage('./assets/logo.png');
+      let blob = null;
+      try { blob = await new Promise(r => drawCertificate(cert, lang, logo).toBlob(r, 'image/png')); }
+      catch { blob = await new Promise(r => drawCertificate(cert, lang, null).toBlob(r, 'image/png')); } // tainted canvas (e.g. file://)
+      if (!blob) { document.getElementById('certStatus').textContent = U('certRenderFailed'); return; }
+      if (certAsset.url) URL.revokeObjectURL(certAsset.url);
+      Object.assign(certAsset, { key, blob, url: URL.createObjectURL(blob) });
+    }
+    // The page may have been re-rendered (language switch, navigation) while fonts were loading.
+    const liveImg = document.getElementById('certImage');
+    if (!liveImg || certAsset.key !== [state.lang, cert.certId, cert.name, cert.issuedAt].join('|')) return;
+    liveImg.src = certAsset.url; liveImg.hidden = false;
+    document.getElementById('certStatus')?.remove();
+    document.getElementById('certFrame')?.setAttribute('aria-busy', 'false');
+    document.querySelectorAll('[data-cert-download], [data-cert-print]').forEach(b => { b.disabled = false; });
+    // Share the file itself: with no server there is no certificate link to share.
+    const file = new File([certAsset.blob], certFileName(cert), { type: 'image/png' });
+    const shareBtn = document.querySelector('[data-cert-share]');
+    if (shareBtn && navigator.canShare?.({ files: [file] })) shareBtn.hidden = false;
+  }
+
+  async function shareCertificate() {
+    const cert = loadCertificate();
+    if (!cert || !certAsset.blob) return;
+    const file = new File([certAsset.blob], certFileName(cert), { type: 'image/png' });
+    try { await navigator.share({ files: [file], title: 'AI Product Workshop — Certificate of Completion' }); }
+    catch (err) { if (err?.name !== 'AbortError') downloadCertificate(); }
+  }
+
+  function downloadCertificate() {
+    const cert = loadCertificate();
+    if (!cert || !certAsset.url) return;
+    const a = document.createElement('a');
+    a.href = certAsset.url; a.download = certFileName(cert);
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+
+  function printCertificate() {
+    if (!certAsset.url) return;
+    const holder = document.createElement('div');
+    holder.id = 'certPrint';
+    holder.innerHTML = `<img src="${certAsset.url}" alt="" />`;
+    // Scope the landscape page size to this print only, so printing a lesson keeps the browser default.
+    const pageStyle = document.createElement('style');
+    pageStyle.textContent = '@page { size: A4 landscape; margin: 0; }';
+    document.body.appendChild(holder); document.head.appendChild(pageStyle);
+    document.body.classList.add('print-cert');
+    const cleanup = () => {
+      holder.remove(); pageStyle.remove(); document.body.classList.remove('print-cert');
+      window.removeEventListener('afterprint', cleanup);
+    };
+    window.addEventListener('afterprint', cleanup);
+    holder.querySelector('img').decode().catch(() => {}).then(() => window.print());
+  }
+
   function route() {
     const skip = document.querySelector('.skip-link');
     if (skip) skip.textContent = state.lang === 'th' ? 'ข้ามไปเนื้อหาหลัก' : 'Skip to main content';
@@ -659,8 +1047,10 @@
       app.innerHTML = lessonPage(lesson);
     } else if (hash === '#/summary') app.innerHTML = summaryPage();
     else if (hash === '#/glossary') app.innerHTML = glossaryPage();
+    else if (hash === '#/certificate') app.innerHTML = certificatePage();
     else app.innerHTML = home();
     bind();
+    if (document.getElementById('certImage')) renderCertificateImage();
     // left:0 เคลียร์ pan แนวนอนที่อาจค้างจากหน้าก่อนหน้า (ระบบ Android บางเวอร์ชัน)
     window.scrollTo({top:0,left:0,behavior:'instant'});
     setTimeout(renderMermaid, 0);
@@ -680,8 +1070,13 @@
     document.getElementById('menuBtn')?.addEventListener('click',()=>document.body.classList.toggle('menu-open'));
     document.querySelectorAll('.lesson-link').forEach(a=>a.addEventListener('click',()=>document.body.classList.remove('menu-open')));
     document.getElementById('resetBtn')?.addEventListener('click',()=>{
-      if(confirm(U('resetConfirm'))){ state.completed.clear(); state.quiz={}; state.practice={}; state.last='prerequisites'; persist(); route(); }
+      if(confirm(U(loadCertificate()?'resetConfirmCert':'resetConfirm'))){
+        state.completed.clear(); state.quiz={}; state.practice={}; state.last='prerequisites';
+        localStorage.removeItem(STORAGE.certificate);
+        persist(); route();
+      }
     });
+    bindCertificate();
     const gSearch = document.getElementById('glossarySearch');
     if (gSearch) {
       gSearch.addEventListener('input', () => applyGlossaryFilter(gSearch.value));
@@ -724,7 +1119,8 @@
       if(!wasDone){
         const idx = course.lessons.findIndex(l=>l.id===id);
         const next = course.lessons[idx+1];
-        showToast(U('completed'));
+        const certNowReady = coreLessons.some(l=>l.id===id) && coreDone()===coreLessons.length && !loadCertificate();
+        showToast(certNowReady ? U('certReady') : U('completed'), certNowReady ? 5000 : 1500);
         location.hash = next ? `#/lesson/${next.id}` : '#/summary';
       } else {
         route(); showToast(state.lang==='th'?'ยกเลิกสถานะแล้ว':'Completion removed');
@@ -1007,6 +1403,9 @@
       const shareBtn = e.target.closest('[data-share-lesson]');
       if (shareBtn) { shareLesson(shareBtn.dataset.shareLesson); return; }
       if (e.target.closest('[data-share-site]')) { shareUrl(document.title, `${location.origin}${location.pathname}`); return; }
+      if (e.target.closest('[data-cert-share]')) { shareCertificate(); return; }
+      if (e.target.closest('[data-cert-download]')) { downloadCertificate(); return; }
+      if (e.target.closest('[data-cert-print]')) { printCertificate(); return; }
       const exBtn = e.target.closest('[data-prompt-example]');
       if (exBtn) {
         const bl = exBtn.closest('.prompt-block');

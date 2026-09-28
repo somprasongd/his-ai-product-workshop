@@ -387,6 +387,42 @@ html[data-theme="dark"] .tool-tab.active { color:#05201c; }
 .skill-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:20px; }
 .skill { padding:14px; border-radius:13px; background:var(--surface); border:1px solid var(--line); }
 
+/* ---- certificate ---- */
+.cert-frame { position:relative; display:grid; place-items:center; aspect-ratio:2000 / 1414; border-radius:var(--radius-sm); border:1px solid var(--line); background:var(--surface-2); overflow:hidden; }
+.cert-image { display:block; width:100%; height:auto; }
+.cert-status { margin:0; color:var(--muted); font-weight:650; }
+.cert-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+.block .cert-actions a.btn { color:var(--text); font-weight:750; text-decoration:none; }
+.cert-actions .btn:disabled { opacity:.55; cursor:not-allowed; transform:none; box-shadow:none; }
+.cert-meta { display:flex; flex-wrap:wrap; gap:10px 32px; margin:20px 0 0; }
+.cert-meta dt { font-size:12px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+.cert-meta dd { margin:4px 0 0; font-weight:700; }
+.cert-note { margin:12px 0 0; font-size:14px; color:var(--muted); }
+.cert-locked .progress-track { margin:6px 0 22px; }
+.cert-locked h2 { font-size:18px; margin-bottom:10px; }
+.cert-locked a.lesson-link { color:var(--muted); font-weight:inherit; text-decoration:none; }
+.cert-locked a.lesson-link:hover { color:var(--text); }
+.cert-form { display:grid; gap:8px; max-width:520px; }
+.cert-form[hidden] { display:none; }
+.cert-form label { font-weight:750; }
+#certName { padding:12px 14px; border:1px solid var(--line); border-radius:13px; background:var(--surface); color:var(--text); font:inherit; font-size:17px; outline:none; transition:border-color .18s ease, box-shadow .18s ease; }
+#certName:focus { border-color:var(--primary); box-shadow:0 0 0 3px color-mix(in srgb, var(--primary) 16%, transparent); }
+#certName[aria-invalid="true"] { border-color:var(--danger); }
+#certName::placeholder { color:var(--muted); }
+.cert-hint { margin:0 0 8px; font-size:13px; color:var(--muted); }
+.cert-error { margin:0; font-size:13px; font-weight:700; color:var(--danger); }
+.cert-confirm-name { font-size:24px; font-weight:800; margin:4px 0 10px; overflow-wrap:anywhere; }
+#certPrint { display:none; }
+@media print {
+  body.print-cert { background:#fff !important; }
+  body.print-cert > *:not(#certPrint) { display:none !important; }
+  body.print-cert #certPrint { display:block; }
+  body.print-cert #certPrint img { display:block; width:100%; max-height:100vh; object-fit:contain; }
+}
+@media (max-width: 780px) {
+  .cert-actions .btn { flex:1 1 100%; }
+}
+
 /* ---- glossary ---- */
 .glossary-toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; margin-top:26px; }
 #glossarySearch { flex:1 1 280px; max-width:440px; padding:11px 14px; border:1px solid var(--line); border-radius:13px; background:var(--surface); color:var(--text); outline:none; transition:border-color .18s ease, box-shadow .18s ease; }

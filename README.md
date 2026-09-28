@@ -17,6 +17,7 @@ The experience combines:
 - expected-result reveals,
 - end-of-lesson checkpoints and wrap-ups,
 - browser-persisted progress,
+- a completion certificate for core lessons 00–17: the learner confirms their name once, the first-issue date and certificate ID are locked in the browser, and the certificate is shared as a PNG file (Web Share), downloaded, printed to PDF, or added to LinkedIn — there is no certificate link because the site has no server,
 - a progressive-hint Capstone that applies the full loop to new behavior on the merged prototype.
 
 ## Local preview
