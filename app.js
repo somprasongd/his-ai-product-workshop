@@ -57,6 +57,17 @@
       glossaryIntro: 'คำศัพท์เทคนิคที่พบในบทเรียนทุกบท พร้อมคำอธิบายภาษาคน ถ้าเจอคำที่ไม่คุ้นระหว่างเรียน กลับมาค้นที่นี่ได้ตลอด',
       glossarySearchPh: 'พิมพ์คำศัพท์ที่อยากรู้ เช่น branch, mock, worktree',
       glossaryEmpty: 'ไม่พบคำศัพท์ที่ตรงกับการค้นหา ลองพิมพ์คำอื่น เช่น diff, state หรือ prompt',
+      privacyNav: 'ความเป็นส่วนตัว', privacyTag: 'นโยบาย', privacyTitle: 'คุกกี้และความเป็นส่วนตัว',
+      privacyIntro: 'เว็บนี้เป็นเว็บสถิตสำหรับเรียนรู้ ไม่มีระบบสมาชิกและไม่มี backend อ่านสรุปด้านล่างเพื่อดูว่ามีข้อมูลอะไรอยู่ใน browser ของคุณ และบริการภายนอกที่เว็บเรียกใช้',
+      privacyUpdated: 'ปรับปรุงล่าสุด: 1 ตุลาคม 2569',
+      privacySections: [
+        ['สรุปสั้นๆ', ['**ไม่ใช้ cookie** ไม่มีทั้ง cookie ของเว็บนี้และ cookie ของบุคคลที่สาม', 'ไม่มี analytics โฆษณา หรือเครื่องมือติดตามพฤติกรรม', 'ไม่มีบัญชีผู้ใช้ และไม่ส่งชื่อ ความคืบหน้า หรือคำตอบของคุณไปยังเซิร์ฟเวอร์ของเว็บนี้']],
+        ['ข้อมูลที่เก็บใน browser ของคุณ (localStorage)', ['ภาษาและธีมที่คุณเลือก', 'บทที่เรียนจบ ผลควิซ สถานะแบบฝึกหัด และบทที่เรียนล่าสุด', 'ตัวเลือกที่คุณตั้งไว้ เช่น ภาษาของ prompt, AI Agent, ที่เก็บ repository และความเร็วเสียงอ่าน', 'ชื่อที่คุณกรอก วันที่ออก และ Certificate ID เมื่อคุณออกใบประกาศ', 'ข้อมูลเหล่านี้อยู่เฉพาะในเครื่องและ browser นี้ ผู้จัดทำเข้าถึงไม่ได้ และใช้เพื่อให้เรียนต่อจากที่ค้างได้เท่านั้น']],
+        ['บริการภายนอกที่ browser เรียกใช้', ['`cdn.jsdelivr.net` ส่งไฟล์ Mermaid สำหรับวาดแผนภาพ ทุกครั้งที่เปิดบทเรียนหรือสไลด์', '`fonts.googleapis.com` ส่งฟอนต์ Noto Sans Thai เฉพาะตอนสร้างภาพใบประกาศ', 'GitHub Pages เป็นผู้โฮสต์เว็บนี้', 'ปุ่ม "เพิ่มใน LinkedIn" ไปยัง linkedin.com เฉพาะเมื่อคุณกดเอง และลิงก์ไม่มีชื่อของคุณ', 'เสียงอ่านใช้ Speech Synthesis ของ browser หรือระบบปฏิบัติการ ซึ่งบางเครื่องอาจใช้เสียงออนไลน์ตามผู้ผลิต', 'บริการเหล่านี้เห็น IP address และข้อมูล browser ตามปกติของการเรียกเว็บ และอยู่ภายใต้นโยบายของผู้ให้บริการแต่ละราย']],
+        ['จัดการข้อมูลของคุณ', ['กด "รีเซ็ต Progress" ในเมนูด้านข้างเพื่อลบความคืบหน้าและใบประกาศ', 'หรือล้างข้อมูลเว็บไซต์ (site data) ของเว็บนี้ในการตั้งค่า browser เพื่อลบทุกอย่าง', 'ใบประกาศที่ดาวน์โหลดหรือพิมพ์ไปแล้วเป็นไฟล์ของคุณ ลบได้จากเครื่องของคุณ']],
+        ['ข้อมูลตัวอย่างในบทเรียน', ['ข้อมูลสุขภาพทุกตัวอย่างเป็นข้อมูลสมมติ (mock)', 'ห้ามนำข้อมูลผู้ป่วยจริง รหัสผ่าน หรือค่า `.env` ไปใส่ใน prompt หรือ issue ที่ฝึกในหลักสูตรนี้']]
+      ],
+      privacyContact: 'มีคำถามหรืออยากให้แก้ไขข้อความนี้ เปิด issue ได้ที่ [GitHub repository]({url})',
       certNav: 'Certificate', certTitle: 'Certificate of Completion',
       certIntro: 'เรียนจบบทหลัก 00–17 ครบแล้วรับ certificate ได้ (Capstone และบทเสริมไม่นับ) ใบจะถูกสร้างใน browser ของคุณและบันทึกวันที่ออกครั้งแรกไว้',
       certLocked: (done,total) => `เรียนจบแล้ว ${done} จาก ${total} บทหลัก เรียนบทที่เหลือให้ครบเพื่อรับ certificate`,
@@ -116,6 +127,17 @@
       glossaryIntro: 'The technical terms used across every lesson, explained in plain language. Come back and search here any time a word feels unfamiliar.',
       glossarySearchPh: 'Search a term, e.g. branch, mock, worktree',
       glossaryEmpty: 'No terms match your search. Try another word, such as diff, state, or prompt',
+      privacyNav: 'Privacy', privacyTag: 'Policy', privacyTitle: 'Cookies and privacy',
+      privacyIntro: 'This is a static learning site with no accounts and no backend. The summary below shows what is stored in your browser and which outside services the site calls.',
+      privacyUpdated: 'Last updated: 1 October 2026',
+      privacySections: [
+        ['In short', ['**No cookies**, neither first-party nor third-party', 'No analytics, advertising, or behavior tracking', 'No user accounts, and your name, progress, and answers are never sent to this site\'s servers']],
+        ['What is stored in your browser (localStorage)', ['Your language and theme choices', 'Completed lessons, quiz results, exercise state, and your last lesson', 'Options you set, such as prompt language, AI agent, repository host, and read-aloud speed', 'The name you enter, the issue date, and the Certificate ID when you issue a certificate', 'This stays on this device and browser, the authors cannot access it, and it is used only so you can resume where you left off']],
+        ['Outside services your browser calls', ['`cdn.jsdelivr.net` serves the Mermaid library that draws diagrams, each time you open a lesson or the slides', '`fonts.googleapis.com` serves the Noto Sans Thai font, only when the certificate image is generated', 'GitHub Pages hosts this site', 'The "Add to LinkedIn" button goes to linkedin.com only when you click it, and the link does not contain your name', 'Read-aloud uses the speech synthesis of your browser or operating system, which on some devices may use online voices from the vendor', 'These services see your IP address and browser details as with any web request, under each provider\'s own policy']],
+        ['Managing your data', ['Use "Reset progress" in the side menu to remove progress and the certificate', 'Or clear this site\'s site data in your browser settings to remove everything', 'A certificate you already downloaded or printed is your own file and can be deleted from your device']],
+        ['Sample data in lessons', ['All health data in examples is synthetic (mock)', 'Never put real patient data, passwords, or `.env` values into prompts or issues you practice with in this course']]
+      ],
+      privacyContact: 'Questions, or want this text changed? Open an issue on the [GitHub repository]({url})',
       certNav: 'Certificate', certTitle: 'Certificate of Completion',
       certIntro: 'Complete core lessons 00–17 to get a certificate (the capstone and bonus lesson are not required). It is generated in your browser and keeps the date it was first issued.',
       certLocked: (done,total) => `You have completed ${done} of ${total} core lessons. Finish the rest to get your certificate.`,
@@ -256,6 +278,7 @@
       zoomOut:'<circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3M8 11h6"/>',
       close:'<path d="M18 6 6 18M6 6l12 12"/>',
       reset:'<path d="M3 12a9 9 0 1 0 2.64-6.36M3 12V5m0 7h7"/>',
+      shield:'<path d="M12 3 5 6v6c0 4.4 3 7.6 7 9 4-1.4 7-4.6 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
       share:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>',
       speaker:'<path d="M11 5 6 9H3a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9.5 9.5 0 0 1 0 13"/>',
       stop:'<rect x="6.5" y="6.5" width="11" height="11" rx="2"/>',
@@ -307,6 +330,7 @@
           <nav class="lesson-nav">
             <a class="lesson-link ${activeId==='glossary'?'active':''}" href="#/glossary"><span class="lesson-num">${icon('book',14)}</span><span>${U('glossary')}</span></a>
             <a class="lesson-link ${activeId==='certificate'?'active':''}" href="#/certificate"><span class="lesson-num">${icon('award',14)}</span><span>${U('certNav')}</span></a>
+            <a class="lesson-link ${activeId==='privacy'?'active':''}" href="#/privacy"><span class="lesson-num">${icon('shield',14)}</span><span>${U('privacyNav')}</span></a>
             <a class="lesson-link" href="./slides.html" target="_blank" rel="noreferrer"><span class="lesson-num">${icon('spark',14)}</span><span>${U('slides')}</span></a>
             <a class="lesson-link" href="${course.meta.starterUrl}" target="_blank" rel="noreferrer"><span class="lesson-num">${icon('code',14)}</span><span>${U('starter')}</span></a>
             <a class="lesson-link" href="${course.meta.sourceUrl}" target="_blank" rel="noreferrer"><span class="lesson-num">${icon('github',14)}</span><span>${U('source')}</span></a>
@@ -646,6 +670,26 @@
     const certCta = coreDone() === coreLessons.length && !loadCertificate();
     const html = `<div class="content"><section class="section"><div class="final-summary"><span class="eyebrow">${pct}% ${U('progress')}</span><h1 class="lesson-title">${esc(t(f.title))}</h1><p class="lesson-intro">${esc(t(f.intro))}</p><div class="skill-grid">${t(f.skills).map(s=>`<div class="skill">${icon('check',15)} ${esc(s)}</div>`).join('')}</div><div class="hero-actions"><a class="btn ${certCta?'btn-primary':'btn-secondary'}" href="#/certificate">${icon('award',16)} ${U('certNav')}</a><a class="btn ${certCta?'btn-secondary':'btn-primary'}" href="#/lesson/capstone">Capstone ${icon('arrow',16)}</a><a class="btn btn-secondary" href="${course.meta.starterUrl}" target="_blank" rel="noreferrer">${U('starter')}</a></div></div></section></div>`;
     return shell(html,'');
+  }
+
+  function privacyPage() {
+    const sections = U('privacySections').map(([h, items]) => `<section class="block">
+      <h2>${esc(h)}</h2>
+      <ul class="clean">${items.map(x => `<li>${rich(x)}</li>`).join('')}</ul>
+    </section>`).join('');
+    const html = `<div class="content">
+      <header class="lesson-header">
+        <div class="lesson-kicker"><span class="pill">${icon('shield',13)} ${U('privacyTag')}</span></div>
+        <h1 class="lesson-title">${U('privacyTitle')}</h1>
+        <p class="lesson-intro">${U('privacyIntro')}</p>
+        <p class="glossary-count">${U('privacyUpdated')}</p>
+      </header>
+      <div class="lesson-body">
+        ${sections}
+        <section class="block"><p>${rich(U('privacyContact').replace('{url}', course.meta.sourceUrl))}</p></section>
+      </div>
+    </div>`;
+    return shell(html, 'privacy');
   }
 
   function glossaryPage() {
@@ -1048,6 +1092,7 @@
     } else if (hash === '#/summary') app.innerHTML = summaryPage();
     else if (hash === '#/glossary') app.innerHTML = glossaryPage();
     else if (hash === '#/certificate') app.innerHTML = certificatePage();
+    else if (hash === '#/privacy') app.innerHTML = privacyPage();
     else app.innerHTML = home();
     bind();
     if (document.getElementById('certImage')) renderCertificateImage();
